@@ -36,6 +36,7 @@ A game realtime multiplayer game that lets it's users share videos, and have the
 
 ## Inventory Management software
 ### Description
+Whoever wants to add this can add it
 ### Proposed Stack
 ### Supplemental Info
 
