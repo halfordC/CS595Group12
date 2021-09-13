@@ -34,10 +34,15 @@ A game realtime multiplayer game that lets it's users share videos, and have the
 ### Supplemental Info
 - an example of a jackbox game. This just shows the main screen, while the 6 players are submitting answers on their phones https://youtu.be/qmgqZr_eazc 
 
+
 ## Inventory Management software
 ### Description
+A piece of software to manage the inventory of an establishment. This could be a warehouse, senior home, retail store, etc. The software would have the ability to check physical inventory and the non-physical (scheduled shipments to the establishment with estimated dates of arrival). Depending on what we would be simulating we could also include where the items are stocked (retail sections, warehouse pallet/storeroom numbers, etc.)
 ### Proposed Stack
+- Node.js (to manage frontend, backend, and webapp)
+- MongoDB (more difficult) JSONdb(very simple)
 ### Supplemental Info
+- Would be developed as some form of an intranet
 
 
 > Written with [StackEdit](https://stackedit.io/).
