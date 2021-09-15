@@ -1,25 +1,26 @@
+
 # CS595Group12
 This is where are Group 12 project will Live. Soon to be decided what it is. 
 We can probably add some pros and cons sections to each of these Ideas, or whatever categories we need for the 3 ideas assignment. 
 
 # Project Ideas:
-## Midi Editor
+## Midi Visualizer
 
 ### Primary Problem
+Musicians with electronic instruments for live shows are getting more and more common. The vast majority of events and venues have some sort of Audio/Visual component to them these days, and the software available for creating synced Visuals to music is all either very expensive, or very complicated. 
 
-### target Users
+### Target Users
+Musicians using digital instruments (Synthesizers, drum machines, samplers, effects units, or DJ controllers) 
 
 ### Scope and Main functionality
 A gui that lets musicians take information that is already coming out of their digital instruments, and use it to control visuals on a screen, creating an audio visual experience for live performance. Minimum Viable Product will allow users to upload multiple image file, and control the location, size, rotation, and alpha value/opacity of that image with Midi CCs, or Midi Notes, which will be assigned by the user. 
+
 ### Prior Knowledge 
 The majority of group members have experience making desktop apps in C based languages, 
-The suplamentary Info shouldn't be too hard to pick up. Hal has an understanding of all aspects of this proposed 
+The supplementary Info shouldn't be too hard to pick up. Hal has an understanding of all aspects of this proposed 
 application. 
 
-### Description
-A gui that lets musicians take information that is already coming out of their digital instruments, and use it to control visuals on a screen, creating an audio visual experience for live performance. Minimum Viable Product will allow users to upload multiple image file, and control the location, size, rotation, and alpha value/opacity of that image with Midi CCs, or Midi Notes, which will be assigned by the user. 
-
-Stretch goals: 
+### Stretch Goals
 - "Scenes" tied to Midi program changes, or bank changes so that Users can change the current visual to a different visual 
 - Simple colored shapes as options instead of images
 - Text that can be controlled the same way as images
@@ -30,6 +31,7 @@ Stretch goals:
 - SDL2 for Graphics and user input. Can be either C++ or C, https://www.libsdl.org/
 - Some Midi library, depending on the proposed language / compiler
 - SDL2 C# wrapper https://github.com/flibitijibibo/SDL2-CS (looking at this, this may not be the best choice? less support, most SDL2 documentation is for C++. Though there are a fair few example projects in C#. This is something to talk about.)
+- 
 ### Supplemental Info
 - What is Midi Exactly? https://youtu.be/faZIkN_e_1s
 - Quick Overview on the Midi Spec https://youtu.be/2BccxWkUgaU
@@ -38,11 +40,22 @@ Stretch goals:
 
 
 ## Music Video Jackbox Game
-### Description
-A game realtime multiplayer game that lets it's users share videos, and have their friends vote on whether they like them or not. Using the "Jackbox" style, users will log into the game on their phones, while watching one main screen, either in person, or on a live stream. Users will be propted with questions like "What's a song that You think is annoying, but everyone else likes?" or "What's a song that you think player X listens to in the shower?". After all players answer two or 3 of these prompts with youtube links, a playlist of their choices will be compiled into a playlist. Players will be able to vote whether they like the video or not, and whoever posted the video will earn points based on how everyone votes. For example, in our first question, the player that submitted the video that they think is annoying but everyone else likes will get a point for everyone that likes the video, and for the second question, if player X ends up liking the video, then the player that submitted it might get 5 points as a bonus for guessing correctly. The prompt for the video will be shown after everyone has voted, sort of like what VH1 used to do with their music video facts. (if anyone else is old enough to remember VH1).
+### Primary Problem
+Are you ever up really late with a friend or two, and your night just devolves into looking up different Music videos and other content on YouTube? This app aims to help you determine who is quantifiably the best at knowing what everyone else likes to listen too and watch, as well as get to know your friends tastes a little bit better. 
+
+### Target Users
+Groups of friends, family get togethers, or twitch streamers.  
+
+### Scope and Main functionality
+A real-time multiplayer game that lets it's users share videos, and have their friends vote on whether they like them or not. Using the "Jackbox" style, users will log into the game on their phones, while watching one main screen, either in person, or on a live stream. Users will be prompted with questions like "What's a song that You think is annoying, but everyone else likes?" or "What's a song that you think player X listens to in the shower?". After all players answer two or 3 of these prompts with YouTube links, a playlist of their choices will be compiled into a playlist. Players will be able to vote whether they like the video or not, and whoever posted the video will earn points based on how everyone votes. For example, in our first question, the player that submitted the video that they think is annoying but everyone else likes will get a point for everyone that likes the video, and for the second question, if player X ends up liking the video, then the player that submitted it might get 5 points as a bonus for guessing correctly. The prompt for the video will be shown after everyone has voted, sort of like what VH1 used to do with their music video facts. (if anyone else is old enough to remember VH1).
+
+### Prior Knowledge
+All members of the team have made WebApps in intro to software Engineering, this could be run on a similar system. 
+
 ### Proposed Stack
 - Websockets https://www.html5rocks.com/en/tutorials/websockets/basics/
 - We could do this through a WebApp, or we could make a dedicated Desktop app. With our knowledge, a Desktop app would probably make the most sense.
+
 ### Supplemental Info
 - an example of a jackbox game. This just shows the main screen, while the 6 players are submitting answers on their phones https://youtu.be/qmgqZr_eazc 
 
