@@ -4,6 +4,18 @@ We can probably add some pros and cons sections to each of these Ideas, or whate
 
 # Project Ideas:
 ## Midi Editor
+
+### Primary Problem
+
+### target Users
+
+### Scope and Main functionality
+A gui that lets musicians take information that is already coming out of their digital instruments, and use it to control visuals on a screen, creating an audio visual experience for live performance. Minimum Viable Product will allow users to upload multiple image file, and control the location, size, rotation, and alpha value/opacity of that image with Midi CCs, or Midi Notes, which will be assigned by the user. 
+### Prior Knowledge 
+The majority of group members have experience making desktop apps in C based languages, 
+The suplamentary Info shouldn't be too hard to pick up. Hal has an understanding of all aspects of this proposed 
+application. 
+
 ### Description
 A gui that lets musicians take information that is already coming out of their digital instruments, and use it to control visuals on a screen, creating an audio visual experience for live performance. Minimum Viable Product will allow users to upload multiple image file, and control the location, size, rotation, and alpha value/opacity of that image with Midi CCs, or Midi Notes, which will be assigned by the user. 
 
