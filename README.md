@@ -41,8 +41,12 @@ A piece of software to manage the inventory of an establishment. This could be a
 ### Proposed Stack
 - Node.js (to manage frontend, backend, and webapp)
 - MongoDB (more difficult) JSONdb(very simple)
+- WPF Application(C#)
 ### Supplemental Info
-- Would be developed as some form of an intranet
+- Web App and/or Desktop App with on premise database and webserver hosting.
+### Relevant Skills
+- Noah has experience in both MongoDB and Node.JS for a web app and its database
+- Quinlan has experience with C#(specifically WPF) and SQL for a desktop app and its databasefrom previous and current job.
 
 
 > Written with [StackEdit](https://stackedit.io/).
