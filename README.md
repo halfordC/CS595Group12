@@ -77,7 +77,7 @@ Small companies are becoming increasingly common with the internet. Having a bus
 ### Relevant Skills
 - Noah has experience in both MongoDB and Node.JS for a web app and its database
 - Quinlan has experience with C#(specifically WPF) and SQL for a desktop app and its database from previous and current job.
-- Sai has a experience with working with SQL and dealing with database managament
+- Sai has a experience with working with dealing with database managament and dealing with C and javascript for managing the backend/frontend
 - Data structures and organization will be the main skill needed which all team members have from their schooling at a minimum.
 
 
