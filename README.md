@@ -41,13 +41,13 @@ application.
 
 ## Music Video Jackbox Game
 ### Primary Problem
-Are you ever up really late with a friend or two, and your night just devolves into looking up different Music videos and other content on YouTube? This app aims to help you determine who is quantifiably the best at knowing what everyone else likes to listen too and watch, as well as get to know your friends tastes a little bit better. 
+Are you ever up really late with a friend or two, and your night just devolves into looking up different Music videos and other content on YouTube? This app aims to help you determine who is quantifiably the best at knowing what everyone would like to listen to and watch, as well as get to know your friend's music taste's.
 
 ### Target Users
-Groups of friends, family get togethers, or twitch streamers.  
+Groups of friends, college students, family get-togethers, or twitch streamers.  
 
 ### Scope and Main functionality
-A real-time multiplayer game that lets it's users share videos, and have their friends vote on whether they like them or not. Using the "Jackbox" style, users will log into the game on their phones, while watching one main screen, either in person, or on a live stream. Users will be prompted with questions like "What's a song that You think is annoying, but everyone else likes?" or "What's a song that you think player X listens to in the shower?". After all players answer two or 3 of these prompts with YouTube links, a playlist of their choices will be compiled into a playlist. Players will be able to vote whether they like the video or not, and whoever posted the video will earn points based on how everyone votes. For example, in our first question, the player that submitted the video that they think is annoying but everyone else likes will get a point for everyone that likes the video, and for the second question, if player X ends up liking the video, then the player that submitted it might get 5 points as a bonus for guessing correctly. The prompt for the video will be shown after everyone has voted, sort of like what VH1 used to do with their music video facts. (if anyone else is old enough to remember VH1).
+A real-time multiplayer game that lets its users share videos, and have their friends vote on whether they like them or not. Using the "Jackbox" style, users will log into the game on their phones, while watching one main screen, either in person or on a live stream. Users will be prompted with questions like "What's a song that You think is annoying, but everyone else likes?" or "What's a song that you think player X listens to in the shower?". After all, players answer two or 3 of these prompts with YouTube links, a playlist of their choices will be compiled into a playlist. Players will be able to vote whether they like the video or not, and whoever posted the video will earn points based on how everyone votes. For example, in our first question, the player that submitted the video that they think is annoying but everyone else likes will get a point for everyone that likes the video, and for the second question, if player X ends up liking the video, then the player that submitted it might get 5 points as a bonus for guessing correctly. The prompt for the video will be shown after everyone has voted, sort of like what VH1 used to do with their music video facts. (if anyone else is old enough to remember VH1).
 
 ### Prior Knowledge
 All members of the team have made WebApps in intro to software Engineering, this could be run on a similar system. 
@@ -77,6 +77,7 @@ Small companies are becoming increasingly common with the internet. Having a bus
 ### Relevant Skills
 - Noah has experience in both MongoDB and Node.JS for a web app and its database
 - Quinlan has experience with C#(specifically WPF) and SQL for a desktop app and its database from previous and current job.
+- Sai has a experience with working with SQL and dealing with database managament
 - Data structures and organization will be the main skill needed which all team members have from their schooling at a minimum.
 
 
