@@ -61,24 +61,32 @@ All members of the team have made WebApps in intro to software Engineering, this
 
 
 ## Inventory Management software
-### Description
-A piece of software to manage the inventory of an establishment. This could be a warehouse, senior home, retail store, etc. The software would have the ability to check physical inventory and the non-physical (scheduled shipments to the establishment with estimated dates of arrival). Depending on what we would be simulating we could also include where the items are stocked (retail sections, warehouse pallet/storeroom numbers, etc.)
-### Problem
+
+### Primary Problem
 Small companies are becoming increasingly common with the internet. Having a business often necessitates keeping track of goods flowing in, out, and what's on your shelves. Inventory management software however is often expensive and requires you to pay for hosting remotely.
-### Stretch Goals
-- Ability to run reports to track patterns and analyze inflow and outflow data.
-### Proposed Stack
-- Node.js (to manage frontend, backend, and webapp)
-- MongoDB (more difficult) JSONdb(very simple)
-- WPF Application(C#)
-### Supplemental Info
-- Web App and/or Desktop App with on premise database and webserver hosting.
-- Should be packaged well and easily deployed to different businesses.
-### Relevant Skills
+
+### Target Users
+Managers of warehouses, or anyone that deals in physical items that need keeping track of. 
+
+### Scope and Main Functionality
+A piece of software to manage the inventory of an establishment. This could be a warehouse, senior home, retail store, etc. The software would have the ability to check physical inventory and the non-physical (scheduled shipments to the establishment with estimated dates of arrival). Depending on what we would be simulating we could also include where the items are stocked (retail sections, warehouse pallet/storeroom numbers, etc.)
+
+### Prior Knowledge
 - Noah has experience in both MongoDB and Node.JS for a web app and its database
 - Quinlan has experience with C#(specifically WPF) and SQL for a desktop app and its database from previous and current job.
 - Sai has a experience with working with dealing with database managament and dealing with C and javascript for managing the backend/frontend
 - Data structures and organization will be the main skill needed which all team members have from their schooling at a minimum.
 
+### Stretch Goals
+- Ability to run reports to track patterns and analyze inflow and outflow data.
+
+### Proposed Stack
+- Node.js (to manage frontend, backend, and webapp)
+- MongoDB (more difficult) JSONdb(very simple)
+- WPF Application(C#)
+
+### Supplemental Info
+- Web App and/or Desktop App with on premise database and webserver hosting.
+- Should be packaged well and easily deployed to different businesses.
 
 > Written with [StackEdit](https://stackedit.io/).
