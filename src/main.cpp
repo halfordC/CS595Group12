@@ -2,8 +2,10 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 
+#include "kiss_sdl.h"
 #include "RenderWindow.hpp"
 
 bool programRunning = true;
@@ -36,7 +38,7 @@ int main(int argc, char* args[])
 		}
 
 	} 
-	
+
 	window.cleanUp();
 	SDL_Quit();
 
