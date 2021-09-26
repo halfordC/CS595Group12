@@ -7,11 +7,21 @@
 
 #include "kiss_sdl.h"
 #include "RenderWindow.hpp"
+#include "RtMidi.h"
 
 bool programRunning = true;
 
 int main(int argc, char* args[])
 {
+	//init Midi object, will be wrapped in it's own init function later. 
+	try {
+    RtMidiIn midiin;
+  } catch (RtMidiError &error) {
+    // Handle the exception here
+    error.printMessage();
+  }
+
+  ///Initialze SDL stuff
 	if(SDL_Init(SDL_INIT_VIDEO) > 0)
 	{
 		std::cout << "SDL_Init has Failed. SDL_ERROR:  " << SDL_GetError() << std::endl;
