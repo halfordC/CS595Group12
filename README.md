@@ -28,11 +28,15 @@ application.
     
 ### Proposed Stack
 - SDL2 for Graphics and user input. Can be either C++ or C, https://www.libsdl.org/
+- SDL2 Image https://www.libsdl.org/projects/SDL_image/
+- SDL2 TTF for Fonts https://www.libsdl.org/projects/SDL_ttf/
 - GUI Library, with example code https://github.com/actsl/kiss_sdl2
 - RTMidi library for C++ https://www.music.mcgill.ca/~gary/rtmidi/index.html#intro
+
 
 ### Supplemental Info
 - What is Midi Exactly? https://youtu.be/faZIkN_e_1s
 - Quick Overview on the Midi Spec https://youtu.be/2BccxWkUgaU
 - Detailed overview of Midi Spec https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
 - SDL2 setup with sublime text, as well as some quick tutorials (C++) https://youtube.com/playlist?list=PL2RPjWnJduNmXHRYwdtublIPdlqocBoLS 
+- Ammendum to this video: instal SDL2 TTF the same way you installed SDL2 Image
