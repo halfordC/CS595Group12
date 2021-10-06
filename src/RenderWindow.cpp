@@ -2,13 +2,27 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
-#include "renderWindow.hpp"
+#include "RenderWindow.hpp"
 
-RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
-	:window(NULL), renderer(NULL) //initialize memory
+RenderWindow::RenderWindow(const char* p_title, bool isFullScreen, int p_w, int p_h, uint32_t windowShown)
+	:window(NULL), renderer(NULL), mode() //initialize memory
 {
-	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN); //title, xpos, ypos, width, height, and show the window. 
-	
+	/* Get current display mode to initialize a window with native screen resolution. */
+	if(SDL_GetCurrentDisplayMode(0, &mode) != 0)
+	{
+		std::cout << "Failed to get current display mode. Error: " << SDL_GetError() << std::endl;
+	}
+
+	if(isFullScreen)
+	{
+		window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mode.w, mode.h, windowShown); //title, xpos, ypos, width, height, and show the window.
+		setFullScreen();
+	}
+	else
+	{
+		window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, p_w, p_h, windowShown); //title, xpos, ypos, width, height, and show the window.
+	}
+
 	if(window == NULL)
 	{
 		std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
@@ -23,5 +37,11 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
 void RenderWindow::cleanUp()
 {
 	SDL_DestroyWindow(window);
+}
 
+void RenderWindow::setFullScreen()
+{
+	SDL_SetWindowSize(window, mode.w, mode.h);
+	SDL_ShowWindow(window);
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 }

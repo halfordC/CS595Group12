@@ -13,7 +13,7 @@ bool programRunning = true;
 
 int main(int argc, char* args[])
 {
-	//init Midi object, will be wrapped in it's own init function later. 
+	//init Midi object, will be wrapped in it's own init function later.
 	try {
     RtMidiIn midiin;
   } catch (RtMidiError &error) {
@@ -32,26 +32,40 @@ int main(int argc, char* args[])
 		std::cout << "IMG_Init has Failed. SDL_ERROR:  " << SDL_GetError() << std::endl;
 	}
 
-	RenderWindow window("FirstWindow", 640, 480);
+	/* Last flag must be SDL_WINDOW_SHOWN or SDL_WINDOW_HIDDEN */
+	RenderWindow sceneViewWindow("Scene View Window", false, 400, 400, SDL_WINDOW_HIDDEN);
+	RenderWindow guiWindow("GUI Window", false, 400, 400, SDL_WINDOW_SHOWN);
 
 	SDL_Event event;
-
+	Uint32 lastTime = 0;
+	Uint32 currentTime;
 	while(programRunning)
 	{
+		currentTime = SDL_GetTicks();
+		if(currentTime > lastTime + 7500)
+		{
+			programRunning = false;
+		}
 		while(SDL_PollEvent(&event))
 		{
-			if(event.type == SDL_QUIT)
-			{
-				programRunning = false;
-			}
-
+			switch(event.type)
+    	{
+    		case SDL_WINDOWEVENT:
+        	switch(event.window.event)
+        	{
+        		case SDL_WINDOWEVENT_ENTER:
+							sceneViewWindow.setFullScreen();
+            	break;
+        	}
+        break;
+    	}
 		}
+	}
 
-	} 
-
-	window.cleanUp();
+	sceneViewWindow.cleanUp();
+	guiWindow.cleanUp();
 	SDL_Quit();
 
 	return 0;
-	
+
 }
