@@ -56,7 +56,11 @@ int main(int argc, char* args[])
 	        switch(event.window.event)
 	        {
 	        	case SDL_WINDOWEVENT_ENTER:
-							string command = "open " + sceneViewWindow.cwd.string();
+							#ifdef __APPLE__
+								string command = "open " + sceneViewWindow.cwd.string();
+							#elif _WIN32
+								string command = "explorer " + sceneViewWindow.cwd.string();
+							#endif
 							system(command.c_str());
 							programRunning = false;
 	            break;
