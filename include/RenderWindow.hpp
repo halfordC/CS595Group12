@@ -5,9 +5,6 @@
 #include <filesystem>
 #include <string>
 
-using std::string;
-namespace fs = std::filesystem;
-
 class RenderWindow
 {
 public:
@@ -15,7 +12,7 @@ public:
 	void cleanUp();
 	void enterViewMode();
 	SDL_DisplayMode mode;
-	fs::path cwd;
+	std::filesystem::path cwd;
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;

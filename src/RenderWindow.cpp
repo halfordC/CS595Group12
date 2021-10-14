@@ -12,6 +12,22 @@ using std::endl; using std::string;
 
 namespace fs = std::filesystem;
 
+/*
+#include <stdint.h>
+#include <iostream>
+#include <string>
+#include <filesystem>
+
+namespace fs = std::filesystem;
+
+typedef struct
+{
+	fs::path resourcePath;
+	float x, y, size, alpha;
+	int rotation;
+} sprite;
+*/
+
 RenderWindow::RenderWindow(const char* p_title, bool isFullScreen, int p_w, int p_h, uint32_t windowShown)
 	:mode(), window(NULL), renderer(NULL), cwd()
 {
@@ -44,10 +60,13 @@ RenderWindow::RenderWindow(const char* p_title, bool isFullScreen, int p_w, int 
 
 	/* Initialize the CWD to the scenes folder. Creates one if none exists. */
 	cwd = fs::current_path();
+
 	#ifdef __APPLE__
 		cwd += "/scenes";
-	#ifdef _WIN32
+	#elif _WIN32
 		cwd += "\\scenes";
+	#endif
+
 	if(!fs::exists(cwd))
 	{
 			fs::create_directory(cwd);
