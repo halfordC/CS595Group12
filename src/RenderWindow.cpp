@@ -44,7 +44,10 @@ RenderWindow::RenderWindow(const char* p_title, bool isFullScreen, int p_w, int 
 
 	/* Initialize the CWD to the scenes folder. Creates one if none exists. */
 	cwd = fs::current_path();
-	cwd += "/scenes";
+	#ifdef __APPLE__
+		cwd += "/scenes";
+	#ifdef _WIN32
+		cwd += "\\scenes";
 	if(!fs::exists(cwd))
 	{
 			fs::create_directory(cwd);
