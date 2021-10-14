@@ -58,19 +58,8 @@ RenderWindow::RenderWindow(const char* p_title, bool isFullScreen, int p_w, int 
 		cout << "Renderer failed to init. Error: " << SDL_GetError() << endl;
 	}
 
-	/* Initialize the CWD to the scenes folder. Creates one if none exists. */
+	/* sets cwd to the root directory of the program. */
 	cwd = fs::current_path();
-
-	#ifdef __APPLE__
-		cwd += "/scenes";
-	#elif _WIN32
-		cwd += "\\scenes";
-	#endif
-
-	if(!fs::exists(cwd))
-	{
-			fs::create_directory(cwd);
-	}
 }
 void RenderWindow::enterViewMode()
 {
@@ -81,4 +70,21 @@ void RenderWindow::enterViewMode()
 void RenderWindow::cleanUp()
 {
 	SDL_DestroyWindow(window);
+}
+
+/* Method will open the scenes folder in file explorer(windows) or finder(macOSx) */
+void RenderWindow::openSceneFolder()
+{
+	#ifdef __APPLE__
+		cwd += "/scenes";
+		string command = "open " + cwd.string();
+	#elif _WIN32
+		cwd += "\\scenes";
+		string command = "explorer " + cwd.string();
+	#endif
+	if(!fs::exists(cwd))
+	{
+			fs::create_directory(cwd);
+	}
+	system(command.c_str());
 }

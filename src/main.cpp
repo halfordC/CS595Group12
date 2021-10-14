@@ -45,9 +45,13 @@ int main(int argc, char* args[])
 
 	/* Start Program Loop */
 	SDL_Event event;
+	unsigned int lastTime = SDL_GetTicks();
+	unsigned int currentTime;
+	int fpsCounter = 0;
 	while(programRunning)
 	{
 		/* Do Events */
+		currentTime = SDL_GetTicks();
 		while(SDL_PollEvent(&event))
 		{
 			switch(event.type)
@@ -56,18 +60,21 @@ int main(int argc, char* args[])
 	        switch(event.window.event)
 	        {
 	        	case SDL_WINDOWEVENT_ENTER:
-							#ifdef __APPLE__
-								string command = "open " + sceneViewWindow.cwd.string();
-							#elif _WIN32
-								string command = "explorer " + sceneViewWindow.cwd.string();
-							#endif
-							system(command.c_str());
+							sceneViewWindow.openSceneFolder();
 							programRunning = false;
 	            break;
 	        }
 	       break;
 	    }
-			/* Do Renders */
+		}
+		/* Do Renders */
+
+		fpsCounter++;
+		if(currentTime - lastTime > 1000)
+		{
+			cout << "FPS: " << fpsCounter << endl;
+			lastTime = currentTime;
+			fpsCounter = 0;
 		}
 	}
 	/* End Program Loop */

@@ -11,6 +11,7 @@ public:
 	RenderWindow(const char* p_title, bool isFullScreen, int p_w, int p_h, uint32_t windowShown);
 	void cleanUp();
 	void enterViewMode();
+	void openSceneFolder();
 	SDL_DisplayMode mode;
 	std::filesystem::path cwd;
 private:
