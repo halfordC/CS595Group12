@@ -60,14 +60,17 @@ int main(int argc, char* args[])
 	        switch(event.window.event)
 	        {
 	        	case SDL_WINDOWEVENT_ENTER:
-							sceneViewWindow.openSceneFolder();
-							programRunning = false;
+							sceneViewWindow.enterViewMode();
 	            break;
 	        }
 	       break;
+				 case SDL_MOUSEBUTTONDOWN:
+				 	programRunning = false;
 	    }
 		}
+
 		/* Do Renders */
+		sceneViewWindow.render();
 
 		fpsCounter++;
 		if(currentTime - lastTime > 1000)
