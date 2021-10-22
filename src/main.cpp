@@ -10,6 +10,7 @@
 #include "kiss_sdl.h"
 #include "RenderWindow.hpp"
 #include "RtMidi.h"
+#include "Sprite.hpp"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;

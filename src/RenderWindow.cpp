@@ -5,6 +5,7 @@
 #include <string>
 
 #include "RenderWindow.hpp"
+#include "Sprite.hpp"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
@@ -26,6 +27,10 @@ typedef struct
 	int rotation;
 } sprite;
 */
+
+/* TODO implement a scene class that will hold an array of sprites to be rendered to the screen
+   Main will instantiate an instance of said class and pass it into the RenderWindow::render()
+	 function to be rendered. This will also be the portal for changes from the transitional layer. */
 
 RenderWindow::RenderWindow(const char* p_title, bool isFullScreen, int p_w, int p_h, uint32_t windowShown)
 	:mode(), cwd(), window(NULL), renderer(NULL), image(NULL)
@@ -59,7 +64,7 @@ RenderWindow::RenderWindow(const char* p_title, bool isFullScreen, int p_w, int 
 
 	/* sets cwd to the root directory of the program. */
 	cwd = fs::current_path();
-	image = IMG_LoadTexture(renderer, "mugshot.PNG");
+  image = IMG_LoadTexture(renderer, "mugshot.PNG");
 }
 void RenderWindow::enterViewMode()
 {

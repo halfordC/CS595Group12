@@ -14,9 +14,9 @@ public:
 	void render();
 	void cleanUp();
 	SDL_DisplayMode mode;
+	SDL_Window* window;
 	std::filesystem::path cwd;
 private:
-	SDL_Window* window;
 	SDL_Renderer* renderer;
 	SDL_Texture* image;
 };
