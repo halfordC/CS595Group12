@@ -38,17 +38,16 @@ int main(int argc, char* args[])
 		cout << "IMG_Init has Failed. SDL_ERROR:  " << SDL_GetError() << endl;
 	}
 
-	/* Last flag must be SDL_WINDOW_SHOWN or SDL_WINDOW_HIDDEN */
-	RenderWindow sceneViewWindow("Scene View Window", false, 400, 400, SDL_WINDOW_HIDDEN);
-	RenderWindow guiWindow("GUI Window", false, 400, 400, SDL_WINDOW_SHOWN);
-	/* End KISS_SDL fuckery */
-
+	RenderWindow sceneViewWindow("Scene View Window");
+	sceneViewWindow.enterViewMode();
+	//sceneViewWindow.openSceneFolder();
 
 	/* Start Program Loop */
 	SDL_Event event;
 	unsigned int lastTime = SDL_GetTicks();
 	unsigned int currentTime;
 	int fpsCounter = 0;
+	int upsCounter = 0;
 	while(programRunning)
 	{
 		/* Do Events */
@@ -57,34 +56,29 @@ int main(int argc, char* args[])
 		{
 			switch(event.type)
 	    {
-	    	case SDL_WINDOWEVENT:
-	        switch(event.window.event)
-	        {
-	        	case SDL_WINDOWEVENT_ENTER:
-							sceneViewWindow.enterViewMode();
-	            break;
-	        }
-	       break;
 				 case SDL_MOUSEBUTTONDOWN:
 				 	programRunning = false;
 	    }
 		}
-
-		/* Do Renders */
-		sceneViewWindow.render();
-
-		fpsCounter++;
-		if(currentTime - lastTime > 1000)
+		/* Do updates */
+		/* Do renders */
+		if(((float)(currentTime - lastTime)) >= (16.67f * fpsCounter))
 		{
-			cout << "FPS: " << fpsCounter << endl;
+			sceneViewWindow.render();
+			fpsCounter++;
+		}
+		upsCounter++;
+		if(currentTime - lastTime >= 1000)
+		{
+			cout << "FPS: " << fpsCounter << " | Updates: " << upsCounter << endl;
 			lastTime = currentTime;
 			fpsCounter = 0;
+			upsCounter = 0;
 		}
 	}
 	/* End Program Loop */
 
 	sceneViewWindow.cleanUp();
-	guiWindow.cleanUp();
 	SDL_Quit();
 
 	return 0;
