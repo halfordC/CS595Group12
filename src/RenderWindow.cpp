@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <fstream>
 
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
@@ -41,8 +42,23 @@ RenderWindow::RenderWindow(const char* p_title):mode(), window(NULL), renderer(N
 	#endif
 	if(!fs::exists(cwd)) fs::create_directory(cwd);
 
+	int i = 0;
+	int w, h;
+	for(auto& dir_entry : fs::directory_iterator(cwd))
+	{
+		image = IMG_LoadTexture(renderer, (dir_entry.path()).c_str());
+		SDL_QueryTexture(image, NULL, NULL, &w, &h);
+		Sprite temp(i * 0.1, i * 0.1, w, h, image);
+		temp.setScale((i + 1) * 0.1);
+		temp.setRotation( (i * 36) );
+		sprites.push_back(temp);
+		i++;
+		cout << "Sprite " << i << "| w->" << w << " h->" << h << endl;
+	}
+
 	/* Below code is to set a Sprite to be rendered by the render method! */
-  image = IMG_LoadTexture(renderer, "mugshot.PNG");
+	/*
+  image = IMG_LoadTexture(renderer, "mugshot.png");
 	int w, h;
 	SDL_QueryTexture(image, NULL, NULL, &w, &h);
 	for(int i = 0; i < 10; i++)
@@ -52,6 +68,7 @@ RenderWindow::RenderWindow(const char* p_title):mode(), window(NULL), renderer(N
 		temp.setRotation( (i * 36) );
 		sprites.push_back(temp);
 	}
+	*/
 }
 
 /* This method will show the RenderWindow in the native resolution of the system. It will be fullscreen
