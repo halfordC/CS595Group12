@@ -14,6 +14,8 @@ public:
 	RenderWindow(const char* p_title);
 	void enterViewMode();
 	void openSceneFolder();
+	void initializeScene();
+	void setSceneDirectory(std::filesystem::path newDir);
 	void render();
 	void cleanUp();
   std::filesystem::path cwd;

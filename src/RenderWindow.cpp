@@ -4,7 +4,6 @@
 #include <filesystem>
 #include <string>
 #include <vector>
-#include <fstream>
 
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
@@ -42,33 +41,7 @@ RenderWindow::RenderWindow(const char* p_title):mode(), window(NULL), renderer(N
 	#endif
 	if(!fs::exists(cwd)) fs::create_directory(cwd);
 
-	int i = 0;
-	int w, h;
-	for(auto& dir_entry : fs::directory_iterator(cwd))
-	{
-		image = IMG_LoadTexture(renderer, (dir_entry.path()).c_str());
-		SDL_QueryTexture(image, NULL, NULL, &w, &h);
-		Sprite temp(i * 0.1, i * 0.1, w, h, image);
-		temp.setScale((i + 1) * 0.1);
-		temp.setRotation( (i * 36) );
-		sprites.push_back(temp);
-		i++;
-		cout << "Sprite " << i << "| w->" << w << " h->" << h << endl;
-	}
-
-	/* Below code is to set a Sprite to be rendered by the render method! */
-	/*
-  image = IMG_LoadTexture(renderer, "mugshot.png");
-	int w, h;
-	SDL_QueryTexture(image, NULL, NULL, &w, &h);
-	for(int i = 0; i < 10; i++)
-	{
-		Sprite temp(i * 0.1, i * 0.1, w, h, image);
-		temp.setScale((i + 1) * 0.1);
-		temp.setRotation( (i * 36) );
-		sprites.push_back(temp);
-	}
-	*/
+	initializeScene();
 }
 
 /* This method will show the RenderWindow in the native resolution of the system. It will be fullscreen
@@ -91,6 +64,56 @@ void RenderWindow::openSceneFolder()
 		string command = "explorer " + cwd.string();
 	#endif
 	system(command.c_str());
+}
+
+/* This method clears and sets up a new sprites vector for rendering. This Method
+ 	 should be called any time a change is made to the current scene directory
+	 and any time the directory changes. */
+void RenderWindow::initializeScene()
+{
+	sprites.clear();
+
+	int i = 0;
+	int w, h;
+	for(auto& dir_entry : fs::directory_iterator(cwd))
+	{
+		if(!fs::is_directory(dir_entry))
+		{
+			/* Pull file extension and set to upper case for string comparison. */
+			string ext = dir_entry.path().extension().string();
+			std::for_each(ext.begin(), ext.end(), [](char & c){
+				c = ::toupper(c);
+			});
+
+			/* Only allow JPEG or PNG at this time as I am a lazy POS */
+			if(ext.compare(".JPEG") == 0 || ext.compare(".PNG") == 0)
+			{
+				image = IMG_LoadTexture(renderer, (dir_entry.path()).c_str());
+				SDL_QueryTexture(image, NULL, NULL, &w, &h);
+				Sprite temp(i * 0.1, i * 0.1, w, h, image);
+
+				/* calls to setScale() and setRotation() are for demonstrative purposes. */
+				temp.setScale((i + 1) * 0.1);
+				temp.setRotation( (i * 36) );
+				sprites.push_back(temp);
+				i++;
+			}
+			cout << ext << endl;
+			cout << "Sprite " << i << "| w->" << w << " h->" << h << endl;
+		}
+	}
+}
+
+/* This method sets the current working directory to newDir. After setting to a new
+	 directory, the scene will be reinitialized wity the initializeScene() method. */
+void RenderWindow::setSceneDirectory(fs::path path)
+{
+	std::error_code ec;
+	if(fs::is_directory(path, ec))
+	{
+		cwd = path;
+		initializeScene();
+	}
 }
 
 /* This method will render the sprites that are held in the sprite vector to the screen.
