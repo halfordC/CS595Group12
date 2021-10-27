@@ -35,9 +35,9 @@ RenderWindow::RenderWindow(const char* p_title):mode(), window(NULL), renderer(N
 	/* Initializes the working directory of the program to the scenes folder, creating one if necessary. */
 	cwd = fs::current_path();
 	#ifdef __APPLE__
-		cwd += "/scenes";
+		cwd += "/scenes/scene1";
 	#elif _WIN32
-		cwd += "\\scenes";
+		cwd += "\\scenes\\scene1";
 	#endif
 	if(!fs::exists(cwd)) fs::create_directory(cwd);
 
@@ -88,12 +88,14 @@ void RenderWindow::initializeScene()
 			/* Only allow JPEG or PNG at this time as I am a lazy POS */
 			if(ext.compare(".JPEG") == 0 || ext.compare(".PNG") == 0)
 			{
-				image = IMG_LoadTexture(renderer, (dir_entry.path()).c_str());
+
+				/* .string().c_str() necessary for macOSx and Windows cross compatablility. */
+				image = IMG_LoadTexture(renderer, (dir_entry.path()).string().c_str());
 				SDL_QueryTexture(image, NULL, NULL, &w, &h);
 				Sprite temp(i * 0.1, i * 0.1, w, h, image);
 
 				/* calls to setScale() and setRotation() are for demonstrative purposes. */
-				temp.setScale((i + 1) * 0.1);
+				temp.setScale((i + 1) * 0.2);
 				temp.setRotation( (i * 36) );
 				sprites.push_back(temp);
 				i++;

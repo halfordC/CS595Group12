@@ -48,6 +48,22 @@ int main(int argc, char* args[])
 	unsigned int currentTime;
 	int fpsCounter = 0;
 	int upsCounter = 0;
+
+	/* Start paths to simulate directory changing. */
+	int secondCounter = 0;
+	bool one = true;
+	std::filesystem::path dir1 = std::filesystem::current_path();
+	std::filesystem::path dir2 = std::filesystem::current_path();
+
+	#ifdef __APPLE__
+		dir1 += "/scenes/scene1";
+		dir2 += "/scenes/scene2";
+	#elif _WIN32
+		dir1 += "\\scenes\\scene1";
+		dir2 += "\\scenes\\scene2";
+	#endif
+	/* End paths to simulate directory changing. */
+
 	while(programRunning)
 	{
 		/* Do Events */
@@ -74,6 +90,23 @@ int main(int argc, char* args[])
 			lastTime = currentTime;
 			fpsCounter = 0;
 			upsCounter = 0;
+
+			/* Simulate directory change every 4 seconds. */
+			secondCounter++;
+			if(secondCounter == 4)
+			{
+				if(one)
+				{
+					one = false;
+					sceneViewWindow.setSceneDirectory(dir1);
+				}
+				else if(!one)
+				{
+					one = true;
+					sceneViewWindow.setSceneDirectory(dir2);
+				}
+				secondCounter = 0;
+			}
 		}
 	}
 	/* End Program Loop */
