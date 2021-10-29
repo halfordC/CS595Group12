@@ -1,0 +1,2 @@
+C:\Files\JuceAsBase\MidiVisualizer\Builds\VisualStudio2019\x64\Debug\ConsoleApp\MidiVisualizer.exe
+C:\Files\JuceAsBase\MidiVisualizer\Builds\VisualStudio2019\x64\Debug\ConsoleApp\MidiVisualizer.pdb
