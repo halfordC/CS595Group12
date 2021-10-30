@@ -933,6 +933,9 @@
     <ClCompile Include="..\..\Source\Translator.cpp">
       <Filter>MidiVisualizer\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\juce_audio_basics\juce_audio_basics.cpp">
+      <Filter>MidiVisualizer\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
@@ -1865,6 +1868,9 @@
     <ClInclude Include="..\..\Source\Binding.h">
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\juce_audio_basics\juce_audio_basics.h">
+      <Filter>MidiVisualizer\Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">
@@ -1875,6 +1881,9 @@
     </None>
     <None Include="..\..\..\..\JUCE\modules\juce_core\native\java\README.txt">
       <Filter>JUCE Modules\juce_core\native\java</Filter>
+    </None>
+    <None Include="..\..\Source\juce_audio_basics\juce_audio_basics.mm">
+      <Filter>MidiVisualizer\Source</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
