@@ -33,15 +33,26 @@ public:
     void getMidiDeviceNames(std::vector< std::string> *inArray) //fills input vector with availible midi devices.
     {
         midiInputs = juce::MidiInput::getAvailableDevices();
+        if (midiInputs.size() == 0)
+        {
+            std::cout << "No devices detected" << std::endl;
+            return;
+        }
 
         for (int i = 0; i < midiInputs.size(); i++) //loop through all availible devices
         {
             inArray->push_back(midiInputs[i].name.toStdString());
         }
+
+
     }
 
     void connectToMidiDevice(std::string deviceName) 
     {
+        if (midiInputs.size()==0) 
+        {
+            return;
+        }
         for (int i = 0; i < midiInputs.size(); i++) 
         {
             if (deviceName.compare(midiInputs[i].name.toStdString())) 
@@ -52,9 +63,7 @@ public:
                 return;
             }
         }
-
         std::cout << "Input Midi device is not connected" << std::endl;
-
     }
 
     bool hasNewMidiMessage() 

@@ -864,7 +864,6 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_devices.cpp" />
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_core.cpp" />
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_events.cpp" />
-    <ClCompile Include="..\..\Source\juce_audio_basics\juce_audio_basics.cpp" />
     <ClCompile Include="..\..\Source\kiss_draw.c" />
     <ClCompile Include="..\..\Source\kiss_general.c" />
     <ClCompile Include="..\..\Source\kiss_posix.c" />
@@ -1180,7 +1179,6 @@
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_events\juce_events.h" />
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h" />
     <ClInclude Include="..\..\Source\Binding.h" />
-    <ClInclude Include="..\..\Source\juce_audio_basics\juce_audio_basics.h" />
     <ClInclude Include="..\..\Source\kiss_sdl.h" />
     <ClInclude Include="..\..\Source\midiModule.h" />
     <ClInclude Include="..\..\Source\RenderWindow.hpp" />
@@ -1190,7 +1188,6 @@
     <None Include="..\..\..\..\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt" />
     <None Include="..\..\..\..\JUCE\modules\juce_audio_devices\native\oboe\README.md" />
     <None Include="..\..\..\..\JUCE\modules\juce_core\native\java\README.txt" />
-    <None Include="..\..\Source\juce_audio_basics\juce_audio_basics.mm" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\resources.rc" />

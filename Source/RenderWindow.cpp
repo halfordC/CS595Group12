@@ -33,6 +33,7 @@ RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(
 	}
 
 	/* Initializes the working directory of the program to the scenes folder, creating one if necessary. */
+	/*
 	cwd = fs::current_path();
 #ifdef __APPLE__
 	cwd += "/scenes/scene1";
@@ -40,17 +41,26 @@ RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(
 	cwd += "\\scenes\\scene1";
 #endif
 	if (!fs::exists(cwd)) fs::create_directory(cwd);
-
+	
 	initializeScene();
+	*/
 }
 
 /* This method will show the RenderWindow in the native resolution of the system. It will be fullscreen
    and borderless. This method should be triggered by the "START" button on the GUI. */
 void RenderWindow::enterViewMode()
 {
+	/*
 	SDL_SetWindowSize(window, mode.w, mode.h);
 	SDL_ShowWindow(window);
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+	*/
+
+	//just to get a cool example screenshot
+	SDL_SetWindowSize(window, 640, 480);
+	SDL_SetWindowPosition(window, 50, 50);
+	SDL_ShowWindow(window);
+
 }
 
 /* This method will open the scenes folder in file explorer(windows) or finder(macOSx).

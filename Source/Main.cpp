@@ -14,11 +14,34 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
+uint8_t numDevices = 0;
 bool programRunning = true;
-MidiModule* myMidiModule = new MidiModule();
+
 
 int main(int argc, char* args[])
 {
+
+	//init Midi Module, get midi input
+	MidiModule* myMidiModule = new MidiModule();
+	
+	std::vector<std::string> midiInputDeviceNames;
+
+	std::cout << "Which of these devices would you like to connect to?" << std::endl;
+	myMidiModule->getMidiDeviceNames(&midiInputDeviceNames);
+
+	for (auto i = midiInputDeviceNames.begin(); i != midiInputDeviceNames.end(); i++)
+	{
+		std::cout << *i << std::endl;
+	}
+
+	if(midiInputDeviceNames.size()>0)
+	{
+		std::string inputRequest;
+		std::cin >> inputRequest;
+		myMidiModule->connectToMidiDevice(inputRequest);
+	}
+	
+
 
 	///Initialze SDL stuff
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
@@ -33,21 +56,23 @@ int main(int argc, char* args[])
 
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
+
+
 	//sceneViewWindow.openSceneFolder();
 
-	/* Start Program Loop */
 	SDL_Event event;
 	unsigned int lastTime = SDL_GetTicks();
 	unsigned int currentTime;
 	int fpsCounter = 0;
 	int upsCounter = 0;
 
-	/* Start paths to simulate directory changing. */
+	/* Start paths to simulate directory changing.*/
 	int secondCounter = 0;
 	bool one = true;
+	
 	std::filesystem::path dir1 = std::filesystem::current_path();
 	std::filesystem::path dir2 = std::filesystem::current_path();
-
+	
 #ifdef __APPLE__
 	dir1 += "/scenes/scene1";
 	dir2 += "/scenes/scene2";
@@ -55,12 +80,14 @@ int main(int argc, char* args[])
 	dir1 += "\\scenes\\scene1";
 	dir2 += "\\scenes\\scene2";
 #endif
+
 	/* End paths to simulate directory changing. */
 
 	while (programRunning)
 	{
-		/* Do Events */
+		// Do Events
 		currentTime = SDL_GetTicks();
+		
 		while (SDL_PollEvent(&event))
 		{
 			switch (event.type)
@@ -69,12 +96,25 @@ int main(int argc, char* args[])
 				programRunning = false;
 			}
 		}
+
 		/* Do updates */
 		/* Do renders */
 		if (((float)(currentTime - lastTime)) >= (16.67f * fpsCounter))
 		{
 			sceneViewWindow.render();
 			fpsCounter++;
+			if (myMidiModule->hasNewMidiMessage())
+			{
+				std::vector<juce::MidiMessage> inBuffer = myMidiModule->getMidiBuffer();
+
+				for (int i = 0; i < inBuffer.size(); i++)
+				{
+					std::cout << "message Recieved: " << myMidiModule->printMessage(inBuffer[i]) << std::endl;
+
+				}
+				myMidiModule->messagesParsed(); //this clears the flag, and waits for a new message. 
+
+			}
 		}
 		upsCounter++;
 		if (currentTime - lastTime >= 1000)
@@ -84,28 +124,35 @@ int main(int argc, char* args[])
 			fpsCounter = 0;
 			upsCounter = 0;
 
-			/* Simulate directory change every 4 seconds. */
+			// Simulate directory change every 4 seconds.
 			secondCounter++;
 			if (secondCounter == 4)
 			{
 				if (one)
 				{
 					one = false;
-					sceneViewWindow.setSceneDirectory(dir1);
+					//sceneViewWindow.setSceneDirectory(dir1);
 				}
 				else if (!one)
 				{
 					one = true;
-					sceneViewWindow.setSceneDirectory(dir2);
+					//sceneViewWindow.setSceneDirectory(dir2);
 				}
 				secondCounter = 0;
 			}
 		}
-	}
-	/* End Program Loop */
 
-	sceneViewWindow.cleanUp();
+	}
+
+	myMidiModule->~MidiModule();
 	SDL_Quit();
+
+		/* End Program Loop */
+	
+	myMidiModule->~MidiModule();
+	sceneViewWindow.cleanUp();
+	
+	
 
 	return 0;
 
