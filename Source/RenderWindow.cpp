@@ -33,17 +33,17 @@ RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(
 	}
 
 	/* Initializes the working directory of the program to the scenes folder, creating one if necessary. */
-	/*
+	
 	cwd = fs::current_path();
 #ifdef __APPLE__
-	cwd += "/scenes/scene1";
+	cwd += "/scenes";
 #elif _WIN32
-	cwd += "\\scenes\\scene1";
+	cwd += "\\scenes";
 #endif
+	cout << cwd.string() << endl;
 	if (!fs::exists(cwd)) fs::create_directory(cwd);
-	
 	initializeScene();
-	*/
+	
 }
 
 /* This method will show the RenderWindow in the native resolution of the system. It will be fullscreen
@@ -55,12 +55,12 @@ void RenderWindow::enterViewMode()
 	SDL_ShowWindow(window);
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 	*/
-
+	
 	//just to get a cool example screenshot
 	SDL_SetWindowSize(window, 640, 480);
 	SDL_SetWindowPosition(window, 50, 50);
 	SDL_ShowWindow(window);
-
+	
 }
 
 /* This method will open the scenes folder in file explorer(windows) or finder(macOSx).
@@ -72,6 +72,7 @@ void RenderWindow::openSceneFolder()
 	string command = "open " + cwd.string();
 #elif _WIN32
 	string command = "explorer " + cwd.string();
+	cout << command << endl;
 #endif
 	system(command.c_str());
 }
@@ -110,7 +111,6 @@ void RenderWindow::initializeScene()
 				sprites.push_back(temp);
 				i++;
 			}
-			cout << ext << endl;
 			cout << "Sprite " << i << "| w->" << w << " h->" << h << endl;
 		}
 	}
@@ -121,6 +121,8 @@ void RenderWindow::initializeScene()
 void RenderWindow::setSceneDirectory(fs::path path)
 {
 	std::error_code ec;
+	cout << path << endl;
+	if (!fs::exists(path)) fs::create_directory(path);
 	if (fs::is_directory(path, ec))
 	{
 		cwd = path;
@@ -149,5 +151,6 @@ void RenderWindow::render()
 
 void RenderWindow::cleanUp()
 {
+	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }

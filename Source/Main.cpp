@@ -56,8 +56,6 @@ int main(int argc, char* args[])
 
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
-
-
 	//sceneViewWindow.openSceneFolder();
 
 	SDL_Event event;
@@ -131,12 +129,12 @@ int main(int argc, char* args[])
 				if (one)
 				{
 					one = false;
-					//sceneViewWindow.setSceneDirectory(dir1);
+					sceneViewWindow.setSceneDirectory(dir1);
 				}
 				else if (!one)
 				{
 					one = true;
-					//sceneViewWindow.setSceneDirectory(dir2);
+					sceneViewWindow.setSceneDirectory(dir2);
 				}
 				secondCounter = 0;
 			}

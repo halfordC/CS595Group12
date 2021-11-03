@@ -1,0 +1,6 @@
+C:/Users/noahr/source/repos/CS595Group12/juceModules/juce_audio_devices/native/oboe/out/build/x64-Debug/CMakeFiles/oboe.dir
+C:/Users/noahr/source/repos/CS595Group12/juceModules/juce_audio_devices/native/oboe/out/build/x64-Debug/CMakeFiles/install/local.dir
+C:/Users/noahr/source/repos/CS595Group12/juceModules/juce_audio_devices/native/oboe/out/build/x64-Debug/CMakeFiles/install.dir
+C:/Users/noahr/source/repos/CS595Group12/juceModules/juce_audio_devices/native/oboe/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/noahr/source/repos/CS595Group12/juceModules/juce_audio_devices/native/oboe/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/noahr/source/repos/CS595Group12/juceModules/juce_audio_devices/native/oboe/out/build/x64-Debug/CMakeFiles/list_install_components.dir
