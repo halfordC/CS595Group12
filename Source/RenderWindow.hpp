@@ -19,10 +19,11 @@ public:
 	void render();
 	void cleanUp();
   std::filesystem::path cwd;
-	std::vector<Sprite> sprites;
+	std::vector<Sprite*> sprites;
 	SDL_DisplayMode mode;
 	SDL_Window* window;
 private:
 	SDL_Renderer* renderer;
 	SDL_Texture* image;
+	Sprite temp;
 };

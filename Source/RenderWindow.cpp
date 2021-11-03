@@ -82,6 +82,7 @@ void RenderWindow::openSceneFolder()
 	 and any time the directory changes. */
 void RenderWindow::initializeScene()
 {
+	for (Sprite* s : sprites) { s->~Sprite(); };
 	sprites.clear();
 
 	int i = 0;
@@ -103,11 +104,11 @@ void RenderWindow::initializeScene()
 				/* .string().c_str() necessary for macOSx and Windows cross compatablility. */
 				image = IMG_LoadTexture(renderer, (dir_entry.path()).string().c_str());
 				SDL_QueryTexture(image, NULL, NULL, &w, &h);
-				Sprite temp(i * 0.1, i * 0.1, w, h, image);
+				Sprite* temp = new Sprite(i * 0.1f, i * 0.1f, w, h, image);
 
 				/* calls to setScale() and setRotation() are for demonstrative purposes. */
-				temp.setScale((i + 1) * 0.2);
-				temp.setRotation((i * 36));
+				temp->setScale((i + 1) * 0.2);
+				temp->setRotation((i * 36));
 				sprites.push_back(temp);
 				i++;
 			}
@@ -136,15 +137,15 @@ void RenderWindow::setSceneDirectory(fs::path path)
 void RenderWindow::render()
 {
 	SDL_RenderClear(renderer);
-	for (Sprite s : sprites)
+	for (Sprite* s : sprites)
 	{
 		SDL_Rect texr;
-		texr.x = (mode.w * s.getX()) - ((s.getWidth() * s.getScale()) / 2);
-		texr.y = (mode.h * s.getY()) - ((s.getHeight() * s.getScale()) / 2);
-		texr.w = s.getWidth() * s.getScale();
-		texr.h = s.getHeight() * s.getScale();
+		texr.x = (mode.w * s->getX()) - ((s->getWidth() * s->getScale()) / 2);
+		texr.y = (mode.h * s->getY()) - ((s->getHeight() * s->getScale()) / 2);
+		texr.w = s->getWidth() * s->getScale();
+		texr.h = s->getHeight() * s->getScale();
 
-		SDL_RenderCopyEx(renderer, s.getRes(), NULL, &texr, s.getRotation(), NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, s->getRes(), NULL, &texr, s->getRotation(), NULL, SDL_FLIP_NONE);
 	}
 	SDL_RenderPresent(renderer);
 }

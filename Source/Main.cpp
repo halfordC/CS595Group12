@@ -90,8 +90,8 @@ int main(int argc, char* args[])
 		{
 			switch (event.type)
 			{
-			case SDL_MOUSEBUTTONDOWN:
-				programRunning = false;
+				case SDL_MOUSEBUTTONDOWN:
+					programRunning = false;
 			}
 		}
 
