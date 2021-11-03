@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/qwalt/Source/Repos/CS595/juceModules/juce_audio_devices/native/oboe/out/install/x64-Debug (default)")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/qwalt/source/repos/CS595/juceModules/juce_audio_devices/native/oboe/out/install/x64-Debug (default)")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
