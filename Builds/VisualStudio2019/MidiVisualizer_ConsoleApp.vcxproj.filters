@@ -933,6 +933,9 @@
     <ClCompile Include="..\..\Source\Translator.cpp">
       <Filter>MidiVisualizer\Source</Filter>
     </ClCompile>
+    <ClCompile Include="midiLayer.cpp">
+      <Filter>MidiVisualizer\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
@@ -1862,7 +1865,10 @@
     <ClInclude Include="..\..\Source\Sprite.hpp">
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Binding.h">
+    <ClInclude Include="..\..\Source\Binding.hpp">
+      <Filter>MidiVisualizer\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="midiLayer.h">
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
   </ItemGroup>
