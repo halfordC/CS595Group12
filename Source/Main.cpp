@@ -56,6 +56,8 @@ int main(int argc, char* args[])
 
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
+	RenderWindow sceneViewWindow2("Scene View Window");
+	sceneViewWindow2.enterViewMode();
 	//sceneViewWindow.openSceneFolder();
 
 	SDL_Event event;
@@ -86,12 +88,24 @@ int main(int argc, char* args[])
 		// Do Events
 		currentTime = SDL_GetTicks();
 		
-		while (SDL_PollEvent(&event))
+		while ( SDL_PollEvent(&event) != 0 )
 		{
 			switch (event.type)
 			{
-				case SDL_MOUSEBUTTONDOWN:
+			case SDL_QUIT:
+				programRunning = false;
+				break;
+			case SDL_WINDOWEVENT:
+				switch (event.window.event)
+				{
+				case SDL_WINDOWEVENT_CLOSE:
 					programRunning = false;
+					break;
+				default:
+					break;
+				}
+			default:
+				break;
 			}
 		}
 
@@ -149,6 +163,7 @@ int main(int argc, char* args[])
 	
 	myMidiModule->~MidiModule();
 	sceneViewWindow.cleanUp();
+	sceneViewWindow2.cleanUp();
 	
 	
 

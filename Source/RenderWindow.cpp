@@ -152,6 +152,8 @@ void RenderWindow::render()
 
 void RenderWindow::cleanUp()
 {
+	for (Sprite* s : sprites) { s->~Sprite(); };
+	sprites.clear();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }
