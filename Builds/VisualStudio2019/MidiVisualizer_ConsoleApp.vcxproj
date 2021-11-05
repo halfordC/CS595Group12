@@ -870,9 +870,9 @@
     <ClCompile Include="..\..\Source\kiss_posix.c" />
     <ClCompile Include="..\..\Source\kiss_widgets.c" />
     <ClCompile Include="..\..\Source\Main.cpp" />
+    <ClCompile Include="..\..\Source\midiLayer.cpp" />
     <ClCompile Include="..\..\Source\RenderWindow.cpp" />
     <ClCompile Include="..\..\Source\Translator.cpp" />
-    <ClCompile Include="midiLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h" />
@@ -1182,10 +1182,10 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h" />
     <ClInclude Include="..\..\Source\Binding.hpp" />
     <ClInclude Include="..\..\Source\kiss_sdl.h" />
+    <ClInclude Include="..\..\Source\midiLayer.h" />
     <ClInclude Include="..\..\Source\midiModule.h" />
     <ClInclude Include="..\..\Source\RenderWindow.hpp" />
     <ClInclude Include="..\..\Source\Sprite.hpp" />
-    <ClInclude Include="midiLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt" />

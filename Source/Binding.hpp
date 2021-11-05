@@ -23,6 +23,10 @@ public:
     void setTarget(float target) { target = target; };
     void setType(int type) { type = type; };
     void setAmount(float amount) { amount = amount; };
+    int getTrigger() { return trigger; };
+    int getTarget() { return target; };
+    int getType() { return type; };
+    float getAmount() { return amount; };
 private:
     int trigger; //Trigger note
     int target; //Which property to target: 0=x, 1=y, 2=width, 3=heigt, 4=rotation, 5=size

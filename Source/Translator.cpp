@@ -1,5 +1,7 @@
 #include <stdint.h>
+#include <stdio.h>
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include "midiLayer.h"
@@ -21,7 +23,7 @@ public:
 		string str;
 		ifstream infile;
 		infile.open("bindings.txt");
-		while (!infile.eof) // To get you all the lines.
+		while (!infile.eof()) // To get you all the lines.
 		{
 			getline(infile, str); // Saves the line in str.
 			txtbindings.push_back(str);
@@ -31,8 +33,8 @@ public:
 		//For each binding line tokenize and create bindings
 		for (int i = 0; i < txtbindings.size(); i++)
 		{
-			str = strtok(txtbindings[i], ",");
-			while (str != NULL)
+			str = strtok(&*txtbindings[i].begin(), ",");
+			while (str.size() != NULL)
 			{
 				bindingtokens.push_back(str);
 				str = strtok(NULL, ",");
@@ -54,21 +56,21 @@ public:
 		{
 			for (int j = 0; j < bindings.size(); j++)
 			{
-				if (bindings[j].trigger != NULL && bindings[j].trigger == buffer[i].payload0)
+				if (bindings[j].getTrigger() != NULL && bindings[j].getTrigger() == buffer[i].payload0)
 				{
-					switch (bindings[j].target)
+					switch (bindings[j].getTarget())
 					{
 					case 0: //target = 1 | X
 					{
-						if (bindings[j].type == 0) //type = 0: Set
-							sprites[j].setX(bindings[j].amount);
+						if (bindings[j].getType() == 0) //type = 0: Set
+							setX(bindings[j]);
 						else //Scale
 							scaleX(bindings[j]);
 						break;
 					}
 					case 1: //target = 2 | Y
 					{
-						if (bindings[j].type == 0) //type = 0: Set
+						if (bindings[j].getType() == 0) //type = 0: Set
 							setY(bindings[j]);
 						else //Scale
 							scaleY(bindings[j]);
@@ -76,7 +78,7 @@ public:
 					}
 					case 2: //target = 3 | Size
 					{
-						if (bindings[j].type == 0) //type = 0: Set
+						if (bindings[j].getType() == 0) //type = 0: Set
 							setSize(bindings[j]);
 						else //Scale
 							scaleSize(bindings[j]);
@@ -84,7 +86,7 @@ public:
 					}
 					case 3: //target = 4 | Rotation
 					{
-						if (bindings[j].type == 0) //type = 0: Set
+						if (bindings[j].getType() == 0) //type = 0: Set
 							setRotation(bindings[j]);
 						else //Scale
 							scaleRotation(bindings[j]);
@@ -92,7 +94,7 @@ public:
 					}
 					case 4: //target = 5 | Alpha
 					{
-						if (bindings[j].type == 0) //type = 0: Set
+						if (bindings[j].getType() == 0) //type = 0: Set
 							setAlpha(bindings[j]);
 						else //Scale
 							scaleAlpha(bindings[j]);
@@ -105,6 +107,56 @@ public:
 			}
 		}
 	}
+#pragma region X
+	void setX(Binding b)
+	{
+
+	}
+	void scaleX(Binding b)
+	{
+
+	}
+#pragma endregion
+#pragma region Y
+	void setY(Binding b)
+	{
+
+	}
+	void scaleY(Binding b)
+	{
+
+	}
+#pragma endregion
+#pragma region Size
+	void setSize(Binding b)
+	{
+
+	}
+	void scaleSize(Binding b)
+	{
+
+	}
+#pragma endregion
+#pragma region Rotation
+	void setRotation(Binding b)
+	{
+
+	}
+	void scaleRotation(Binding b)
+	{
+
+	}
+#pragma endregion
+#pragma region Alpha
+	void scaleAlpha(Binding b)
+	{
+
+	}
+	void setAlpha(Binding b)
+	{
+
+	}
+#pragma endregion
 private:
 	vector<Binding> bindings;
 };

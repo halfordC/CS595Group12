@@ -933,7 +933,7 @@
     <ClCompile Include="..\..\Source\Translator.cpp">
       <Filter>MidiVisualizer\Source</Filter>
     </ClCompile>
-    <ClCompile Include="midiLayer.cpp">
+    <ClCompile Include="..\..\Source\midiLayer.cpp">
       <Filter>MidiVisualizer\Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1868,7 +1868,7 @@
     <ClInclude Include="..\..\Source\Binding.hpp">
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
-    <ClInclude Include="midiLayer.h">
+    <ClInclude Include="..\..\Source\midiLayer.h">
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
   </ItemGroup>
