@@ -144,7 +144,7 @@ private:
     bool isAddingFromMidiInput = false;  
     juce::Array<juce::MidiDeviceInfo> midiInputs;
     std::vector<juce::MidiMessage> midiBuffer;
-    bool newMessageFlag = false;
+    bool newMessageFlag;
 
     double startTime;
 

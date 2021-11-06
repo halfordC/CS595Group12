@@ -870,7 +870,6 @@
     <ClCompile Include="..\..\Source\kiss_posix.c" />
     <ClCompile Include="..\..\Source\kiss_widgets.c" />
     <ClCompile Include="..\..\Source\Main.cpp" />
-    <ClCompile Include="..\..\Source\midiLayer.cpp" />
     <ClCompile Include="..\..\Source\RenderWindow.cpp" />
     <ClCompile Include="..\..\Source\Translator.cpp" />
   </ItemGroup>
@@ -1182,7 +1181,6 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h" />
     <ClInclude Include="..\..\Source\Binding.hpp" />
     <ClInclude Include="..\..\Source\kiss_sdl.h" />
-    <ClInclude Include="..\..\Source\midiLayer.h" />
     <ClInclude Include="..\..\Source\midiModule.h" />
     <ClInclude Include="..\..\Source\RenderWindow.hpp" />
     <ClInclude Include="..\..\Source\Sprite.hpp" />
