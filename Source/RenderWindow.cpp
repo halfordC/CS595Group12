@@ -33,17 +33,17 @@ RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(
 	}
 
 	/* Initializes the working directory of the program to the scenes folder, creating one if necessary. */
-	/*
+	
 	cwd = fs::current_path();
 #ifdef __APPLE__
-	cwd += "/scenes/scene1";
+	cwd += "/scenes";
 #elif _WIN32
-	cwd += "\\scenes\\scene1";
+	cwd += "\\scenes";
 #endif
+	cout << cwd.string() << endl;
 	if (!fs::exists(cwd)) fs::create_directory(cwd);
-	
 	initializeScene();
-	*/
+	
 }
 
 /* This method will show the RenderWindow in the native resolution of the system. It will be fullscreen
@@ -55,12 +55,12 @@ void RenderWindow::enterViewMode()
 	SDL_ShowWindow(window);
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 	*/
-
+	
 	//just to get a cool example screenshot
 	SDL_SetWindowSize(window, 640, 480);
 	SDL_SetWindowPosition(window, 50, 50);
 	SDL_ShowWindow(window);
-
+	
 }
 
 /* This method will open the scenes folder in file explorer(windows) or finder(macOSx).
@@ -72,6 +72,7 @@ void RenderWindow::openSceneFolder()
 	string command = "open " + cwd.string();
 #elif _WIN32
 	string command = "explorer " + cwd.string();
+	cout << command << endl;
 #endif
 	system(command.c_str());
 }
@@ -81,6 +82,7 @@ void RenderWindow::openSceneFolder()
 	 and any time the directory changes. */
 void RenderWindow::initializeScene()
 {
+	for (Sprite* s : sprites) { s->~Sprite(); };
 	sprites.clear();
 
 	int i = 0;
@@ -102,15 +104,14 @@ void RenderWindow::initializeScene()
 				/* .string().c_str() necessary for macOSx and Windows cross compatablility. */
 				image = IMG_LoadTexture(renderer, (dir_entry.path()).string().c_str());
 				SDL_QueryTexture(image, NULL, NULL, &w, &h);
-				Sprite temp(i * 0.1, i * 0.1, w, h, image);
+				Sprite* temp = new Sprite(i * 0.1f, i * 0.1f, w, h, image);
 
 				/* calls to setScale() and setRotation() are for demonstrative purposes. */
-				temp.setScale((i + 1) * 0.2);
-				temp.setRotation((i * 36));
+				temp->setScale((i + 1) * 0.2);
+				temp->setRotation((i * 36));
 				sprites.push_back(temp);
 				i++;
 			}
-			cout << ext << endl;
 			cout << "Sprite " << i << "| w->" << w << " h->" << h << endl;
 		}
 	}
@@ -121,6 +122,8 @@ void RenderWindow::initializeScene()
 void RenderWindow::setSceneDirectory(fs::path path)
 {
 	std::error_code ec;
+	cout << path << endl;
+	if (!fs::exists(path)) fs::create_directory(path);
 	if (fs::is_directory(path, ec))
 	{
 		cwd = path;
@@ -134,20 +137,23 @@ void RenderWindow::setSceneDirectory(fs::path path)
 void RenderWindow::render()
 {
 	SDL_RenderClear(renderer);
-	for (Sprite s : sprites)
+	for (Sprite* s : sprites)
 	{
 		SDL_Rect texr;
-		texr.x = (mode.w * s.getX()) - ((s.getWidth() * s.getScale()) / 2);
-		texr.y = (mode.h * s.getY()) - ((s.getHeight() * s.getScale()) / 2);
-		texr.w = s.getWidth() * s.getScale();
-		texr.h = s.getHeight() * s.getScale();
+		texr.x = (mode.w * s->getX()) - ((s->getWidth() * s->getScale()) / 2);
+		texr.y = (mode.h * s->getY()) - ((s->getHeight() * s->getScale()) / 2);
+		texr.w = s->getWidth() * s->getScale();
+		texr.h = s->getHeight() * s->getScale();
 
-		SDL_RenderCopyEx(renderer, s.getRes(), NULL, &texr, s.getRotation(), NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, s->getRes(), NULL, &texr, s->getRotation(), NULL, SDL_FLIP_NONE);
 	}
 	SDL_RenderPresent(renderer);
 }
 
 void RenderWindow::cleanUp()
 {
+	for (Sprite* s : sprites) { s->~Sprite(); };
+	sprites.clear();
+	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }

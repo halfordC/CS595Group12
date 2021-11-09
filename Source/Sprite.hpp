@@ -36,6 +36,8 @@ public:
   int getRotation() { return rot; };
   float getScale() { return scale; };
   SDL_Texture* getRes() { return res; };
+  //TODO ADD ALPHA SCALING
+  ~Sprite() { SDL_DestroyTexture(res); };
 private:
   float x;
   float y;
