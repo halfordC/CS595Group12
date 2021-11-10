@@ -19,7 +19,7 @@ public:
 	Translator(const RenderWindow& a) //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
 	{
 		midimod = new MidiModule();
-		vector<Sprite> sprites = a.sprites;
+		vector<Sprite*> sprites = a.sprites;
 		vector<string> txtbindings;
 		vector<string> bindingtokens;
 		//midiModule = a.midiModule;
@@ -50,7 +50,7 @@ public:
 		}
 	}
 
-	void translate()
+	void translate(const RenderWindow& a)
 	{
 		if (midimod->hasNewMidiMessage())
 		{
