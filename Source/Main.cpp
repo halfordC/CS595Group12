@@ -10,6 +10,7 @@
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
 #include "midiModule.h"
+#include "UserGUI.hpp"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
@@ -56,8 +57,8 @@ int main(int argc, char* args[])
 
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
-	RenderWindow sceneViewWindow2("Scene View Window");
-	sceneViewWindow2.enterViewMode();
+	UserGUI gui("GUI Test");
+	gui.enterViewMode();
 	//sceneViewWindow.openSceneFolder();
 
 	SDL_Event event;
@@ -163,7 +164,7 @@ int main(int argc, char* args[])
 	
 	myMidiModule->~MidiModule();
 	sceneViewWindow.cleanUp();
-	sceneViewWindow2.cleanUp();
+	gui.cleanUp();
 	
 	
 
