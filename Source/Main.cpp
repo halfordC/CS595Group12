@@ -116,6 +116,7 @@ int main(int argc, char* args[])
 		if (((float)(currentTime - lastTime)) >= (16.67f * fpsCounter))
 		{
 			sceneViewWindow.render();
+			gui.render();
 			fpsCounter++;
 			if (myMidiModule->hasNewMidiMessage())
 			{

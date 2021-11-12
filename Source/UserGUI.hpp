@@ -22,4 +22,10 @@ public:
 private:
 	SDL_Renderer* renderer;
 	SDL_Event e;
+	kiss_window window1;
+	kiss_array objects;
+	kiss_button button;
+	char message[KISS_MAX_LENGTH];
+	kiss_label label;
+
 };
