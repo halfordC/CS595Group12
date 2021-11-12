@@ -6,11 +6,12 @@
 //#include <unistd.h>
 #include <filesystem>
 
-#include "kiss_sdl.h"
+//#include "kiss_sdl.h"
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
 #include "midiModule.h"
 #include "UserGUI.hpp"
+#include "myKissGui.hpp"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;

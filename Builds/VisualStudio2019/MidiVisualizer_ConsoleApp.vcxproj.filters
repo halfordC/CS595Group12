@@ -912,18 +912,6 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_events.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\kiss_draw.c">
-      <Filter>MidiVisualizer\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\kiss_general.c">
-      <Filter>MidiVisualizer\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\kiss_posix.c">
-      <Filter>MidiVisualizer\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\kiss_widgets.c">
-      <Filter>MidiVisualizer\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Main.cpp">
       <Filter>MidiVisualizer\Source</Filter>
     </ClCompile>
@@ -934,6 +922,9 @@
       <Filter>MidiVisualizer\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UserGUI.cpp">
+      <Filter>MidiVisualizer\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\myKissGui.cpp">
       <Filter>MidiVisualizer\Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1853,9 +1844,6 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>JUCE Library Code</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\kiss_sdl.h">
-      <Filter>MidiVisualizer\Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\midiModule.h">
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
@@ -1869,6 +1857,9 @@
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UserGUI.hpp">
+      <Filter>MidiVisualizer\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\myKissGui.hpp">
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
   </ItemGroup>
