@@ -59,7 +59,6 @@ int main(int argc, char* args[])
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
 	UserGUI gui("GUI Test");
-	gui.enterViewMode();
 	//sceneViewWindow.openSceneFolder();
 
 	SDL_Event event;

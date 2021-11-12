@@ -10,19 +10,16 @@
 class UserGUI
 {
 public:
-	UserGUI(const char* p_title);
-	void enterViewMode();
+	UserGUI(char* p_title);
 	int initializeScene();
 	void render();
 	void cleanUp();
 	std::filesystem::path selectedDirectory;
-	SDL_DisplayMode mode;
-	SDL_Window* window;
 	myKissGUI* kissGUI;
 private:
 	SDL_Renderer* renderer;
 	SDL_Event e;
-	kiss_window window1;
+	kiss_window window;
 	kiss_array objects;
 	kiss_button button;
 	char message[KISS_MAX_LENGTH];
