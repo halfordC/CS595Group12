@@ -20,8 +20,12 @@ private:
 	SDL_Event e;
 	kiss_window window;
 	kiss_array objects;
-	kiss_button button;
+	kiss_button addScene;
+	kiss_button noteButton;
+	kiss_button addBinding;
 	kiss_combobox midiDeviceDrop;
+	kiss_combobox imgParam;
+	kiss_combobox midiParam;
 	char message[KISS_MAX_LENGTH];
 	kiss_label label;
 

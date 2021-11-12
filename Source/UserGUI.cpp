@@ -30,11 +30,19 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 	
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
 	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 480);
-	kissGUI->kiss_label_new(&label, &window, message, window.rect.w / 2 - strlen(message) *
+	/*kissGUI->kiss_label_new(&label, &window, message, window.rect.w / 2 - strlen(message) *
 		kissGUI->kiss_textfont.advance / 2, window.rect.h / 2 - (kissGUI->kiss_textfont.fontheight +
-			2 * kissGUI->kiss_normal.h) / 2);
-	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &textArray, 40,40,150,100);
+			2 * kissGUI->kiss_normal.h) / 2);*/
+	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &textArray, 490,20,120,100);
 	midiDeviceDrop.visible = 1;
+	kissGUI->kiss_combobox_new(&imgParam, &window, "Image Param", &textArray, 40, 140, 120, 100);
+	imgParam.visible = 1;
+	kissGUI->kiss_combobox_new(&midiParam, &window, "Midi Param", &textArray, 180, 140, 110, 100);
+	midiParam.visible = 1;
+	kissGUI->kiss_button_new(&noteButton, &window, "Note/CC", 310, 146);
+	noteButton.visible = 1;
+	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 220);
+	addBinding.visible = 1;
 
 	label.textcolor.r = 255;
 	window.visible = 1;
@@ -49,8 +57,12 @@ void UserGUI::render()
 {
 	SDL_RenderClear(renderer);
 	kissGUI->kiss_window_draw(&window, renderer);
-	kissGUI->kiss_label_draw(&label, renderer);
+	/*kissGUI->kiss_label_draw(&label, renderer);*/
 	kissGUI->kiss_combobox_draw(&midiDeviceDrop, renderer);
+	kissGUI->kiss_combobox_draw(&imgParam, renderer);
+	kissGUI->kiss_combobox_draw(&midiParam, renderer);
+	kissGUI->kiss_button_draw(&noteButton, renderer);
+	kissGUI->kiss_button_draw(&addBinding, renderer);
 	SDL_RenderPresent(renderer);
 }
 
