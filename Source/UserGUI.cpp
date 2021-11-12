@@ -21,12 +21,21 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 
 	char message[KISS_MAX_LENGTH];
 	strcpy(message, "Hello World!");
+
+	kiss_array textArray;
+	kissGUI->kiss_array_new(&textArray);
+
+	kissGUI->kiss_array_append(&textArray, 0, "Thing1");
+	kissGUI->kiss_array_append(&textArray, 1, "Thing2");
 	
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
 	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 480);
 	kissGUI->kiss_label_new(&label, &window, message, window.rect.w / 2 - strlen(message) *
 		kissGUI->kiss_textfont.advance / 2, window.rect.h / 2 - (kissGUI->kiss_textfont.fontheight +
 			2 * kissGUI->kiss_normal.h) / 2);
+	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &textArray, 40,40,150,100);
+	midiDeviceDrop.visible = 1;
+
 	label.textcolor.r = 255;
 	window.visible = 1;
 	
@@ -41,6 +50,7 @@ void UserGUI::render()
 	SDL_RenderClear(renderer);
 	kissGUI->kiss_window_draw(&window, renderer);
 	kissGUI->kiss_label_draw(&label, renderer);
+	kissGUI->kiss_combobox_draw(&midiDeviceDrop, renderer);
 	SDL_RenderPresent(renderer);
 }
 

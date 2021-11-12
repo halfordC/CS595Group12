@@ -11,7 +11,6 @@ class UserGUI
 {
 public:
 	UserGUI(char* p_title);
-	int initializeScene();
 	void render();
 	void cleanUp();
 	std::filesystem::path selectedDirectory;
@@ -22,6 +21,7 @@ private:
 	kiss_window window;
 	kiss_array objects;
 	kiss_button button;
+	kiss_combobox midiDeviceDrop;
 	char message[KISS_MAX_LENGTH];
 	kiss_label label;
 
