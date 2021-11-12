@@ -40,9 +40,7 @@ RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(
 #elif _WIN32
 	cwd += "\\scenes";
 #endif
-	cout << cwd.string() << endl;
 	if (!fs::exists(cwd)) fs::create_directory(cwd);
-	initializeScene();
 	
 }
 
@@ -72,7 +70,6 @@ void RenderWindow::openSceneFolder()
 	string command = "open " + cwd.string();
 #elif _WIN32
 	string command = "explorer " + cwd.string();
-	cout << command << endl;
 #endif
 	system(command.c_str());
 }
@@ -82,6 +79,10 @@ void RenderWindow::openSceneFolder()
 	 and any time the directory changes. */
 void RenderWindow::initializeScene()
 {
+	unsigned int startTime = SDL_GetTicks();
+	srand(time(NULL));
+	int r1;
+	float x, y;
 	for (Sprite* s : sprites) { s->~Sprite(); };
 	sprites.clear();
 
@@ -98,23 +99,26 @@ void RenderWindow::initializeScene()
 				});
 
 			/* Only allow JPEG or PNG at this time as I am a lazy POS */
-			if (ext.compare(".JPEG") == 0 || ext.compare(".PNG") == 0)
+			if (ext.compare(".JPG") == 0 || ext.compare(".PNG") == 0)
 			{
-
+				r1 = rand() % 2;
+				x = (rand() % 100) * 0.01f;
+				y = (rand() % 100) * 0.01f;
 				/* .string().c_str() necessary for macOSx and Windows cross compatablility. */
 				image = IMG_LoadTexture(renderer, (dir_entry.path()).string().c_str());
 				SDL_QueryTexture(image, NULL, NULL, &w, &h);
-				Sprite* temp = new Sprite(i * 0.1f, i * 0.1f, w, h, image);
+				Sprite* temp = new Sprite(x, y, w, h, image, r1);
 
 				/* calls to setScale() and setRotation() are for demonstrative purposes. */
-				temp->setScale((i + 1) * 0.2);
-				temp->setRotation((i * 36));
+				temp->setScale(0.15);
 				sprites.push_back(temp);
 				i++;
 			}
-			cout << "Sprite " << i << "| w->" << w << " h->" << h << endl;
 		}
 	}
+	float timeToLoad = ((float)(SDL_GetTicks() - startTime)) / 1000;
+	cout << "Loaded directory in " << timeToLoad << " seconds | avg of " << (timeToLoad / i) * 1000 << "ms per image | Images loaded " << i << endl;
+
 }
 
 /* This method sets the current working directory to newDir. After setting to a new
@@ -122,7 +126,6 @@ void RenderWindow::initializeScene()
 void RenderWindow::setSceneDirectory(fs::path path)
 {
 	std::error_code ec;
-	cout << path << endl;
 	if (!fs::exists(path)) fs::create_directory(path);
 	if (fs::is_directory(path, ec))
 	{
@@ -140,13 +143,14 @@ void RenderWindow::render()
 	for (Sprite* s : sprites)
 	{
 		SDL_Rect texr;
-		texr.x = (mode.w * s->getX()) - ((s->getWidth() * s->getScale()) / 2);
-		texr.y = (mode.h * s->getY()) - ((s->getHeight() * s->getScale()) / 2);
+		texr.x = (640 * s->getX()) - ((s->getWidth() * s->getScale()) / 2);
+		texr.y = (480 * s->getY()) - ((s->getHeight() * s->getScale()) / 2);
 		texr.w = s->getWidth() * s->getScale();
 		texr.h = s->getHeight() * s->getScale();
 
 		SDL_RenderCopyEx(renderer, s->getRes(), NULL, &texr, s->getRotation(), NULL, SDL_FLIP_NONE);
-	}
+	}     
+
 	SDL_RenderPresent(renderer);
 }
 
