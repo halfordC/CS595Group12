@@ -5,6 +5,15 @@
 
 	myKissGUI::myKissGUI() 
 	{
+		/*
+		kiss_textfont; kiss_buttonfont;
+		kiss_normal; 
+		kiss_prelight; kiss_active; kiss_bar;
+		kiss_up; kiss_down; kiss_left; kiss_right; kiss_vslider;
+		kiss_hslider; kiss_selected; kiss_unselected; kiss_combo;
+		*/
+		kiss_screen_width = 0; 
+		kiss_screen_height = 0;
 		kiss_textfont_size = 15;
 		kiss_buttonfont_size = 12;
 		kiss_click_interval = 140;

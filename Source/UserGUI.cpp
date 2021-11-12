@@ -33,9 +33,9 @@ UserGUI::UserGUI(const char* p_title) :mode(), window(NULL), renderer(NULL)
 	}
 
 	cout << "GUI strated" << endl;
-	myKissGUI* kissGUI = new myKissGUI();
+	kissGUI = new myKissGUI();
 
-	//initializeScene();
+	initializeScene();
 }
 
 /* This method will show the RenderWindow in the native resolution of the system. It will be fullscreen
