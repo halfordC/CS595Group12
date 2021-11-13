@@ -44,6 +44,20 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 220);
 	addBinding.visible = 1;
 
+	kissGUI->kiss_button_new(&startButton, &window, "Start", 550, 430);
+	startButton.visible = 1;
+
+	kissGUI->kiss_array_new(&path);
+	kissGUI->kiss_textbox_new(&filePath, &window, 1, &path, 40, 100, 450, 30);
+	filePath.visible = 1;
+
+	kissGUI->kiss_button_new(&browsePath, &window, "Browse", 500, 105);
+	browsePath.visible = 1;
+
+	kissGUI->kiss_button_new(&midiLearn, &window, "Listen", 390, 146);
+	midiLearn.visible = 1;
+
+
 	label.textcolor.r = 255;
 	window.visible = 1;
 	
@@ -63,6 +77,13 @@ void UserGUI::render()
 	kissGUI->kiss_combobox_draw(&midiParam, renderer);
 	kissGUI->kiss_button_draw(&noteButton, renderer);
 	kissGUI->kiss_button_draw(&addBinding, renderer);
+
+	kissGUI->kiss_button_draw(&startButton, renderer);
+	kissGUI->kiss_textbox_draw(&filePath, renderer);
+	kissGUI->kiss_button_draw(&browsePath, renderer);
+	kissGUI->kiss_button_draw(&midiLearn, renderer);
+
+
 	SDL_RenderPresent(renderer);
 }
 

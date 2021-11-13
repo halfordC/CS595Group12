@@ -26,6 +26,13 @@ private:
 	kiss_combobox midiDeviceDrop;
 	kiss_combobox imgParam;
 	kiss_combobox midiParam;
+
+	kiss_button startButton;
+	kiss_array path;
+	kiss_textbox filePath;
+	kiss_button browsePath;
+	kiss_button midiLearn;
+
 	char message[KISS_MAX_LENGTH];
 	kiss_label label;
 
