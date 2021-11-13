@@ -21,23 +21,21 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 
 	char message[KISS_MAX_LENGTH];
 	strcpy(message, "Hello World!");
+	
+	kissGUI->fillConnectedMidiDevices(&connectedMidiDevices); // fill dropdown
 
-	kiss_array textArray;
-	kissGUI->kiss_array_new(&textArray);
-
-	kissGUI->kiss_array_append(&textArray, 0, "Thing1");
-	kissGUI->kiss_array_append(&textArray, 1, "Thing2");
 	
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
 	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 480);
 	/*kissGUI->kiss_label_new(&label, &window, message, window.rect.w / 2 - strlen(message) *
 		kissGUI->kiss_textfont.advance / 2, window.rect.h / 2 - (kissGUI->kiss_textfont.fontheight +
 			2 * kissGUI->kiss_normal.h) / 2);*/
-	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &textArray, 490,20,120,100);
+
+	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 490,20,120,100);
 	midiDeviceDrop.visible = 1;
-	kissGUI->kiss_combobox_new(&imgParam, &window, "Image Param", &textArray, 40, 140, 120, 100);
+	kissGUI->kiss_combobox_new(&imgParam, &window, "Image Param", &imageParamList, 40, 140, 120, 100);
 	imgParam.visible = 1;
-	kissGUI->kiss_combobox_new(&midiParam, &window, "Midi Param", &textArray, 180, 140, 110, 100);
+	kissGUI->kiss_combobox_new(&midiParam, &window, "Midi Param", &midiParamList, 180, 140, 110, 100);
 	midiParam.visible = 1;
 	kissGUI->kiss_button_new(&noteButton, &window, "Note/CC", 310, 146);
 	noteButton.visible = 1;
@@ -69,4 +67,30 @@ void UserGUI::render()
 void UserGUI::cleanUp()
 {
 	SDL_DestroyRenderer(renderer);
+}
+
+
+void UserGUI::selectMidiDropdownEvent(SDL_Event* e)
+{
+	int draw = 1;
+	void** p, * s;
+	int i;
+	if (kissGUI->kiss_combobox_event(&midiDeviceDrop, e, &draw)) 
+	{
+		
+/*
+		if ((p = (void**)bsearch(&s, midiDeviceDrop.textbox.array->data,
+			midiDeviceDrop.textbox.array->length, sizeof(void*),
+			kiss_string_compare))) {
+			i = p - combobox->textbox.array->data;
+
+
+		}
+		else
+			std::cout << "data not found" << std::endl;
+			//strcpy(stext, "Data not found");
+			*/
+	}
+
+
 }

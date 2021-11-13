@@ -1,7 +1,8 @@
 #include "myKissGUI.hpp"
+#include "midiModule.h"
 
 
-
+extern MidiModule* myMidiModule;
 
 	myKissGUI::myKissGUI() 
 	{
@@ -27,6 +28,24 @@
 		kiss_green = { 0, 150, 0, 255 };
 		kiss_blue = { 0, 0, 255, 255 };
 		kiss_lightblue = { 200, 225, 255, 255 };
+
+	}
+
+
+	void myKissGUI::fillConnectedMidiDevices(kiss_array *inArray) 
+	{
+		kiss_array_new(inArray);
+
+		std::vector<std::string> midiInputDeviceNames; //make string array
+		myMidiModule->getMidiDeviceNames(&midiInputDeviceNames); //throw all device names in string array
+
+		//add all strings returned from connected midi devices to array. 
+		for (auto i = midiInputDeviceNames.begin(); i != midiInputDeviceNames.end(); i++)
+		{
+			std::string convertBucket = *i;
+			char* c = strcpy(new char[convertBucket.length() + 1], convertBucket.c_str());
+			kiss_array_appendstring(inArray, 0, c, NULL);
+		}
 
 	}
 

@@ -6,7 +6,6 @@
 //#include <unistd.h>
 #include <filesystem>
 
-//#include "kiss_sdl.h"
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
 #include "midiModule.h"
@@ -19,13 +18,14 @@ using std::endl; using std::string;
 uint8_t numDevices = 0;
 bool programRunning = true;
 
+//keep this global, so other libraries can call it with extern. 
+MidiModule* myMidiModule = new MidiModule();
+
 
 int main(int argc, char* args[])
 {
 
-	//init Midi Module, get midi input
-	MidiModule* myMidiModule = new MidiModule();
-
+	/*
 	std::vector<std::string> midiInputDeviceNames;
 
 	std::cout << "Which of these devices would you like to connect to?" << std::endl;
@@ -36,14 +36,14 @@ int main(int argc, char* args[])
 		std::cout << *i << std::endl;
 	}
 
-	if (midiInputDeviceNames.size() > 0)
+	if(midiInputDeviceNames.size()>0)
 	{
 		std::string inputRequest;
 		std::cin >> inputRequest;
 		myMidiModule->connectToMidiDevice(inputRequest);
 	}
-
-
+	
+	*/
 
 	///Initialze SDL stuff
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
@@ -70,10 +70,10 @@ int main(int argc, char* args[])
 	/* Start paths to simulate directory changing.*/
 	int secondCounter = 0;
 	bool one = true;
-
+	
 	std::filesystem::path dir1 = std::filesystem::current_path();
 	std::filesystem::path dir2 = std::filesystem::current_path();
-
+	
 #ifdef __APPLE__
 	dir1 += "/scenes/scene1";
 	dir2 += "/scenes/scene2";
@@ -82,16 +82,16 @@ int main(int argc, char* args[])
 	dir2 += "\\scenes\\scene2";
 #endif
 
-	sceneViewWindow.setSceneDirectory(dir1);
 	/* End paths to simulate directory changing. */
 
 	while (programRunning)
 	{
 		// Do Events
 		currentTime = SDL_GetTicks();
-
-		while (SDL_PollEvent(&event) != 0)
+		
+		while ( SDL_PollEvent(&event) != 0 )
 		{
+			gui.selectMidiDropdownEvent(&event);
 			switch (event.type)
 			{
 			case SDL_QUIT:
@@ -110,17 +110,13 @@ int main(int argc, char* args[])
 				break;
 			}
 		}
+		int draw = 1;
+		gui.kissGUI->kiss_combobox_event((&gui.midiDeviceDrop), NULL, &draw);
 
 		/* Do updates */
 		/* Do renders */
 		if (((float)(currentTime - lastTime)) >= (16.67f * fpsCounter))
 		{
-
-			for (Sprite* x : sceneViewWindow.getSprites())
-			{
-				x->update();
-			}
-
 			sceneViewWindow.render();
 			gui.render();
 			fpsCounter++;
@@ -145,9 +141,9 @@ int main(int argc, char* args[])
 			fpsCounter = 0;
 			upsCounter = 0;
 
-			// Simulate directory change every 5 seconds.
+			// Simulate directory change every 4 seconds.
 			secondCounter++;
-			if (secondCounter == 5)
+			if (secondCounter == 4)
 			{
 				if (one)
 				{
@@ -161,21 +157,21 @@ int main(int argc, char* args[])
 				}
 				secondCounter = 0;
 			}
-
 		}
+
 	}
 
-		myMidiModule->~MidiModule();
-		SDL_Quit();
+	myMidiModule->~MidiModule();
+	SDL_Quit();
 
 		/* End Program Loop */
+	
+	myMidiModule->~MidiModule();
+	sceneViewWindow.cleanUp();
+	gui.cleanUp();
+	
+	
 
-		myMidiModule->~MidiModule();
-		sceneViewWindow.cleanUp();
-		gui.cleanUp();
-
-
-
-		return 0;
+	return 0;
 
 }

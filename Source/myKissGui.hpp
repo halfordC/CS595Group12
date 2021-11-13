@@ -245,6 +245,7 @@ class myKissGUI
 {
 public:
 	myKissGUI();
+	void fillConnectedMidiDevices(kiss_array* inArray);
 	char* kiss_getcwd(char* buf, int size);
 	int kiss_chdir(char* path);
 	int kiss_getstat(char* pathname, kiss_stat* buf);
