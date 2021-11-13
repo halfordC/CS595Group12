@@ -47,8 +47,53 @@ extern MidiModule* myMidiModule;
 			kiss_array_appendstring(inArray, 0, c, NULL);
 		}
 
+		if (midiInputDeviceNames.size() == 0) 
+		{
+			kiss_array_appendstring(inArray, 0, "No Connected Devices", NULL);
+
+		}
+
 	}
 
+	void myKissGUI::fillMidiParam(kiss_array* inArray)
+	{
+		kiss_array_new(inArray);
+
+		kiss_array_appendstring(inArray, 0, "Note On", NULL);
+		kiss_array_appendstring(inArray, 0, "Note Off", NULL);
+		kiss_array_appendstring(inArray, 0, "Control Change", NULL);
+	}
+
+	bool myKissGUI::dropBoxcompare(kiss_entry clickedEntry, char* compare)
+	{
+		char* clicked = clickedEntry.text;
+		int found = 0;
+		int i = 0;//look through the text entry until a null terminator is found.
+		while (found != 1)
+		{
+			if (clicked[i] == NULL)
+			{
+				found = 1;
+			}
+			i++;
+			if (i == 199)
+			{
+				found = 2; //
+			}
+		}
+
+		int clickedLength = i - 1;
+
+		bool isSame = true;
+		for (int j = 0; j < clickedLength; j++) 
+		{
+			if (clicked[j] != compare[j]) 
+			{
+				isSame = false;
+			}
+		}
+		return isSame;
+	}
 
 	char* myKissGUI::kiss_getcwd(char* buf, int size)
 	{

@@ -16,6 +16,7 @@ public:
 	std::filesystem::path selectedDirectory;
 	myKissGUI* kissGUI;
 	void selectMidiDropdownEvent(SDL_Event* e);
+	void selectMidiParamEvent(SDL_Event* e);
 	kiss_window window;
 	kiss_array objects;
 	kiss_button addScene;
@@ -29,6 +30,12 @@ public:
 	kiss_array connectedMidiDevices; //This will need to be changed as devices are connected and disconnected.
 	kiss_array midiParamList;
 	kiss_array imageParamList;
+
+	kiss_button startButton;
+	kiss_array path;
+	kiss_textbox filePath;
+	kiss_button browsePath;
+	kiss_button midiLearn;
 private:
 	SDL_Renderer* renderer;
 	SDL_Event e;

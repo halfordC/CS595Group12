@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+
 #include "UserGUI.hpp"
 //#include "kiss_sdl.h"
 #include "myKissGui.hpp"
@@ -22,7 +23,8 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 	char message[KISS_MAX_LENGTH];
 	strcpy(message, "Hello World!");
 	
-	kissGUI->fillConnectedMidiDevices(&connectedMidiDevices); // fill dropdown
+	kissGUI->fillConnectedMidiDevices(&connectedMidiDevices); // fill midi device dropdown
+	kissGUI->fillMidiParam(&midiParamList); //fill midi param dropdown
 
 	
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
@@ -41,6 +43,19 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 	noteButton.visible = 1;
 	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 220);
 	addBinding.visible = 1;
+
+	kissGUI->kiss_button_new(&startButton, &window, "Start", 550, 430);
+	startButton.visible = 1;
+
+	kissGUI->kiss_array_new(&path);
+	kissGUI->kiss_textbox_new(&filePath, &window, 1, &path, 40, 100, 450, 30);
+	filePath.visible = 1;
+
+	kissGUI->kiss_button_new(&browsePath, &window, "Browse", 500, 105);
+	browsePath.visible = 1;
+
+	kissGUI->kiss_button_new(&midiLearn, &window, "Listen", 390, 146);
+	midiLearn.visible = 1;
 
 	label.textcolor.r = 255;
 	window.visible = 1;
@@ -61,6 +76,12 @@ void UserGUI::render()
 	kissGUI->kiss_combobox_draw(&midiParam, renderer);
 	kissGUI->kiss_button_draw(&noteButton, renderer);
 	kissGUI->kiss_button_draw(&addBinding, renderer);
+
+	kissGUI->kiss_button_draw(&startButton, renderer);
+	kissGUI->kiss_textbox_draw(&filePath, renderer);
+	kissGUI->kiss_button_draw(&browsePath, renderer);
+	kissGUI->kiss_button_draw(&midiLearn, renderer);
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -77,6 +98,12 @@ void UserGUI::selectMidiDropdownEvent(SDL_Event* e)
 	int i;
 	if (kissGUI->kiss_combobox_event(&midiDeviceDrop, e, &draw)) 
 	{
+		p = midiDeviceDrop.textbox.array->data;
+		s = *p;
+		char* contents = (char*)s;
+
+		std::cout << contents << std::endl;
+
 		
 /*
 		if ((p = (void**)bsearch(&s, midiDeviceDrop.textbox.array->data,
@@ -92,5 +119,38 @@ void UserGUI::selectMidiDropdownEvent(SDL_Event* e)
 			*/
 	}
 
+
+}
+
+void UserGUI::selectMidiParamEvent(SDL_Event* e) 
+{
+
+	int draw = 1;
+	int i;
+	if (kissGUI->kiss_combobox_event(&midiParam,e,&draw)) 
+	{
+		//An item has been clicked! but which one? 
+		//normally, we would use bsearch, but we can't really do that in c++ with how this is setup.
+		//so we must mannualy search through and find the entry. 
+		int length = midiParam.textbox.array->length;
+		for (int i = 0; i< length; i++) 
+		{
+			void** p = midiParam.textbox.array->data+i; //data is of type void pointer pointer
+			void* s = *p; //derefference p, and get S. 
+			char* contents = (char*)s; //contents is the char* string stored at data location i.
+
+
+			std::cout << contents << std::endl;
+
+			//now we need to compare this string with the string that was clicked. where does that string come from?
+			bool result = kissGUI->dropBoxcompare(midiParam.entry, contents);
+			if (result) 
+			{
+				//We are at the text box entry index of what we clicked on, do the clicked action. 
+			}
+
+
+		}
+	}
 
 }

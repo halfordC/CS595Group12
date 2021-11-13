@@ -246,10 +246,12 @@ class myKissGUI
 public:
 	myKissGUI();
 	void fillConnectedMidiDevices(kiss_array* inArray);
+	void fillMidiParam(kiss_array* inArray);
+	bool dropBoxcompare(kiss_entry clickedEntry, char* compare);
 	char* kiss_getcwd(char* buf, int size);
 	int kiss_chdir(char* path);
 	int kiss_getstat(char* pathname, kiss_stat* buf);
-//	kiss_dir* kiss_opendir(char* name);
+	//	kiss_dir* kiss_opendir(char* name);
 	kiss_dirent* kiss_readdir(kiss_dir* dirp);
 	int kiss_closedir(kiss_dir* dirp);
 	int kiss_isdir(kiss_stat s);
@@ -356,9 +358,9 @@ public:
 	SDL_Color kiss_green = { 0, 150, 0, 255 };
 	SDL_Color kiss_blue = { 0, 0, 255, 255 };
 	SDL_Color kiss_lightblue = { 200, 225, 255, 255 };
-	
+
 private:
-	
+
 };
 
 #endif
