@@ -59,7 +59,7 @@ public:
             {
                 //connect to that device here. 
                 setMidiInput(i);
-                std::cout << "connected!" << std::endl;
+                std::cout << deviceName + " connected!" << std::endl;
                 return;
             }
         }

@@ -9,9 +9,12 @@
 #include "UserGUI.hpp"
 //#include "kiss_sdl.h"
 #include "myKissGui.hpp"
+#include "midiModule.h"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
+
+extern MidiModule* myMidiModule;
 
 
 UserGUI::UserGUI(char* p_title) : renderer(NULL)
@@ -94,39 +97,32 @@ void UserGUI::cleanUp()
 void UserGUI::selectMidiDropdownEvent(SDL_Event* e)
 {
 	int draw = 1;
-	void** p, * s;
-	int i;
+	
 	if (kissGUI->kiss_combobox_event(&midiDeviceDrop, e, &draw)) 
 	{
-		p = midiDeviceDrop.textbox.array->data;
-		s = *p;
-		char* contents = (char*)s;
+		int length = midiDeviceDrop.textbox.array->length;
+		for (int i = 0; i<length; i++) 
+		{
+			void** p = midiDeviceDrop.textbox.array->data + i;
+			void* s = *p;
+			char* contents = (char*)s;
 
-		std::cout << contents << std::endl;
+			bool result = kissGUI->dropBoxcompare(midiDeviceDrop.entry, contents);
+			if (result)
+			{
+				//we need to connect to the midi device here. 
+				string connect(contents); //to convert to a std::string, just give a char* as a constructor parameter. 
 
-		
-/*
-		if ((p = (void**)bsearch(&s, midiDeviceDrop.textbox.array->data,
-			midiDeviceDrop.textbox.array->length, sizeof(void*),
-			kiss_string_compare))) {
-			i = p - combobox->textbox.array->data;
-
-
+				myMidiModule->connectToMidiDevice(connect);
+			}
 		}
-		else
-			std::cout << "data not found" << std::endl;
-			//strcpy(stext, "Data not found");
-			*/
 	}
-
-
 }
 
 void UserGUI::selectMidiParamEvent(SDL_Event* e) 
 {
 
 	int draw = 1;
-	int i;
 	if (kissGUI->kiss_combobox_event(&midiParam,e,&draw)) 
 	{
 		//An item has been clicked! but which one? 
@@ -137,16 +133,14 @@ void UserGUI::selectMidiParamEvent(SDL_Event* e)
 		{
 			void** p = midiParam.textbox.array->data+i; //data is of type void pointer pointer
 			void* s = *p; //derefference p, and get S. 
-			char* contents = (char*)s; //contents is the char* string stored at data location i.
-
-
-			std::cout << contents << std::endl;
+			char* contents = (char*)s; //contents is the char* string stored at data location i.;
 
 			//now we need to compare this string with the string that was clicked. where does that string come from?
 			bool result = kissGUI->dropBoxcompare(midiParam.entry, contents);
 			if (result) 
 			{
 				//We are at the text box entry index of what we clicked on, do the clicked action. 
+				//so it is important we know what is here. 
 			}
 
 
