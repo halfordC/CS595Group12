@@ -17,6 +17,7 @@ public:
 	myKissGUI* kissGUI;
 	void selectMidiDropdownEvent(SDL_Event* e);
 	void selectMidiParamEvent(SDL_Event* e);
+	void typeFilePath(SDL_Event* e);
 	kiss_window window;
 	kiss_array objects;
 	kiss_button addScene;
@@ -36,9 +37,11 @@ public:
 	kiss_textbox filePath;
 	kiss_button browsePath;
 	kiss_button midiLearn;
+	kiss_entry filePathEntry;
 private:
 	SDL_Renderer* renderer;
 	SDL_Event e;
+	int listenFilter;
 	
 
 };

@@ -74,6 +74,7 @@ int main(int argc, char* args[])
 			//GUI callback events go here.
 			gui.selectMidiDropdownEvent(&event);
 			gui.selectMidiParamEvent(&event);
+			gui.typeFilePath(&event);
 
 			switch (event.type)
 			{

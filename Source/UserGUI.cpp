@@ -25,6 +25,7 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 
 	char message[KISS_MAX_LENGTH];
 	strcpy(message, "Hello World!");
+
 	
 	kissGUI->fillConnectedMidiDevices(&connectedMidiDevices); // fill midi device dropdown
 	kissGUI->fillMidiParam(&midiParamList); //fill midi param dropdown
@@ -37,28 +38,19 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 			2 * kissGUI->kiss_normal.h) / 2);*/
 
 	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 490,20,120,100);
-	midiDeviceDrop.visible = 1;
 	kissGUI->kiss_combobox_new(&imgParam, &window, "Image Param", &imageParamList, 40, 140, 120, 100);
-	imgParam.visible = 1;
 	kissGUI->kiss_combobox_new(&midiParam, &window, "Midi Param", &midiParamList, 180, 140, 110, 100);
-	midiParam.visible = 1;
 	kissGUI->kiss_button_new(&noteButton, &window, "Note/CC", 310, 146);
-	noteButton.visible = 1;
 	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 220);
-	addBinding.visible = 1;
 
 	kissGUI->kiss_button_new(&startButton, &window, "Start", 550, 430);
-	startButton.visible = 1;
 
-	kissGUI->kiss_array_new(&path);
-	kissGUI->kiss_textbox_new(&filePath, &window, 1, &path, 40, 100, 450, 30);
-	filePath.visible = 1;
+	kissGUI->kiss_entry_new(&filePathEntry, &window, 1, "FilePath", 40, 100, 450);
+
 
 	kissGUI->kiss_button_new(&browsePath, &window, "Browse", 500, 105);
-	browsePath.visible = 1;
 
 	kissGUI->kiss_button_new(&midiLearn, &window, "Listen", 390, 146);
-	midiLearn.visible = 1;
 
 	label.textcolor.r = 255;
 	window.visible = 1;
@@ -74,6 +66,7 @@ void UserGUI::render()
 	SDL_RenderClear(renderer);
 	kissGUI->kiss_window_draw(&window, renderer);
 	/*kissGUI->kiss_label_draw(&label, renderer);*/
+	kissGUI->kiss_button_draw(&browsePath, renderer);
 	kissGUI->kiss_combobox_draw(&midiDeviceDrop, renderer);
 	kissGUI->kiss_combobox_draw(&imgParam, renderer);
 	kissGUI->kiss_combobox_draw(&midiParam, renderer);
@@ -81,8 +74,8 @@ void UserGUI::render()
 	kissGUI->kiss_button_draw(&addBinding, renderer);
 
 	kissGUI->kiss_button_draw(&startButton, renderer);
-	kissGUI->kiss_textbox_draw(&filePath, renderer);
-	kissGUI->kiss_button_draw(&browsePath, renderer);
+	kissGUI->kiss_entry_draw(&filePathEntry, renderer);
+	
 	kissGUI->kiss_button_draw(&midiLearn, renderer);
 
 	SDL_RenderPresent(renderer);
@@ -141,10 +134,30 @@ void UserGUI::selectMidiParamEvent(SDL_Event* e)
 			{
 				//We are at the text box entry index of what we clicked on, do the clicked action. 
 				//so it is important we know what is here. 
+
+				listenFilter = i;
+
+
 			}
 
 
 		}
 	}
+
+}
+
+
+void UserGUI::typeFilePath(SDL_Event* e) 
+{
+
+	int draw = 1;
+	if (kissGUI->kiss_entry_event(&filePathEntry, e, &draw)) 
+	{
+		char* inputText = filePathEntry.text;
+		//do stuff with inputText
+
+
+	}
+
 
 }
