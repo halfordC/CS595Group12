@@ -29,7 +29,7 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 	
 	kissGUI->fillConnectedMidiDevices(&connectedMidiDevices); // fill midi device dropdown
 	kissGUI->fillMidiParam(&midiParamList); //fill midi param dropdown
-
+	kissGUI->fillImageParam(&imageParamList); //fill midi param dropdown
 	
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
 	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 480);
@@ -118,9 +118,9 @@ void UserGUI::selectMidiParamEvent(SDL_Event* e)
 	int draw = 1;
 	if (kissGUI->kiss_combobox_event(&midiParam,e,&draw)) 
 	{
-		//An item has been clicked! but which one? 
+		//An item has been clicked! but which one?
 		//normally, we would use bsearch, but we can't really do that in c++ with how this is setup.
-		//so we must mannualy search through and find the entry. 
+		//so we must mannualy search through and find the entry.
 		int length = midiParam.textbox.array->length;
 		for (int i = 0; i< length; i++) 
 		{
@@ -137,10 +137,7 @@ void UserGUI::selectMidiParamEvent(SDL_Event* e)
 
 				listenFilter = i;
 
-
 			}
-
-
 		}
 	}
 
@@ -149,15 +146,10 @@ void UserGUI::selectMidiParamEvent(SDL_Event* e)
 
 void UserGUI::typeFilePath(SDL_Event* e) 
 {
-
 	int draw = 1;
 	if (kissGUI->kiss_entry_event(&filePathEntry, e, &draw)) 
 	{
 		char* inputText = filePathEntry.text;
 		//do stuff with inputText
-
-
 	}
-
-
 }

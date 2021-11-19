@@ -247,6 +247,7 @@ public:
 	myKissGUI();
 	void fillConnectedMidiDevices(kiss_array* inArray);
 	void fillMidiParam(kiss_array* inArray);
+	void fillImageParam(kiss_array* inArray);
 	bool dropBoxcompare(kiss_entry clickedEntry, char* compare);
 	char* kiss_getcwd(char* buf, int size);
 	int kiss_chdir(char* path);
