@@ -1,123 +1,170 @@
 #include <stdint.h>
+#include <stdio.h>
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include "midiModule.h"
-#include "Binding.h"
+#include "Binding.hpp"
+#include "RenderWindow.hpp"
+#include "Sprite.hpp"
 
-binding parsedBindings[10];
 
-void translate(MidiModule *midiIn)
-{
-    //is there a new Message?
-    if (midiIn->hasNewMidiMessage()) {
-        //Grab the offered up midiMessage from the midi input/controller
-        std::vector<juce::MidiMessage> buffer = midiIn->getMidiBuffer();
-        midiIn->messagesParsed(); //we want to do this here, so that we can recieved new messages whil we are parsing them. 
-        for (int i = 0; i < buffer.size(); i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                uint8_t payload0;
-                if (buffer[i].isController()) 
-                {
-                    payload0 = buffer[i].getControllerNumber();
-                }
-                else if (buffer[i].isNoteOnOrOff()) 
-                {
-                    payload0 = buffer[i].getNoteNumber();
-                }
-                if (parsedBindings[j].trigger != NULL && parsedBindings[j].trigger == payload0)
-                {
-                    switch (parsedBindings[j].property)
-                    {
-                    case 1: //type = 1 | X
-                    {
-                        if (parsedBindings[j].type == true)
-                            setX(parsedBindings[j]);
-                        else
-                            scaleX(parsedBindings[j]);
-                        break;
-                    }
-                    case 2: //type = 2 | Y
-                    {
-                        if (parsedBindings[j].type == true)
-                            setY(parsedBindings[j]);
-                        else
-                            scaleY(parsedBindings[j]);
-                        break;
-                    }
-                    case 3: //type = 3 | Size
-                    {
-                        if (parsedBindings[j].type == true)
-                            setSize(parsedBindings[j]);
-                        else
-                            scaleSize(parsedBindings[j]);
-                        break;
-                    }
-                    case 4: //type = 4 | Rotation
-                    {
-                        if (parsedBindings[j].type == true)
-                            setRotation(parsedBindings[j]);
-                        else
-                            scaleRotation(parsedBindings[j]);
-                        break;
-                    }
-                    case 5: //type = 5 | Alpha
-                    {
-                        if (parsedBindings[j].type == true)
-                            setAlpha(parsedBindings[j]);
-                        else
-                            scaleAlpha(parsedBindings[j]);
-                        break;
-                    }
-                    default: // code to be executed if n doesn't match any cases
-                        std::cout << "Failed to execute Binding!" << std::endl;
-                    }
-                }
-            }
 
-        }
-    }
-}
+using namespace std;
 
-void setX(binding b)
+class Translator
 {
-	b.x = b.xTarget;
-}
-void scaleX(binding b)
-{
-	b.x = b.x * b.xScaleTarget;
-}
-void setY(binding b)
-{
-	b.y = b.yTarget;
-}
-void scaleY(binding b)
-{
-	b.y = b.y * b.yScaleTarget;
-}
-void setSize(binding b)
-{
-	b.size = b.sizeTarget;
-}
-void scaleSize(binding b)
-{
-	b.size = b.size * b.sizeScaleTarget;
-}
-void setRotation(binding b)
-{
-	b.rotation = b.rotationTarget;
-}
-void scaleRotation(binding b)
-{
-	b.rotation = b.rotation * b.rotationScaleTarget;
-}
-void setAlpha(binding b)
-{
-	b.alpha = b.alphaTarget;
-}
-void scaleAlpha(binding b)
-{
-	b.alpha = b.alpha * b.alphaScaleTarget;
-}
+public:
+	Translator(const RenderWindow& a) //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
+	{
+		midimod = new MidiModule();
+		vector<Sprite*> sprites = a.sprites;
+		vector<string> txtbindings;
+		vector<string> bindingtokens;
+		//midiModule = a.midiModule;
+
+		string str;
+		ifstream infile;
+		infile.open("bindings.txt");
+		while (!infile.eof()) // To get you all the lines.
+		{
+			getline(infile, str); // Saves the line in str.
+			txtbindings.push_back(str);
+		}
+		infile.close(); //saves lines in txtbindings
+
+		//For each binding line tokenize and create bindings
+		for (int i = 0; i < txtbindings.size(); i++)
+		{
+			str = strtok(&*txtbindings[i].begin(), ",");
+			while (str.size() != NULL)
+			{
+				bindingtokens.push_back(str);
+				str = strtok(NULL, ",");
+			}
+
+			Binding temp(stoi(bindingtokens[1]), stoi(bindingtokens[2]), stoi(bindingtokens[3]), stof(bindingtokens[4]));
+
+			bindings.push_back(temp);
+		}
+	}
+
+	void translate(const RenderWindow& a)
+	{
+		if (midimod->hasNewMidiMessage())
+		{
+			//Grab the offered up midiMessage from the midi input/controller
+			vector<juce::MidiMessage> buffer = midimod->getMidiBuffer();
+			int bufferlength = buffer.size();
+			//int bufferLength = pollMidiBufferLength();
+			for (int i = 0; i < bufferlength; i++)
+			{
+				for (int j = 0; j < bindings.size(); j++)
+				{
+					if (bindings[j].getTrigger() != NULL && bindings[j].getTrigger() == buffer[i].getNoteNumber())
+					{
+						switch (bindings[j].getTarget())
+						{
+						case 0: //target = 1 | X
+						{
+							if (bindings[j].getType() == 0) //type = 0: Set
+								setX(bindings[j]);
+							else //Scale
+								scaleX(bindings[j]);
+							break;
+						}
+						case 1: //target = 2 | Y
+						{
+							if (bindings[j].getType() == 0) //type = 0: Set
+								setY(bindings[j]);
+							else //Scale
+								scaleY(bindings[j]);
+							break;
+						}
+						case 2: //target = 3 | Size
+						{
+							if (bindings[j].getType() == 0) //type = 0: Set
+								setSize(bindings[j]);
+							else //Scale
+								scaleSize(bindings[j]);
+							break;
+						}
+						case 3: //target = 4 | Rotation
+						{
+							if (bindings[j].getType() == 0) //type = 0: Set
+								setRotation(bindings[j]);
+							else //Scale
+								scaleRotation(bindings[j]);
+							break;
+						}
+						case 4: //target = 5 | Alpha
+						{
+							if (bindings[j].getType() == 0) //type = 0: Set
+								setAlpha(bindings[j]);
+							else //Scale
+								scaleAlpha(bindings[j]);
+							break;
+						}
+						default: // code to be executed if n doesn't match any cases
+							cout << "Failed to execute Binding!" << endl;
+						}
+					}
+				}
+			}
+		}
+	}
+#pragma region X
+	void setX(Binding b)
+	{
+
+	}
+	void scaleX(Binding b)
+	{
+
+	}
+#pragma endregion
+#pragma region Y
+	void setY(Binding b)
+	{
+
+	}
+	void scaleY(Binding b)
+	{
+
+	}
+#pragma endregion
+#pragma region Size
+	void setSize(Binding b)
+	{
+
+	}
+	void scaleSize(Binding b)
+	{
+
+	}
+#pragma endregion
+#pragma region Rotation
+	void setRotation(Binding b)
+	{
+
+	}
+	void scaleRotation(Binding b)
+	{
+
+	}
+#pragma endregion
+#pragma region Alpha
+	void scaleAlpha(Binding b)
+	{
+
+	}
+	void setAlpha(Binding b)
+	{
+
+	}
+#pragma endregion
+private:
+	MidiModule* midimod;
+	vector<Binding> bindings;
+};

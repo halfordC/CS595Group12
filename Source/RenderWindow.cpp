@@ -157,3 +157,13 @@ void RenderWindow::cleanUp()
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }
+
+std::vector<Sprite*>RenderWindow:: getSprites()
+{
+	return sprites;
+}
+
+void RenderWindow::setSprites(std::vector<Sprite*> s)
+{
+	sprites = s;
+}

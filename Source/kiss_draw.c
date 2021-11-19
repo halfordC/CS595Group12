@@ -24,24 +24,7 @@
 
 #include "kiss_sdl.h"
 
-kiss_font kiss_textfont, kiss_buttonfont;
-kiss_image kiss_normal, kiss_prelight, kiss_active, kiss_bar,
-	kiss_up, kiss_down, kiss_left, kiss_right, kiss_vslider,
-	kiss_hslider, kiss_selected, kiss_unselected, kiss_combo;
-int kiss_screen_width, kiss_screen_height;
-int kiss_textfont_size = 15;
-int kiss_buttonfont_size = 12;
-int kiss_click_interval = 140;
-int kiss_progress_interval = 50;
-int kiss_slider_padding = 2;
-int kiss_edge = 2;
-int kiss_border = 6;
-double kiss_spacing = 0.5;
-SDL_Color kiss_white = {255, 255, 255, 255};
-SDL_Color kiss_black = {0, 0, 0, 255};
-SDL_Color kiss_green = {0, 150, 0, 255};
-SDL_Color kiss_blue = {0, 0, 255, 255};
-SDL_Color kiss_lightblue = {200, 225, 255, 255};
+
 
 unsigned int kiss_getticks(void)
 {

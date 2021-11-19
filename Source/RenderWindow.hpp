@@ -18,6 +18,8 @@ public:
 	void setSceneDirectory(std::filesystem::path newDir);
 	void render();
 	void cleanUp();
+	void setSprites(std::vector<Sprite*>);
+	std::vector<Sprite*> getSprites();
   std::filesystem::path cwd;
 	std::vector<Sprite*> sprites;
 	SDL_DisplayMode mode;
