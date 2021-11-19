@@ -207,7 +207,9 @@ void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 						{
 							isMidiType = true;
 							memset(noteEntry.text, 0, 200); //clear char array
-							const char* newNote = juce::MidiMessage::getMidiNoteName(inBuffer[i].getNoteNumber(), true, true, 3).toStdString().c_str(); //really long function to get note number / letter
+
+							string noteString = juce::MidiMessage::getMidiNoteName(inBuffer[i].getNoteNumber(), true, true, 3).toStdString();
+							const char* newNote = noteString.c_str();
 							strcat(noteEntry.text, newNote); //fill char array with new note value
 
 							//Also, add this note to the translator app for the selected image param
@@ -220,7 +222,8 @@ void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 						{
 							isMidiType = true;
 							memset(noteEntry.text, 0, 200); //clear char array
-							const char* newNote = juce::MidiMessage::getMidiNoteName(inBuffer[i].getNoteNumber(), true, true, 3).toStdString().c_str(); //really long function to get note number / letter
+							string noteString = juce::MidiMessage::getMidiNoteName(inBuffer[i].getNoteNumber(), true, true, 3).toStdString();
+							const char* newNote = noteString.c_str();
 							strcat(noteEntry.text, newNote); //fill char array with new note value
 
 							//Also, add this note to the translator app for the selected image param

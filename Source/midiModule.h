@@ -15,7 +15,7 @@ public:
         //this should be a seperate function, public. 
 
         // find the first enabled device and use that by default
-        /*
+        
         for (auto input : midiInputs)
         {
             if (deviceManager.isMidiInputDeviceEnabled(input.identifier))
@@ -24,7 +24,6 @@ public:
                 break;
             }
         }
-        */
     }
 
     ~MidiModule() override
@@ -58,7 +57,7 @@ public:
         }
         for (int i = 0; i < midiInputs.size(); i++) 
         {
-            if (deviceName.compare(midiInputs[i].name.toStdString())) 
+            if (deviceName.compare(midiInputs[i].name.toStdString())==0) 
             {
                 //connect to that device here. 
                 setMidiInput(i);
