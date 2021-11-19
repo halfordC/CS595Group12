@@ -10,9 +10,11 @@
 //#include "kiss_sdl.h"
 #include "myKissGui.hpp"
 #include "midiModule.h"
+#include "RenderWindow.hpp"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
+
 
 
 
@@ -249,6 +251,16 @@ void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 		}
 		
 
+	}
+
+}
+
+void UserGUI::browseEvent(SDL_Event* e, RenderWindow myRenderWindow) 
+{
+	int draw = 1;
+	if (kissGUI->kiss_button_event(&browsePath, e, &draw)) 
+	{
+		myRenderWindow.openSceneFolder();
 	}
 
 }

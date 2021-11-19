@@ -7,6 +7,7 @@
 #include <vector>
 #include "myKissGui.hpp"
 #include "midiModule.h"
+#include "RenderWindow.hpp"
 
 class UserGUI
 {
@@ -20,6 +21,7 @@ public:
 	void typeFilePath(SDL_Event* e);
 	void midiLearnEvent(SDL_Event* e);
 	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
+	void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
 
 	std::filesystem::path selectedDirectory;
 	myKissGUI* kissGUI;

@@ -84,6 +84,7 @@ int main(int argc, char* args[])
 			gui.typeFilePath(&event);
 			gui.midiLearnEvent(&event);
 			gui.midiListenButton(&event, myMidiModule);
+			gui.browseEvent(&event, sceneViewWindow);
 
 
 			switch (event.type)
