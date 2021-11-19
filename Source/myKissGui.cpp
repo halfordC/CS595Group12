@@ -2,7 +2,7 @@
 #include "midiModule.h"
 
 
-extern MidiModule* myMidiModule;
+//extern MidiModule* myMidiModule;
 
 	myKissGUI::myKissGUI() 
 	{
@@ -32,7 +32,7 @@ extern MidiModule* myMidiModule;
 	}
 
 
-	void myKissGUI::fillConnectedMidiDevices(kiss_array *inArray) 
+	void myKissGUI::fillConnectedMidiDevices(kiss_array *inArray, MidiModule * myMidiModule) 
 	{
 		kiss_array_new(inArray);
 
@@ -62,6 +62,19 @@ extern MidiModule* myMidiModule;
 		kiss_array_appendstring(inArray, 0, "Note On", NULL);
 		kiss_array_appendstring(inArray, 0, "Note Off", NULL);
 		kiss_array_appendstring(inArray, 0, "Control Change", NULL);
+	}
+
+	void myKissGUI::fillImageParam(kiss_array* inArray)
+	{
+		kiss_array_new(inArray);
+
+		kiss_array_appendstring(inArray, 0, "Scale X", NULL);
+		kiss_array_appendstring(inArray, 0, "Scale Y", NULL);
+		kiss_array_appendstring(inArray, 0, "Scale Width", NULL);
+		kiss_array_appendstring(inArray, 0, "Scale Height", NULL);
+		kiss_array_appendstring(inArray, 0, "Scale Size", NULL);
+		kiss_array_appendstring(inArray, 0, "Scale Rotation", NULL);
+		kiss_array_appendstring(inArray, 0, "Scale Alpha", NULL);
 	}
 
 	bool myKissGUI::dropBoxcompare(kiss_entry clickedEntry, char* compare)

@@ -14,10 +14,10 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-extern MidiModule* myMidiModule;
 
 
-UserGUI::UserGUI(char* p_title) : renderer(NULL)
+
+UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 {
 	kissGUI = new myKissGUI();
 	kissGUI->kiss_array_new(&objects );
@@ -27,30 +27,28 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 	strcpy(message, "Hello World!");
 
 	
-	kissGUI->fillConnectedMidiDevices(&connectedMidiDevices); // fill midi device dropdown
+	kissGUI->fillConnectedMidiDevices(&connectedMidiDevices, myMidiModule); // fill midi device dropdown
 	kissGUI->fillMidiParam(&midiParamList); //fill midi param dropdown
+
+	kissGUI->fillImageParam(&imageParamList);
 
 	
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
 	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 480);
-	/*kissGUI->kiss_label_new(&label, &window, message, window.rect.w / 2 - strlen(message) *
-		kissGUI->kiss_textfont.advance / 2, window.rect.h / 2 - (kissGUI->kiss_textfont.fontheight +
-			2 * kissGUI->kiss_normal.h) / 2);*/
 
 	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 490,20,120,100);
 	kissGUI->kiss_combobox_new(&imgParam, &window, "Image Param", &imageParamList, 40, 140, 120, 100);
 	kissGUI->kiss_combobox_new(&midiParam, &window, "Midi Param", &midiParamList, 180, 140, 110, 100);
-	kissGUI->kiss_button_new(&noteButton, &window, "Note/CC", 310, 146);
+	kissGUI->kiss_entry_new(&noteEntry, &window,1, "Note/CC", 310, 140, 100);
 	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 220);
 
 	kissGUI->kiss_button_new(&startButton, &window, "Start", 550, 430);
 
 	kissGUI->kiss_entry_new(&filePathEntry, &window, 1, "FilePath", 40, 100, 450);
 
-
 	kissGUI->kiss_button_new(&browsePath, &window, "Browse", 500, 105);
 
-	kissGUI->kiss_button_new(&midiLearn, &window, "Listen", 390, 146);
+	kissGUI->kiss_button_new(&midiLearn, &window, "Listen", 420, 146);
 
 	label.textcolor.r = 255;
 	window.visible = 1;
@@ -64,19 +62,17 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 void UserGUI::render()
 {
 	SDL_RenderClear(renderer);
+
 	kissGUI->kiss_window_draw(&window, renderer);
-	/*kissGUI->kiss_label_draw(&label, renderer);*/
 	kissGUI->kiss_button_draw(&browsePath, renderer);
+	kissGUI->kiss_button_draw(&startButton, renderer);
+	kissGUI->kiss_button_draw(&midiLearn, renderer);
+	kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
 	kissGUI->kiss_combobox_draw(&midiDeviceDrop, renderer);
 	kissGUI->kiss_combobox_draw(&imgParam, renderer);
 	kissGUI->kiss_combobox_draw(&midiParam, renderer);
-	kissGUI->kiss_button_draw(&noteButton, renderer);
-	kissGUI->kiss_button_draw(&addBinding, renderer);
-
-	kissGUI->kiss_button_draw(&startButton, renderer);
+	kissGUI->kiss_entry_draw(&noteEntry, renderer);
 	kissGUI->kiss_entry_draw(&filePathEntry, renderer);
-	
-	kissGUI->kiss_button_draw(&midiLearn, renderer);
 
 	SDL_RenderPresent(renderer);
 }
@@ -87,7 +83,7 @@ void UserGUI::cleanUp()
 }
 
 
-void UserGUI::selectMidiDropdownEvent(SDL_Event* e)
+void UserGUI::selectMidiDropdownEvent(SDL_Event* e, MidiModule* myMidiModule)
 {
 	int draw = 1;
 	
@@ -105,6 +101,8 @@ void UserGUI::selectMidiDropdownEvent(SDL_Event* e)
 			{
 				//we need to connect to the midi device here. 
 				string connect(contents); //to convert to a std::string, just give a char* as a constructor parameter. 
+
+				std::cout << connect << std::endl;
 
 				myMidiModule->connectToMidiDevice(connect);
 			}
@@ -136,14 +134,19 @@ void UserGUI::selectMidiParamEvent(SDL_Event* e)
 				//so it is important we know what is here. 
 
 				listenFilter = i;
-
-
 			}
-
-
 		}
 	}
+}
 
+
+void UserGUI::selectImageParamEvent(SDL_Event* e) 
+{
+	int draw = 1;
+	if(kissGUI->kiss_combobox_event(&imgParam, e, &draw))
+	{
+		//do stuff like the previous box up there
+	}
 }
 
 
@@ -156,8 +159,42 @@ void UserGUI::typeFilePath(SDL_Event* e)
 		char* inputText = filePathEntry.text;
 		//do stuff with inputText
 
+	}
+}
+
+void UserGUI::midiLearnEvent(SDL_Event* e) 
+{
+	int draw = 1;
+	if (kissGUI->kiss_entry_event(&noteEntry, e, &draw)) 
+	{
+		char* inputText = noteEntry.text;
+		//check if the note is infact a note. 
 
 	}
+}
 
+void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule) 
+{
+	int draw = 1;
+	bool isMidiType = false;
+	if (kissGUI->kiss_button_event(&midiLearn, e, &draw))
+	{
+		while (!isMidiType) 
+		{
+			if (myMidiModule->hasNewMidiMessage())
+			{
+				std::vector<juce::MidiMessage> inBuffer = myMidiModule->getMidiBuffer();
+
+				for (int i = 0; i < inBuffer.size(); i++)
+				{
+					std::cout << "message Recieved in Button: " << myMidiModule->printMessage(inBuffer[i]) << std::endl;
+
+				}
+				myMidiModule->messagesParsed(); //this clears the flag, and waits for a new message. 
+
+			}
+		}
+
+	}
 
 }

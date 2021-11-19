@@ -6,22 +6,27 @@
 #include <string>
 #include <vector>
 #include "myKissGui.hpp"
+#include "midiModule.h"
 
 class UserGUI
 {
 public:
-	UserGUI(char* p_title);
+	UserGUI(char* p_title, MidiModule* myMidiModule);
 	void render();
 	void cleanUp();
+	void selectMidiDropdownEvent(SDL_Event* e, MidiModule * myMidiModule);
+	void selectMidiParamEvent(SDL_Event* e);
+	void selectImageParamEvent(SDL_Event* e);
+	void typeFilePath(SDL_Event* e);
+	void midiLearnEvent(SDL_Event* e);
+	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
+
 	std::filesystem::path selectedDirectory;
 	myKissGUI* kissGUI;
-	void selectMidiDropdownEvent(SDL_Event* e);
-	void selectMidiParamEvent(SDL_Event* e);
-	void typeFilePath(SDL_Event* e);
 	kiss_window window;
 	kiss_array objects;
 	kiss_button addScene;
-	kiss_button noteButton;
+	kiss_entry noteEntry;
 	kiss_button addBinding;
 	kiss_combobox midiDeviceDrop;
 	kiss_combobox imgParam;

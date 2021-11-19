@@ -19,12 +19,13 @@ uint8_t numDevices = 0;
 bool programRunning = true;
 
 //keep this global, so other libraries can call it with extern. 
-MidiModule* myMidiModule = new MidiModule();
+
 
 
 int main(int argc, char* args[])
 {
 
+	MidiModule* myMidiModule = new MidiModule();
 	///Initialze SDL stuff
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
 	{
@@ -38,7 +39,7 @@ int main(int argc, char* args[])
 
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
-	UserGUI gui("GUI Test");
+	UserGUI gui("GUI Test", myMidiModule);
 	//sceneViewWindow.openSceneFolder();
 
 	SDL_Event event;
@@ -51,6 +52,8 @@ int main(int argc, char* args[])
 	int secondCounter = 0;
 	bool one = true;
 	
+	myMidiModule->connectToMidiDevice("Launchkey Mini MK3");
+
 	std::filesystem::path dir1 = std::filesystem::current_path();
 	std::filesystem::path dir2 = std::filesystem::current_path();
 	
@@ -72,9 +75,13 @@ int main(int argc, char* args[])
 		while ( SDL_PollEvent(&event) != 0 )
 		{
 			//GUI callback events go here.
-			gui.selectMidiDropdownEvent(&event);
+			gui.selectMidiDropdownEvent(&event, myMidiModule);
 			gui.selectMidiParamEvent(&event);
+			gui.selectImageParamEvent(&event);
 			gui.typeFilePath(&event);
+			gui.midiLearnEvent(&event);
+			gui.midiListenButton(&event, myMidiModule);
+
 
 			switch (event.type)
 			{
@@ -95,7 +102,7 @@ int main(int argc, char* args[])
 			}
 		}
 		int draw = 1;
-		gui.kissGUI->kiss_combobox_event((&gui.midiDeviceDrop), NULL, &draw);
+		gui.kissGUI->kiss_combobox_event((&gui.midiDeviceDrop), NULL, &draw); //we probably need to do this to for the other dropdowns, but I don't know why, or remember how
 
 		/* Do updates */
 		/* Do renders */
@@ -117,6 +124,7 @@ int main(int argc, char* args[])
 
 			}
 		}
+
 		upsCounter++;
 		if (currentTime - lastTime >= 1000)
 		{

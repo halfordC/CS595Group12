@@ -32,6 +32,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "midiModule.h"
+
 #define KISS_MAX_LENGTH 200
 #define KISS_MIN_LENGTH 10
 #define KISS_MAX_LABEL 500
@@ -245,8 +247,9 @@ class myKissGUI
 {
 public:
 	myKissGUI();
-	void fillConnectedMidiDevices(kiss_array* inArray);
+	void fillConnectedMidiDevices(kiss_array* inArray, MidiModule *myMidiModule);
 	void fillMidiParam(kiss_array* inArray);
+	void fillImageParam(kiss_array* inArray);
 	bool dropBoxcompare(kiss_entry clickedEntry, char* compare);
 	char* kiss_getcwd(char* buf, int size);
 	int kiss_chdir(char* path);
