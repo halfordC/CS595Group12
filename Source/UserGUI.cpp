@@ -104,6 +104,8 @@ void UserGUI::selectMidiDropdownEvent(SDL_Event* e, MidiModule* myMidiModule)
 				//we need to connect to the midi device here. 
 				string connect(contents); //to convert to a std::string, just give a char* as a constructor parameter. 
 
+
+
 				std::cout << connect << std::endl;
 
 				myMidiModule->connectToMidiDevice(connect);
