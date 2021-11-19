@@ -39,7 +39,7 @@ UserGUI::UserGUI(char* p_title) : renderer(NULL)
 	imgParam.visible = 1;
 	kissGUI->kiss_combobox_new(&midiParam, &window, "Midi Param", &textArray, 180, 140, 110, 100);
 	midiParam.visible = 1;
-	kissGUI->kiss_button_new(&noteButton, &window, "Note/CC", 310, 146);
+	kissGUI->kiss_entry_new()
 	noteButton.visible = 1;
 	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 220);
 	addBinding.visible = 1;

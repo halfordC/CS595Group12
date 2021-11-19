@@ -9,7 +9,7 @@
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
 
-
+extern MidiModule* myMidiModule;
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -19,7 +19,6 @@ class Translator
 public:
 	Translator(const RenderWindow& a) //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
 	{
-		midimod = new MidiModule();
 		vector<Sprite*> sprites = a.sprites;
 		vector<string> txtbindings;
 		vector<string> bindingtokens;
@@ -53,10 +52,10 @@ public:
 
 	void translate(const RenderWindow& a)
 	{
-		if (midimod->hasNewMidiMessage())
+		if (myMidiModule->hasNewMidiMessage())
 		{
 			//Grab the offered up midiMessage from the midi input/controller
-			vector<juce::MidiMessage> buffer = midimod->getMidiBuffer();
+			vector<juce::MidiMessage> buffer = myMidiModule->getMidiBuffer();
 			int bufferlength = buffer.size();
 			//int bufferLength = pollMidiBufferLength();
 			for (int i = 0; i < bufferlength; i++)
@@ -144,7 +143,6 @@ public:
 				{
 					out.push_back(dir_entry.path().filename().string());
 				}
-				cout << "Sprite " << i << "| w->" << w << " h->" << h << endl;
 			}
 		}
 	}

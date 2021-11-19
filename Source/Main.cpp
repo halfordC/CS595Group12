@@ -19,12 +19,13 @@ using std::endl; using std::string;
 uint8_t numDevices = 0;
 bool programRunning = true;
 
+MidiModule* myMidiModule = new MidiModule();
+
 
 int main(int argc, char* args[])
 {
 
 	//init Midi Module, get midi input
-	MidiModule* myMidiModule = new MidiModule();
 	
 	std::vector<std::string> midiInputDeviceNames;
 
