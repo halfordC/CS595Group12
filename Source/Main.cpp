@@ -52,7 +52,10 @@ int main(int argc, char* args[])
 	int secondCounter = 0;
 	bool one = true;
 	
-	myMidiModule->connectToMidiDevice("Launchkey Mini MK3");
+	//myMidiModule->connectToMidiDevice("Launchkey Mini MK3");
+
+
+
 
 	std::filesystem::path dir1 = std::filesystem::current_path();
 	std::filesystem::path dir2 = std::filesystem::current_path();

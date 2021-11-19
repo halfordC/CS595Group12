@@ -15,6 +15,7 @@ public:
         //this should be a seperate function, public. 
 
         // find the first enabled device and use that by default
+        /*
         for (auto input : midiInputs)
         {
             if (deviceManager.isMidiInputDeviceEnabled(input.identifier))
@@ -23,11 +24,13 @@ public:
                 break;
             }
         }
+        */
     }
 
     ~MidiModule() override
     {
         deviceManager.removeMidiInputDeviceCallback(juce::MidiInput::getAvailableDevices()[currentInputIndex].identifier, this);
+        
     }
 
     void getMidiDeviceNames(std::vector< std::string> *inArray) //fills input vector with availible midi devices.
@@ -60,7 +63,10 @@ public:
                 //connect to that device here. 
                 setMidiInput(i);
                 std::cout << deviceName + " connected!" << std::endl;
+
                 return;
+
+
             }
         }
         std::cout << "Input Midi device is not connected" << std::endl;
@@ -101,6 +107,23 @@ public:
     std::vector<juce::MidiMessage> getMidiBuffer()
     {
         return midiBuffer;
+    }
+
+    bool isConnected() 
+    {
+        auto list = juce::MidiInput::getAvailableDevices();
+
+        for (int i = 0; i < list.size(); i++) 
+        {
+            if (deviceManager.isMidiInputDeviceEnabled(list[i].identifier)) 
+            {
+                return true;
+            }
+            
+        }
+        return false;
+
+        
     }
 
 private:
