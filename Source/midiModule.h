@@ -58,7 +58,7 @@ public:
         }
         for (int i = 0; i < midiInputs.size(); i++) 
         {
-            if (deviceName.compare(midiInputs[i].name.toStdString())==0) 
+            if (deviceName.compare(midiInputs[i].name.toStdString())) 
             {
                 //connect to that device here. 
                 setMidiInput(i);
