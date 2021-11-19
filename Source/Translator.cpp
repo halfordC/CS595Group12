@@ -12,6 +12,7 @@
 
 
 using namespace std;
+namespace fs = std::filesystem;
 
 class Translator
 {
@@ -114,6 +115,40 @@ public:
 			}
 		}
 	}
+
+	vector<string> getImages()
+	{
+		vector<string> out;
+		fs::path cwd = fs::current_path();
+
+#ifdef __APPLE__
+	cwd += "/scenes";
+#elif _WIN32
+	cwd += "\\scenes";
+#endif
+		
+		int i = 0;
+		int w, h;
+		for (auto& dir_entry : fs::directory_iterator(cwd))
+		{
+			if (!fs::is_directory(dir_entry))
+			{
+				/* Pull file extension and set to upper case for string comparison. */
+				string ext = dir_entry.path().extension().string();
+				std::for_each(ext.begin(), ext.end(), [](char& c) {
+					c = ::toupper(c);
+					});
+
+				/* Only allow JPEG or PNG at this time as I am a lazy POS */
+				if (ext.compare(".JPEG") == 0 || ext.compare(".PNG") == 0)
+				{
+					out.push_back(dir_entry.path().filename().string());
+				}
+				cout << "Sprite " << i << "| w->" << w << " h->" << h << endl;
+			}
+		}
+	}
+
 #pragma region X
 	void setX(Binding b)
 	{
