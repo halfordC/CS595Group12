@@ -22,10 +22,14 @@ public:
 	void midiLearnEvent(SDL_Event* e);
 	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
 	void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
+	void addBindingEvent(SDL_Event* e);
 
 	std::filesystem::path selectedDirectory;
 	myKissGUI* kissGUI;
 	kiss_window window;
+
+	std::vector<kiss_window> bindings; //Hoping I can create a new window for each binding.  Possibly could use a vector or some type of dynamic array
+
 	kiss_array objects;
 	kiss_button addScene;
 	kiss_entry noteEntry;
@@ -49,6 +53,8 @@ private:
 	SDL_Renderer* renderer;
 	SDL_Event e;
 	int listenFilter;
+
+
 	
 
 };

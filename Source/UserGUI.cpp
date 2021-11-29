@@ -267,3 +267,12 @@ void UserGUI::browseEvent(SDL_Event* e, RenderWindow myRenderWindow)
 	}
 
 }
+
+void UserGUI::addBindingEvent(SDL_Event* e)
+{
+	int draw = 1;
+	if (kissGUI->kiss_button_event(&addBinding, e, &draw))
+	{
+
+	}
+}
