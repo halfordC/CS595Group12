@@ -36,17 +36,32 @@ public:
 		//For each binding line tokenize and create bindings
 		for (int i = 0; i < txtbindings.size(); i++)
 		{
-			str = strtok(&*txtbindings[i].begin(), ",");
+			//split bindings by their label and values
+			str = strtok(&*txtbindings[i].begin(), ",:");
 			while (str.size() != NULL)
 			{
 				bindingtokens.push_back(str);
 				str = strtok(NULL, ",");
 			}
 
-			Binding temp(stoi(bindingtokens[1]), stoi(bindingtokens[2]), stoi(bindingtokens[3]), stof(bindingtokens[4]));
+			//Check if there are any missing values and reject any incomplete bindings
+			if (bindingtokens.size() >= 10)
+			{
+				//grab every other value since even ones are the labels
+				string p;
+				int trig;
+				int tar;
+				int typ;
+				int amnt;
 
-			bindings.push_back(temp);
+				Binding temp(bindingtokens[1], stoi(bindingtokens[3]), stoi(bindingtokens[5]), stoi(bindingtokens[7]), stof(bindingtokens[9]));
+				bindings.push_back(temp);
+			}
+			else
+				cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
 		}
+
+
 	}
 
 	void translate(const RenderWindow& a)
