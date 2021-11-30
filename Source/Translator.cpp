@@ -45,7 +45,7 @@ public:
 			}
 
 			//Check if there are any missing values and reject any incomplete bindings
-			if (bindingtokens.size() >= 10)
+			if (bindingtokens.size() == 12)
 			{
 				//grab every other value since even ones are the labels
 				string p;
@@ -54,7 +54,23 @@ public:
 				int typ;
 				int amnt;
 
-				Binding temp(bindingtokens[1], stoi(bindingtokens[3]), stoi(bindingtokens[5]), stoi(bindingtokens[7]), stof(bindingtokens[9]));
+				for (int i = 0; i < 6; i++)
+				{
+					if (bindingtokens[i * 2] == "Path")
+						p = bindingtokens[i + 1];
+					else if (bindingtokens[i * 2] == "Trigger")
+						trig = stoi(bindingtokens[i + 1]);
+					else if (bindingtokens[i * 2] == "MessageType")
+						typ = stoi(bindingtokens[i + 1]);
+					else if (bindingtokens[i * 2] == "Target")
+						tar = stoi(bindingtokens[i + 1]);
+					else if (bindingtokens[i * 2] == "ChangeType")
+						typ = stoi(bindingtokens[i + 1]);
+					else if (bindingtokens[i * 2] == "Amount")
+						amnt = stoi(bindingtokens[i + 1]);
+				}
+
+				Binding temp(bindingtokens[1], stoi(bindingtokens[3]), stoi(bindingtokens[5]), stoi(bindingtokens[7]), stoi(bindingtokens[9]), stof(bindingtokens[11]));
 				bindings.push_back(temp);
 			}
 			else
