@@ -85,6 +85,7 @@ int main(int argc, char* args[])
 			gui.midiLearnEvent(&event);
 			gui.midiListenButton(&event, myMidiModule);
 			gui.browseEvent(&event, sceneViewWindow);
+			gui.addBindingEvent(&event);
 
 
 			switch (event.type)

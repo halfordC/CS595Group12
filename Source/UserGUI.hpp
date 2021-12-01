@@ -27,8 +27,17 @@ public:
 	std::filesystem::path selectedDirectory;
 	myKissGUI* kissGUI;
 	kiss_window window;
-
-	std::vector<kiss_window> bindings; //Hoping I can create a new window for each binding.  Possibly could use a vector or some type of dynamic array
+	
+	kiss_vscrollbar scrollBar;
+	std::vector<kiss_window> allBindings; //Hoping I can create a new window for each binding.  Possibly could use a vector or some type of dynamic array
+	kiss_window bindings; //window containing all bindings so I can place a scroll bar on it
+	kiss_window binding; //Placeholder for creating a new binding window
+	std::vector<kiss_combobox> imgParams;
+	std::vector<kiss_combobox> midiParams;
+	std::vector<kiss_entry> noteEntrys;
+	std::vector<kiss_entry> filePathEntrys;
+	std::vector<kiss_button> browsePathButtons;
+	std::vector<kiss_button> midiLearnButtons;
 
 	kiss_array objects;
 	kiss_button addScene;
@@ -53,8 +62,5 @@ private:
 	SDL_Renderer* renderer;
 	SDL_Event e;
 	int listenFilter;
-
-
-	
 
 };

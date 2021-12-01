@@ -38,17 +38,21 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
 	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 480);
 
+	kissGUI->kiss_window_new(&bindings, &window, 1, 30, 60, 500, 300);
+	//kissGUI->kiss_vscrollbar_new(&scrollBar, &window, 550, 360, 300);
+
 	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 490,20,120,100);
+
 	kissGUI->kiss_combobox_new(&imgParam, &window, "Image Param", &imageParamList, 40, 140, 120, 100);
 	kissGUI->kiss_combobox_new(&midiParam, &window, "Midi Param", &midiParamList, 180, 140, 110, 100);
 	kissGUI->kiss_entry_new(&noteEntry, &window,1, "Note/CC", 310, 140, 100);
-	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 220);
+	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 370);
 
 	kissGUI->kiss_button_new(&startButton, &window, "Start", 550, 430);
 
-	kissGUI->kiss_entry_new(&filePathEntry, &window, 1, "FilePath", 40, 100, 450);
+	kissGUI->kiss_entry_new(&filePathEntry, &window, 1, "FilePath", 40, 100, 400);
 
-	kissGUI->kiss_button_new(&browsePath, &window, "Browse", 500, 105);
+	kissGUI->kiss_button_new(&browsePath, &window, "Browse", 450, 105);
 
 	kissGUI->kiss_button_new(&midiLearn, &window, "Listen", 420, 146);
 
@@ -66,15 +70,41 @@ void UserGUI::render()
 	SDL_RenderClear(renderer);
 
 	kissGUI->kiss_window_draw(&window, renderer);
-	kissGUI->kiss_button_draw(&browsePath, renderer);
-	kissGUI->kiss_button_draw(&startButton, renderer);
-	kissGUI->kiss_button_draw(&midiLearn, renderer);
+
+	kissGUI->kiss_window_draw(&bindings, renderer);
+
 	kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
+
+	
+	//if (allBindings.size() > 0) kissGUI->kiss_window_draw(&allBindings.back(), renderer);
+	/*for (kiss_window w : allBindings) kissGUI->kiss_window_draw(&w, renderer);
+	for (kiss_button b : browsePathButtons) kissGUI->kiss_button_draw(&b, renderer);
+	for (kiss_button b : midiLearnButtons) kissGUI->kiss_button_draw(&b, renderer);
+	for (kiss_combobox c : imgParams) kissGUI->kiss_combobox_draw(&c, renderer);
+	for (kiss_combobox c : midiParams) kissGUI->kiss_combobox_draw(&c, renderer);
+	for (kiss_entry e : filePathEntrys) kissGUI->kiss_entry_draw(&e, renderer);
+	for (kiss_entry e : noteEntrys) kissGUI->kiss_entry_draw(&e, renderer);*/
+	for (int i = allBindings.size()-1; i >= 0; --i) 
+	{
+		kissGUI->kiss_window_draw(&allBindings.at(i), renderer);
+		kissGUI->kiss_button_draw(&browsePathButtons.at(i), renderer);
+		kissGUI->kiss_button_draw(&midiLearnButtons.at(i), renderer);
+		kissGUI->kiss_combobox_draw(&imgParams.at(i), renderer);
+		kissGUI->kiss_combobox_draw(&midiParams.at(i), renderer);
+		kissGUI->kiss_entry_draw(&filePathEntrys.at(i), renderer);
+		kissGUI->kiss_entry_draw(&noteEntrys.at(i), renderer);
+	}
+	
+
+	//kissGUI->kiss_button_draw(&browsePath, renderer);
+	kissGUI->kiss_button_draw(&startButton, renderer);
+	//kissGUI->kiss_button_draw(&midiLearn, renderer);
+	
 	kissGUI->kiss_combobox_draw(&midiDeviceDrop, renderer);
-	kissGUI->kiss_combobox_draw(&imgParam, renderer);
-	kissGUI->kiss_combobox_draw(&midiParam, renderer);
-	kissGUI->kiss_entry_draw(&noteEntry, renderer);
-	kissGUI->kiss_entry_draw(&filePathEntry, renderer);
+	//kissGUI->kiss_combobox_draw(&imgParam, renderer);
+	//kissGUI->kiss_combobox_draw(&midiParam, renderer);
+	//kissGUI->kiss_entry_draw(&noteEntry, renderer);
+	//kissGUI->kiss_entry_draw(&filePathEntry, renderer);
 
 	SDL_RenderPresent(renderer);
 }
@@ -116,26 +146,29 @@ void UserGUI::selectMidiParamEvent(SDL_Event* e)
 {
 
 	int draw = 1;
-	if (kissGUI->kiss_combobox_event(&midiParam,e,&draw)) 
+	for (int j = 0; j < midiParams.size(); ++j)
 	{
-		//An item has been clicked! but which one? 
-		//normally, we would use bsearch, but we can't really do that in c++ with how this is setup.
-		//so we must mannualy search through and find the entry. 
-		int length = midiParam.textbox.array->length;
-		for (int i = 0; i< length; i++) 
+		if (kissGUI->kiss_combobox_event(&midiParams.at(j), e, &draw))
 		{
-			void** p = midiParam.textbox.array->data+i; //data is of type void pointer pointer
-			void* s = *p; //derefference p, and get S. 
-			char* contents = (char*)s; //contents is the char* string stored at data location i.;
-
-			//now we need to compare this string with the string that was clicked. where does that string come from?
-			bool result = kissGUI->dropBoxcompare(midiParam.entry, contents);
-			if (result) 
+			//An item has been clicked! but which one? 
+			//normally, we would use bsearch, but we can't really do that in c++ with how this is setup.
+			//so we must mannualy search through and find the entry. 
+			int length = midiParams.at(j).textbox.array->length;
+			for (int i = 0; i < length; i++)
 			{
-				//We are at the text box entry index of what we clicked on, do the clicked action. 
-				//so it is important we know what is here. 
+				void** p = midiParams.at(j).textbox.array->data + i; //data is of type void pointer pointer
+				void* s = *p; //derefference p, and get S. 
+				char* contents = (char*)s; //contents is the char* string stored at data location i.;
 
-				listenFilter = i;
+				//now we need to compare this string with the string that was clicked. where does that string come from?
+				bool result = kissGUI->dropBoxcompare(midiParams.at(j).entry, contents);
+				if (result)
+				{
+					//We are at the text box entry index of what we clicked on, do the clicked action. 
+					//so it is important we know what is here. 
+
+					listenFilter = i;
+				}
 			}
 		}
 	}
@@ -145,9 +178,12 @@ void UserGUI::selectMidiParamEvent(SDL_Event* e)
 void UserGUI::selectImageParamEvent(SDL_Event* e) 
 {
 	int draw = 1;
-	if(kissGUI->kiss_combobox_event(&imgParam, e, &draw))
+	for (int i = 0; i < imgParams.size(); ++i)
 	{
-		//do stuff like the previous box up there
+		if (kissGUI->kiss_combobox_event(&imgParams.at(i), e, &draw))
+		{
+			//do stuff like the previous box up there
+		}
 	}
 }
 
@@ -156,12 +192,15 @@ void UserGUI::typeFilePath(SDL_Event* e)
 {
 
 	int draw = 1;
-	if (kissGUI->kiss_entry_event(&filePathEntry, e, &draw)) 
-	{
-		char* inputText = filePathEntry.text;
-		//do stuff with inputText
+	for (int i = 0; i < filePathEntrys.size(); i++) {
+		if (kissGUI->kiss_entry_event(&filePathEntrys.at(i), e, &draw))
+		{
+			char* inputText = filePathEntrys.at(i).text;
+			//do stuff with inputText
 
+		}
 	}
+	//if (kissGUI->kiss_entry_event(&filePathEntry, e, &draw)) { char* inputText = filePathEntry.text; }
 }
 
 void UserGUI::midiLearnEvent(SDL_Event* e) 
@@ -261,11 +300,14 @@ void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 void UserGUI::browseEvent(SDL_Event* e, RenderWindow myRenderWindow) 
 {
 	int draw = 1;
-	if (kissGUI->kiss_button_event(&browsePath, e, &draw)) 
+	for (int i = 0; i < browsePathButtons.size(); ++i)
 	{
-		myRenderWindow.openSceneFolder();
+		//browsePath = b;
+		if (kissGUI->kiss_button_event(&browsePathButtons.at(i), e, &draw))
+		{
+			myRenderWindow.openSceneFolder();
+		}
 	}
-
 }
 
 void UserGUI::addBindingEvent(SDL_Event* e)
@@ -273,6 +315,40 @@ void UserGUI::addBindingEvent(SDL_Event* e)
 	int draw = 1;
 	if (kissGUI->kiss_button_event(&addBinding, e, &draw))
 	{
+		kissGUI->fillMidiParam(&midiParamList);
+		kissGUI->fillImageParam(&imageParamList);
+		int loc = (allBindings.size() * 90) + 70;
+		kissGUI->kiss_window_new(&binding, &bindings, 1, 40, loc, 480, 90);
 
+		kissGUI->kiss_combobox_new(&imgParam, &binding, "Image Param", &imageParamList, 45, loc + 50, 120, 100);
+		imgParam.visible = 1;
+
+		kissGUI->kiss_combobox_new(&midiParam, &binding, "Midi Param", &midiParamList, 180, loc+50, 110, 100);
+		midiParam.visible = 1;
+
+		kissGUI->kiss_entry_new(&noteEntry, &binding, 1, "Note/CC", 310, loc+50, 100);
+		noteEntry.visible = 1;
+		
+		kissGUI->kiss_entry_new(&filePathEntry, &binding, 1, "FilePath", 45, loc+10, 400);
+		filePathEntry.visible = 1;
+
+		kissGUI->kiss_button_new(&browsePath, &binding, "Browse", 450, loc+15);
+		browsePath.visible = 1;
+
+		kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", 420, loc+55);
+		midiLearn.visible = 1;
+
+		binding.visible = 1;
+		//bindings.focus = 0;
+		//binding.focus = 1;
+		imgParams.push_back(imgParam);
+		midiParams.push_back(midiParam);
+		noteEntrys.push_back(noteEntry);
+		filePathEntrys.push_back(filePathEntry);
+		browsePathButtons.push_back(browsePath);
+		midiLearnButtons.push_back(midiLearn);
+		allBindings.push_back(binding);
+
+		//kissGUI->kiss_window_draw(&binding, renderer);
 	}
 }
