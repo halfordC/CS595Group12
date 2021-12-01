@@ -33,6 +33,12 @@ public:
 		}
 		infile.close(); //saves lines in txtbindings
 
+		string p = "";
+		int trig;
+		int tar;
+		int typ;
+		int amnt;
+
 		//For each binding line tokenize and create bindings
 		for (int i = 0; i < txtbindings.size(); i++)
 		{
@@ -47,13 +53,7 @@ public:
 			//Check if there are any missing values and reject any incomplete bindings
 			if (bindingtokens.size() == 12)
 			{
-				//grab every other value since even ones are the labels
-				string p;
-				int trig;
-				int tar;
-				int typ;
-				int amnt;
-
+				//grab every other value since even ones are the 
 				for (int i = 0; i < 6; i++)
 				{
 					if (bindingtokens[i * 2] == "Path")
@@ -69,15 +69,19 @@ public:
 					else if (bindingtokens[i * 2] == "Amount")
 						amnt = stoi(bindingtokens[i + 1]);
 				}
+			}
+			else
+				cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
 
+			if (p != "" && trig != NULL && typ != NULL && tar != NULL && typ != NULL && amnt != NULL)
+			{
 				Binding temp(bindingtokens[1], stoi(bindingtokens[3]), stoi(bindingtokens[5]), stoi(bindingtokens[7]), stoi(bindingtokens[9]), stof(bindingtokens[11]));
 				bindings.push_back(temp);
 			}
 			else
 				cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
+
 		}
-
-
 	}
 
 	void translate(const RenderWindow& a)
