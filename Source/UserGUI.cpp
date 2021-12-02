@@ -86,7 +86,7 @@ void UserGUI::render()
 
 	kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
 
-	sceneArray[sceneIndex];
+	sceneArray[sceneIndex]->render(renderer);
 	
 	//if (allBindings.size() > 0) kissGUI->kiss_window_draw(&allBindings.back(), renderer);
 	/*for (kiss_window w : allBindings) kissGUI->kiss_window_draw(&w, renderer);
@@ -217,6 +217,7 @@ void UserGUI::typeFilePath(SDL_Event* e)
 	//if (kissGUI->kiss_entry_event(&filePathEntry, e, &draw)) { char* inputText = filePathEntry.text; }
 }
 
+/*
 void UserGUI::midiLearnEvent(SDL_Event* e) 
 {
 	int draw = 1;
@@ -230,6 +231,8 @@ void UserGUI::midiLearnEvent(SDL_Event* e)
 		}
 	}
 }
+*/
+
 
 void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule) 
 {
@@ -410,6 +413,8 @@ void UserGUI::addBindingEvent(SDL_Event* e)
 	int draw = 1;
 	if (kissGUI->kiss_button_event(&addBinding, e, &draw))
 	{
+		sceneArray[sceneIndex]->addImg();
+		/*
 		kissGUI->fillMidiParam(&midiParamList);
 		kissGUI->fillImageParam(&imageParamList);
 		int loc = (allBindings.size() * 90) + 70;
@@ -443,5 +448,6 @@ void UserGUI::addBindingEvent(SDL_Event* e)
 		browsePathButtons.push_back(browsePath);
 		midiLearnButtons.push_back(midiLearn);
 		allBindings.push_back(binding);
+		*/
 	}
 }

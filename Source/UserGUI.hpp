@@ -42,11 +42,11 @@ public:
 
 	kiss_array objects;
 	kiss_button addScene;
-	kiss_entry noteEntry;
+	//kiss_entry noteEntry;
 	kiss_button addBinding;
 	kiss_combobox midiDeviceDrop;
-	kiss_combobox imgParam;
-	kiss_combobox midiParam;
+	//kiss_combobox imgParam;
+	//kiss_combobox midiParam;
 	char message[KISS_MAX_LENGTH];
 	kiss_label label;
 	kiss_array connectedMidiDevices; //This will need to be changed as devices are connected and disconnected.

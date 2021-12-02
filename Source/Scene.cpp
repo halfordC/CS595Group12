@@ -20,28 +20,32 @@ using std::endl; using std::string;
 Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow)
 {
 	addImgParamIndex = 0; //this is the number of imgParam objects in our ImgParam array.
-	imgParameters *firstIMPar = new imgParameters();
+	imgParameters *firstIMPar = new imgParameters(kissGUI);
 	imgParArray[addImgParamIndex] = firstIMPar;
-	addImgParamIndex++;
+	imgParamIndex = 0;
 
 	sceneKissGUI = kissGUI;
 	sceneKissGUI->kiss_window_new(&sceneWindow, mainWindow, 1, 30, 60, 500, 300);
-
 }
+
 void Scene::addImg()
 {
-	imgParameters* nextIMPar = new imgParameters();
-	imgParArray[addImgParamIndex] = nextIMPar;
-	addImgParamIndex++;
+	if (addImgParamIndex < 15)
+	{
+		addImgParamIndex++; 
+		imgParameters* nextIMPar = new imgParameters(sceneKissGUI);
+		imgParArray[addImgParamIndex] = nextIMPar;
+	}
 }
 
-void Scene::render(int *draw, SDL_Renderer* renderer)
+void Scene::render(SDL_Renderer* renderer)
 {
-	SDL_RenderClear(renderer);
+	//SDL_RenderClear(renderer);
+	
 	sceneKissGUI->kiss_window_draw(&sceneWindow, renderer);
-
-
-
-	//also, call the render function on all img that we have in scene view. 
-
+	
+	for (int i = 0; i < addImgParamIndex; i++) 
+	{
+		imgParArray[i]->render();
+	}
 }

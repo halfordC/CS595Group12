@@ -28,11 +28,13 @@ imgParameters::imgParameters(myKissGUI* kissGUI)
 	kissGUI->kiss_entry_new(&filePathEntry, &binding, 1, "FilePath", binding.rect.x + 5, binding.rect.y + 10, 400);
 	kissGUI->kiss_button_new(&browsePath, &binding, "Browse", binding.rect.x + 410, binding.rect.y + 15);
 	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 380, binding.rect.y + 55);
+
+	binding.visible = 1;
 }
 
 void imgParameters::render()
 {
-	SDL_RenderClear(renderer);
+	//SDL_RenderClear(renderer);
 
 	imgKissGUI->kiss_window_draw(&binding, renderer);
 	imgKissGUI->kiss_button_draw(&browsePath, renderer);
@@ -42,7 +44,7 @@ void imgParameters::render()
 	imgKissGUI->kiss_entry_draw(&noteEntry, renderer);
 	imgKissGUI->kiss_entry_draw(&filePathEntry, renderer);
 
-	SDL_RenderPresent(renderer);
+	//SDL_RenderPresent(renderer);
 }
 
 void imgParameters::cleanUp()
