@@ -869,6 +869,7 @@
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\myKissGui.cpp" />
     <ClCompile Include="..\..\Source\RenderWindow.cpp" />
+    <ClCompile Include="..\..\Source\Scene.cpp" />
     <ClCompile Include="..\..\Source\Translator.cpp" />
     <ClCompile Include="..\..\Source\UserGUI.cpp" />
   </ItemGroup>
@@ -1183,6 +1184,7 @@
     <ClInclude Include="..\..\Source\midiModule.h" />
     <ClInclude Include="..\..\Source\myKissGui.hpp" />
     <ClInclude Include="..\..\Source\RenderWindow.hpp" />
+    <ClInclude Include="..\..\Source\Scene.h" />
     <ClInclude Include="..\..\Source\Sprite.hpp" />
     <ClInclude Include="..\..\Source\UserGUI.hpp" />
   </ItemGroup>

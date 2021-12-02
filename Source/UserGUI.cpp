@@ -34,7 +34,6 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 
 	kissGUI->fillImageParam(&imageParamList);
 
-	
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
 	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 480);
 
