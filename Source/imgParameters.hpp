@@ -37,4 +37,5 @@ public:
 private:
 	SDL_Event* e;
 	myKissGUI* imgKissGUI;
+	int listenFilter;
 };
