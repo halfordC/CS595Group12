@@ -15,7 +15,7 @@ class imgParameters
 public:
 	imgParameters(myKissGUI* kissGUI);
 
-	void render();
+	void render(SDL_Renderer* renderer);
 	void cleanUp();
 	void selectMidiParamEvent(SDL_Event* e);
 	void selectImageParamEvent(SDL_Event* e);
@@ -35,7 +35,6 @@ public:
 	kiss_array imageParamList;
 
 private:
-	SDL_Renderer* renderer;
 	SDL_Event* e;
 	myKissGUI* imgKissGUI;
 };

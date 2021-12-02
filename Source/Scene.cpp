@@ -46,6 +46,6 @@ void Scene::render(SDL_Renderer* renderer)
 	
 	for (int i = 0; i < addImgParamIndex; i++) 
 	{
-		imgParArray[i]->render();
+		imgParArray[i]->render(renderer);
 	}
 }
