@@ -865,6 +865,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_devices.cpp" />
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_core.cpp" />
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_events.cpp" />
+    <ClCompile Include="..\..\Source\imgParameters.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\myKissGui.cpp" />
     <ClCompile Include="..\..\Source\RenderWindow.cpp" />
@@ -1178,6 +1179,7 @@
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_events\juce_events.h" />
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h" />
     <ClInclude Include="..\..\Source\Binding.hpp" />
+    <ClInclude Include="..\..\Source\imgParameters.hpp" />
     <ClInclude Include="..\..\Source\midiModule.h" />
     <ClInclude Include="..\..\Source\myKissGui.hpp" />
     <ClInclude Include="..\..\Source\RenderWindow.hpp" />
