@@ -35,5 +35,7 @@ public:
 	kiss_array imageParamList;
 
 private:
-	
+	SDL_Renderer* renderer;
+	SDL_Event* e;
+	myKissGUI* imgKissGUI;
 };

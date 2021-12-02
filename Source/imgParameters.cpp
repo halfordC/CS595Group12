@@ -18,6 +18,7 @@ using std::endl; using std::string;
 
 imgParameters::imgParameters(myKissGUI* kissGUI)
 {
+	imgKissGUI = kissGUI;
 	kissGUI->fillMidiParam(&midiParamList);
 	kissGUI->fillImageParam(&imageParamList);
 	kissGUI->kiss_window_new(&binding, NULL, 1, 0, 0, 480, 90);
@@ -29,3 +30,22 @@ imgParameters::imgParameters(myKissGUI* kissGUI)
 	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 380, binding.rect.y + 55);
 }
 
+void imgParameters::render()
+{
+	SDL_RenderClear(renderer);
+
+	imgKissGUI->kiss_window_draw(&binding, renderer);
+	imgKissGUI->kiss_button_draw(&browsePath, renderer);
+	imgKissGUI->kiss_button_draw(&midiLearn, renderer);
+	imgKissGUI->kiss_combobox_draw(&imgParam, renderer);
+	imgKissGUI->kiss_combobox_draw(&midiParam, renderer);
+	imgKissGUI->kiss_entry_draw(&noteEntry, renderer);
+	imgKissGUI->kiss_entry_draw(&filePathEntry, renderer);
+
+	SDL_RenderPresent(renderer);
+}
+
+void imgParameters::cleanUp()
+{
+	SDL_DestroyRenderer(renderer);
+}
