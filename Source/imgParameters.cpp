@@ -32,7 +32,7 @@ imgParameters::imgParameters(int x, int y, myKissGUI* kissGUI, kiss_window *inWi
 	binding.visible = 1;
 }
 
-void imgParameters::render(SDL_Renderer* renderer)
+void imgParameters::render(int x, int y, SDL_Renderer* renderer)
 {
 	//SDL_RenderClear(renderer);
 

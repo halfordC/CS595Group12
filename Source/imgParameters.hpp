@@ -15,7 +15,7 @@ class imgParameters
 public:
 	imgParameters(int x, int y, myKissGUI* kissGUI, kiss_window *inWindow);
 
-	void render(SDL_Renderer* renderer);
+	void render(int x, int y, SDL_Renderer* renderer);//Alternatively could modify coordinates for scrolling in their own method
 	void cleanUp();
 	void selectMidiParamEvent(SDL_Event* e);
 	void selectImageParamEvent(SDL_Event* e);
