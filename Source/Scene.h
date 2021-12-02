@@ -25,4 +25,6 @@ private:
 	int imgParamIndex; //should not go over 15. 
 	int addImgParamIndex;
 	myKissGUI* sceneKissGUI;
+	int currentY;
+	int staticX;
 };

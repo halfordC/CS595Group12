@@ -16,12 +16,12 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-imgParameters::imgParameters(int x, int y, myKissGUI* kissGUI)
+imgParameters::imgParameters(int x, int y, myKissGUI* kissGUI, kiss_window *inWindow)
 {
 	imgKissGUI = kissGUI;
 	kissGUI->fillMidiParam(&midiParamList);
 	kissGUI->fillImageParam(&imageParamList);
-	kissGUI->kiss_window_new(&binding, NULL, 1, x, y, 480, 90);
+	kissGUI->kiss_window_new(&binding, inWindow, 1, x, y, 480, 90);
 	kissGUI->kiss_combobox_new(&imgParam, &binding, "Image Param", &imageParamList, binding.rect.x + 5, binding.rect.y + 50, 120, 100);
 	kissGUI->kiss_combobox_new(&midiParam, &binding, "Midi Param", &midiParamList, binding.rect.x + 140, binding.rect.y + 50, 110, 100);
 	kissGUI->kiss_entry_new(&noteEntry, &binding, 1, "Note/CC", binding.rect.x + 270, binding.rect.y + 50, 100);
