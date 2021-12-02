@@ -8,6 +8,7 @@
 #include "myKissGui.hpp"
 #include "midiModule.h"
 #include "RenderWindow.hpp"
+#include "Scene.h"
 
 class UserGUI
 {
@@ -58,9 +59,14 @@ public:
 	kiss_button browsePath;
 	kiss_button midiLearn;
 	kiss_entry filePathEntry;
+
+	Scene* sceneArray[15]; //max of 15 scenes. If we can can't make Horizontal scroll tabs, we'll just make 3. 
+
 private:
 	SDL_Renderer* renderer;
 	SDL_Event e;
 	int listenFilter;
+	int sceneIndex;
+	int addSceneIndex;
 
 };

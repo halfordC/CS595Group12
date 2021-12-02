@@ -14,15 +14,17 @@
 class Scene 
 {
 public:
-	Scene();
+	Scene::Scene(myKissGUI* kissGUI, kiss_window* mainWindow);
 	imgParameters * imgParArray[15]; // setting a hard limit of 15 images for now. Might change later.
 
-	void addImg(myKissGUI* kissGUI, SDL_Event *e);
-	void render(int * draw, SDL_Renderer* renderer, myKissGUI* kissGUI);
+	void addImg(); //not an event, called by the event in Main Window. 
+	void render(int * draw, SDL_Renderer* renderer);
+
 
 	kiss_button addImgButton;
 	kiss_window sceneWindow;
-	//we need a function to add 
 private:
 	int imgParamIndex; //should not go over 15. 
+	int addImgParamIndex;
+	myKissGUI* sceneKissGUI;
 };

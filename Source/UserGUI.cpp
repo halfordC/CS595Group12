@@ -11,12 +11,10 @@
 #include "myKissGui.hpp"
 #include "midiModule.h"
 #include "RenderWindow.hpp"
+#include "Scene.h"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
-
-
-
 
 
 UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
@@ -25,35 +23,48 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	kissGUI->kiss_array_new(&objects );
 	renderer = kissGUI->kiss_init(p_title, &objects, 640, 480);
 
+
+
 	char message[KISS_MAX_LENGTH];
 	strcpy(message, "Hello World!");
 
 	
 	kissGUI->fillConnectedMidiDevices(&connectedMidiDevices, myMidiModule); // fill midi device dropdown
-	kissGUI->fillMidiParam(&midiParamList); //fill midi param dropdown
+	//kissGUI->fillMidiParam(&midiParamList); //fill midi param dropdown
 
-	kissGUI->fillImageParam(&imageParamList);
+	//kissGUI->fillImageParam(&imageParamList);
 
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
 	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 480);
 
-	kissGUI->kiss_window_new(&bindings, &window, 1, 30, 60, 500, 300);
+
+	//We want to instantite the first scene after we instantiate the window. 
+	sceneIndex = 0;
+	addSceneIndex = 0;
+	Scene* firstScene = new Scene(kissGUI, &window);
+	sceneArray[0] = firstScene;
+
+
+
+	//kissGUI->kiss_window_new(&bindings, &window, 1, 30, 60, 500, 300);
 	//kissGUI->kiss_vscrollbar_new(&scrollBar, &window, 550, 360, 300);
+
+
 
 	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 490,20,120,100);
 
-	kissGUI->kiss_combobox_new(&imgParam, &window, "Image Param", &imageParamList, 40, 140, 120, 100);
-	kissGUI->kiss_combobox_new(&midiParam, &window, "Midi Param", &midiParamList, 180, 140, 110, 100);
-	kissGUI->kiss_entry_new(&noteEntry, &window,1, "Note/CC", 310, 140, 100);
+	//kissGUI->kiss_combobox_new(&imgParam, &window, "Image Param", &imageParamList, 40, 140, 120, 100);
+	//kissGUI->kiss_combobox_new(&midiParam, &window, "Midi Param", &midiParamList, 180, 140, 110, 100);
+	//kissGUI->kiss_entry_new(&noteEntry, &window,1, "Note/CC", 310, 140, 100);
 	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 370);
 
 	kissGUI->kiss_button_new(&startButton, &window, "Start", 550, 430);
 
-	kissGUI->kiss_entry_new(&filePathEntry, &window, 1, "FilePath", 40, 100, 400);
+	//kissGUI->kiss_entry_new(&filePathEntry, &window, 1, "FilePath", 40, 100, 400);
 
-	kissGUI->kiss_button_new(&browsePath, &window, "Browse", 450, 105);
+	//kissGUI->kiss_button_new(&browsePath, &window, "Browse", 450, 105);
 
-	kissGUI->kiss_button_new(&midiLearn, &window, "Listen", 420, 146);
+	//kissGUI->kiss_button_new(&midiLearn, &window, "Listen", 420, 146);
 
 	label.textcolor.r = 255;
 	window.visible = 1;
@@ -70,10 +81,12 @@ void UserGUI::render()
 
 	kissGUI->kiss_window_draw(&window, renderer);
 
-	kissGUI->kiss_window_draw(&bindings, renderer);
+	kissGUI->kiss_window_draw(&(sceneArray[sceneIndex]->sceneWindow), renderer);
+	//kissGUI->kiss_window_draw(&bindings, renderer);
 
 	kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
 
+	sceneArray[sceneIndex];
 	
 	//if (allBindings.size() > 0) kissGUI->kiss_window_draw(&allBindings.back(), renderer);
 	/*for (kiss_window w : allBindings) kissGUI->kiss_window_draw(&w, renderer);
@@ -83,6 +96,7 @@ void UserGUI::render()
 	for (kiss_combobox c : midiParams) kissGUI->kiss_combobox_draw(&c, renderer);
 	for (kiss_entry e : filePathEntrys) kissGUI->kiss_entry_draw(&e, renderer);
 	for (kiss_entry e : noteEntrys) kissGUI->kiss_entry_draw(&e, renderer);*/
+	/*
 	for (int i = allBindings.size()-1; i >= 0; --i) 
 	{
 		kissGUI->kiss_window_draw(&allBindings.at(i), renderer);
@@ -93,6 +107,7 @@ void UserGUI::render()
 		kissGUI->kiss_entry_draw(&filePathEntrys.at(i), renderer);
 		kissGUI->kiss_entry_draw(&noteEntrys.at(i), renderer);
 	}
+	*/
 	
 
 	//kissGUI->kiss_button_draw(&browsePath, renderer);
