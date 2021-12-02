@@ -178,7 +178,7 @@ void UserGUI::selectMidiParamEvent(SDL_Event* e)
 void UserGUI::selectImageParamEvent(SDL_Event* e) 
 {
 	int draw = 1;
-	for (int i = 0; i < imgParams.size(); ++i)
+	for (int i = 0; i < imgParams.size(); i++)
 	{
 		if (kissGUI->kiss_combobox_event(&imgParams.at(i), e, &draw))
 		{
@@ -206,11 +206,14 @@ void UserGUI::typeFilePath(SDL_Event* e)
 void UserGUI::midiLearnEvent(SDL_Event* e) 
 {
 	int draw = 1;
-	if (kissGUI->kiss_entry_event(&noteEntry, e, &draw)) 
+	for (int i = 0; i < noteEntrys.size(); i++)
 	{
-		char* inputText = noteEntry.text;
-		//check if the note is infact a note. 
+		if (kissGUI->kiss_entry_event(&noteEntrys.at(i), e, &draw))
+		{
+			char* inputText = noteEntry.text;
+			//check if the note is infact a note. 
 
+		}
 	}
 }
 
