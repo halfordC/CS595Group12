@@ -17,30 +17,28 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-Scene::Scene() 
+Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow)
 {
-	imgParamIndex = 0; //this is the number of imgParam objects in our ImgParam array.
+	addImgParamIndex = 0; //this is the number of imgParam objects in our ImgParam array.
 	imgParameters *firstIMPar = new imgParameters();
-	imgParArray[imgParamIndex] = firstIMPar;
-	imgParamIndex++;
+	imgParArray[addImgParamIndex] = firstIMPar;
+	addImgParamIndex++;
 
+	sceneKissGUI = kissGUI;
+	sceneKissGUI->kiss_window_new(&sceneWindow, mainWindow, 1, 30, 60, 500, 300);
 
 }
-void Scene::addImg(myKissGUI *kissGUI, SDL_Event* e)
+void Scene::addImg()
 {
-	int draw = 1;
-	if (kissGUI->kiss_button_event(&addImgButton, e, &draw))
-	{
-		imgParameters* nextIMPar = new imgParameters();
-		imgParArray[imgParamIndex] = nextIMPar;
-		imgParamIndex++;
-	}
+	imgParameters* nextIMPar = new imgParameters();
+	imgParArray[addImgParamIndex] = nextIMPar;
+	addImgParamIndex++;
 }
 
-void Scene::render(int *draw, SDL_Renderer* renderer, myKissGUI *kissGUI)
+void Scene::render(int *draw, SDL_Renderer* renderer)
 {
 	SDL_RenderClear(renderer);
-	kissGUI->kiss_window_draw(&sceneWindow, renderer);
+	sceneKissGUI->kiss_window_draw(&sceneWindow, renderer);
 
 
 
