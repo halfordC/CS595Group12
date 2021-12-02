@@ -13,7 +13,7 @@
 class imgParameters
 {
 public:
-	imgParameters(myKissGUI* kissGUI);
+	imgParameters(int x, int y, myKissGUI* kissGUI);
 
 	void render(SDL_Renderer* renderer);
 	void cleanUp();
