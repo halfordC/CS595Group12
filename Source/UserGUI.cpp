@@ -222,7 +222,7 @@ void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 	int draw = 1;
 	bool isMidiType = false;
 	char newText[200] = "newNote";
-	if (kissGUI->kiss_button_event(&midiLearn, e, &draw))
+	/*if (kissGUI->kiss_button_event(&midiLearn, e, &draw))
 	{
 
 		if (!myMidiModule->isConnected()) 
@@ -296,6 +296,84 @@ void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 		}
 		
 
+	}*/
+	for (int j = 0; j < midiLearnButtons.size(); j++)
+	{
+		if (kissGUI->kiss_button_event(&midiLearnButtons.at(j), e, &draw))
+		{
+
+			if (!myMidiModule->isConnected())
+			{
+				return; //if no connected devices, we will be in a loop forever. 
+			}
+			memset(noteEntrys.at(j).text, 0, 200); //clear char array
+			strcat(noteEntrys.at(j).text, "newNote"); //fill char array with new note value
+			while (!isMidiType)
+			{
+				if (myMidiModule->hasNewMidiMessage())
+				{
+					std::vector<juce::MidiMessage> inBuffer = myMidiModule->getMidiBuffer();
+
+					for (int i = 0; i < inBuffer.size(); i++)
+					{
+						//std::cout << "message Recieved in Button: " << myMidiModule->printMessage(inBuffer[i]) << std::endl;
+
+						//this is kinda gross, sorry
+						switch (listenFilter)
+						{
+						case 0: //Note on
+							if (inBuffer[i].isNoteOn())
+							{
+								isMidiType = true;
+								memset(noteEntrys.at(j).text, 0, 200); //clear char array
+
+								string noteString = juce::MidiMessage::getMidiNoteName(inBuffer[i].getNoteNumber(), true, true, 3).toStdString();
+								const char* newNote = noteString.c_str();
+								strcat(noteEntrys.at(j).text, newNote); //fill char array with new note value
+
+								//Also, add this note to the translator app for the selected image param
+							}
+
+							break;
+
+						case 1: //Note off
+							if (inBuffer[i].isNoteOff())
+							{
+								isMidiType = true;
+								memset(noteEntrys.at(j).text, 0, 200); //clear char array
+								string noteString = juce::MidiMessage::getMidiNoteName(inBuffer[i].getNoteNumber(), true, true, 3).toStdString();
+								const char* newNote = noteString.c_str();
+								strcat(noteEntrys.at(j).text, newNote); //fill char array with new note value
+
+								//Also, add this note to the translator app for the selected image param
+							}
+
+							break;
+
+						case 2: //CC
+							if (inBuffer[i].isController())
+							{
+								isMidiType = true;
+								memset(noteEntrys.at(j).text, 0, 200); //clear char array
+								string CCstr = "CC " + std::to_string(inBuffer[i].getControllerNumber());
+								const char* newCC = CCstr.c_str(); //really long function to get note number / letter
+								strcat(noteEntrys.at(j).text, newCC); //fill char array with new note value
+
+								//Also, add this note to the translator app for the selected image param
+							}
+
+							break;
+
+						}
+
+					}
+					myMidiModule->messagesParsed(); //this clears the flag, and waits for a new message. 
+
+				}
+			}
+
+
+		}
 	}
 
 }
@@ -351,7 +429,5 @@ void UserGUI::addBindingEvent(SDL_Event* e)
 		browsePathButtons.push_back(browsePath);
 		midiLearnButtons.push_back(midiLearn);
 		allBindings.push_back(binding);
-
-		//kissGUI->kiss_window_draw(&binding, renderer);
 	}
 }
