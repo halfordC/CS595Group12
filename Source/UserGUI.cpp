@@ -45,7 +45,8 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	sceneArray[0] = firstScene;
 
 	kissGUI->kiss_tab_new(&(sceneTab[0]), &window, "Scene 1", 50, 34);
-
+	
+	kissGUI->kiss_tab_new(&plusTab, &window, "+", 125, 34);
 
 
 	//kissGUI->kiss_window_new(&bindings, &window, 1, 30, 60, 500, 300);
@@ -87,7 +88,7 @@ void UserGUI::render()
 	//kissGUI->kiss_window_draw(&bindings, renderer);
 
 	kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
-
+	kissGUI->kiss_tab_draw(&plusTab, renderer);
 	sceneArray[sceneIndex]->render(renderer);
 	kissGUI->kiss_tab_draw(&(sceneTab[0]), renderer);
 	

@@ -62,6 +62,7 @@ public:
 
 	Scene* sceneArray[15]; //max of 15 scenes. If we can can't make Horizontal scroll tabs, we'll just make 3. 
 	kiss_tab sceneTab[15];
+	kiss_tab plusTab;
 
 
 private:
