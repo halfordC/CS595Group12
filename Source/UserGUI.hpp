@@ -16,11 +16,17 @@ public:
 	UserGUI(char* p_title, MidiModule* myMidiModule);
 	void render();
 	void cleanUp();
+	void guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
 	void selectMidiDropdownEvent(SDL_Event* e, MidiModule * myMidiModule);
 	void addBindingEvent(SDL_Event* e);
+
+	void addSceneEvent(SDL_Event* e);
+	void sceneTabEvent(SDL_Event* e);
+
 	void guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
 	void scrollUpEvent(SDL_Event* e);
 	void scrollDownEvent(SDL_Event* e);
+
 
 	std::filesystem::path selectedDirectory;
 	myKissGUI* kissGUI;
@@ -46,6 +52,8 @@ public:
 	Scene* sceneArray[15]; //max of 15 scenes. If we can can't make Horizontal scroll tabs, we'll just make 3. 
 	kiss_tab sceneTab[15];
 	kiss_tab plusTab;
+	
+
 
 	kiss_upbutton scrollUp;
 	kiss_downbutton scrollDown;
@@ -57,5 +65,11 @@ private:
 	int listenFilter;
 	int sceneIndex;
 	int addSceneIndex;
+	int currentSceneTab;
+	int addSceneTabIndex;
+	int currentSceneTabX;
+	int staticSceneTabY;
+
+
 
 };
