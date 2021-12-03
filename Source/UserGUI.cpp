@@ -117,10 +117,8 @@ void UserGUI::cleanUp()
 
 void UserGUI::guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow)
 {
-	for (int i = 0; i <= sceneIndex; ++i)
-	{
-		sceneArray[i]->sceneEvent(e, myMidiModule, myRenderWindow);
-	}
+	
+		sceneArray[sceneIndex]->sceneEvent(e, myMidiModule, myRenderWindow);
 }
 
 
