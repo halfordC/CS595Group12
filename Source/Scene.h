@@ -17,6 +17,7 @@ public:
 	Scene::Scene(myKissGUI* kissGUI, kiss_window* mainWindow);
 	void addImg(); //not an event, called by the event in Main Window. 
 	void render(SDL_Renderer* renderer);
+	void sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
 
 	imgParameters* imgParArray[15]; // setting a hard limit of 15 images for now. Might change later.
 	kiss_button addImgButton;

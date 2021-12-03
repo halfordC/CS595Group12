@@ -29,6 +29,7 @@ Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow)
 	imgParArray[addImgParamIndex] = firstIMPar;
 	imgParamIndex = 0;
 	currentY += 90;
+	addImgParamIndex = 1;
 
 
 }
@@ -37,10 +38,11 @@ void Scene::addImg()
 {
 	if (addImgParamIndex < 15)
 	{
-		addImgParamIndex++; 
+		 
 		imgParameters* nextIMPar = new imgParameters(40, currentY, sceneKissGUI, &sceneWindow);
 		imgParArray[addImgParamIndex] = nextIMPar;
 		currentY += 90;
+		addImgParamIndex++;
 	}
 }
 
@@ -50,8 +52,21 @@ void Scene::render(SDL_Renderer* renderer)
 	
 	sceneKissGUI->kiss_window_draw(&sceneWindow, renderer);
 	
-	for (int i = 0; i <= addImgParamIndex; i++) 
+	for (int i = addImgParamIndex - 1; i >= 0; i--) 
 	{
-		imgParArray[i]->render(staticX, (startY +i*90), renderer);
+		imgParArray[i]->render(0, 0, renderer);
+	}
+}
+
+void Scene::sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow)
+{
+	for (int i = 0; i < addImgParamIndex; i++)
+	{
+		imgParArray[i]->selectMidiParamEvent(e);
+		imgParArray[i]->selectImageParamEvent(e);
+		imgParArray[i]->typeFilePath(e);
+		imgParArray[i]->midiLearnEvent(e);
+		imgParArray[i]->midiListenButton(e, myMidiModule);
+		imgParArray[i]->browseEvent(e, myRenderWindow);
 	}
 }
