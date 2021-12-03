@@ -83,6 +83,8 @@ void UserGUI::render()
 
   
   kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
+  kissGUI->kiss_upbutton_draw(&scrollUp, renderer);
+  kissGUI->kiss_downbutton_draw(&scrollDown, renderer);
 
 	//For loop here, render all scene tabs that are not the current scene tab / current scene
 	for (int i = 0; i < addSceneTabIndex; i++) 
@@ -103,8 +105,7 @@ void UserGUI::render()
 	
 	kissGUI->kiss_combobox_draw(&midiDeviceDrop, renderer);
 
-	kissGUI->kiss_upbutton_draw(&scrollUp, renderer);
-	kissGUI->kiss_downbutton_draw(&scrollDown, renderer);
+
 
 	SDL_RenderPresent(renderer);
 }

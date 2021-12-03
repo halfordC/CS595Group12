@@ -22,8 +22,6 @@ public:
 
 	void addSceneEvent(SDL_Event* e);
 	void sceneTabEvent(SDL_Event* e);
-
-	void guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
 	void scrollUpEvent(SDL_Event* e);
 	void scrollDownEvent(SDL_Event* e);
 
