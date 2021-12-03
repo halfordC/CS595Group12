@@ -88,6 +88,7 @@ int main(int argc, char* args[])
 			gui.addBindingEvent(&event);
 			gui.guiEvent(&event, myMidiModule, sceneViewWindow);
 			gui.addSceneEvent(&event);
+			gui.sceneTabEvent(&event);
 
 
 			switch (event.type)

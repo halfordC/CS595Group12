@@ -185,6 +185,15 @@ void UserGUI::addSceneEvent(SDL_Event* e)
 
 void UserGUI::sceneTabEvent(SDL_Event* e)
 {
-
+	int draw = 1;
+	for (int i = 0; i < addSceneTabIndex; i++) 
+	{
+		if (kissGUI->kiss_tab_event(&(sceneTab[i]), e, &draw)) 
+		{
+			//changing the active scene to the one clicked. 
+			currentSceneTab = i;
+			sceneIndex = i;
+		}
+	}
 
 }
