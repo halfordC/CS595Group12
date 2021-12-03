@@ -204,11 +204,6 @@ void UserGUI::sceneTabEvent(SDL_Event* e)
 			sceneIndex = i;
 		}
 	}
-{
-	for (int i = 0; i <= sceneIndex; ++i)
-	{
-		sceneArray[i]->sceneEvent(e, myMidiModule, myRenderWindow);
-	}
 }
 
 void UserGUI::scrollUpEvent(SDL_Event* e)
@@ -227,6 +222,4 @@ void UserGUI::scrollDownEvent(SDL_Event* e)
 	{
 
 	}
-}
-
 }
