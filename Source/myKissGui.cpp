@@ -593,7 +593,9 @@
 		r += kiss_image_new(&kiss_vslider, "kiss_vslider.png", a, renderer);
 		r += kiss_image_new(&kiss_hslider, "kiss_hslider.png", a, renderer);
 		r += kiss_image_new(&kiss_up, "kiss_up.png", a, renderer);
+		r += kiss_image_new(&kiss_up_prelight, "kiss_up_prelight.png", a, renderer);
 		r += kiss_image_new(&kiss_down, "kiss_down.png", a, renderer);
+		r += kiss_image_new(&kiss_down_prelight, "kiss_down_prelight.png", a, renderer);
 		r += kiss_image_new(&kiss_left, "kiss_left.png", a, renderer);
 		r += kiss_image_new(&kiss_right, "kiss_right.png", a, renderer);
 		r += kiss_image_new(&kiss_combo, "kiss_combo.png", a, renderer);
@@ -800,6 +802,177 @@
 				button->rect.y, NULL);
 		kiss_rendertext(renderer, button->text, button->textx, button->texty,
 			button->font, button->textcolor);
+		return 1;
+	}
+
+	int myKissGUI::kiss_upbutton_new(kiss_upbutton* button, kiss_window* wdw, int x, int y)
+	{
+		if (!button) return -1;
+		//if (button->font.magic != KISS_MAGIC) button->font = kiss_buttonfont;
+		if (button->normalimg.magic != KISS_MAGIC)
+			button->normalimg = kiss_up;
+		if (button->activeimg.magic != KISS_MAGIC)
+			button->activeimg = kiss_up;
+		if (button->prelightimg.magic != KISS_MAGIC)
+			button->prelightimg = kiss_up_prelight;
+		kiss_makerect(&button->rect, x, y, button->normalimg.w,
+			button->normalimg.h);
+		//button->textcolor = kiss_white;
+		//kiss_string_copy(button->text, KISS_MAX_LENGTH, text, NULL);
+		//button->textx = x + button->normalimg.w / 2 -
+		//	kiss_textwidth(button->font, text, NULL) / 2;
+		//button->texty = y + button->normalimg.h / 2 -
+		//	button->font.fontheight / 2;
+		button->active = 0;
+		button->prelight = 0;
+		button->visible = 0;
+		button->focus = 0;
+		button->wdw = wdw;
+		return 0;
+	}
+
+	int myKissGUI::kiss_upbutton_event(kiss_upbutton* button, SDL_Event* event, int* draw)
+	{
+		if (!button || !button->visible || !event) return 0;
+		if (event->type == SDL_WINDOWEVENT &&
+			event->window.event == SDL_WINDOWEVENT_EXPOSED)
+			*draw = 1;
+		if (!button->focus && (!button->wdw ||
+			(button->wdw && !button->wdw->focus)))
+			return 0;
+		if (event->type == SDL_MOUSEBUTTONDOWN &&
+			kiss_pointinrect(event->button.x, event->button.y,
+				&button->rect)) {
+			button->active = 1;
+			*draw = 1;
+		}
+		else if (event->type == SDL_MOUSEBUTTONUP &&
+			kiss_pointinrect(event->button.x, event->button.y,
+				&button->rect) && button->active) {
+			button->active = 0;
+			*draw = 1;
+			return 1;
+		}
+		else if (event->type == SDL_MOUSEMOTION &&
+			kiss_pointinrect(event->motion.x, event->motion.y,
+				&button->rect)) {
+			button->prelight = 1;
+			*draw = 1;
+		}
+		else if (event->type == SDL_MOUSEMOTION &&
+			!kiss_pointinrect(event->motion.x, event->motion.y,
+				&button->rect)) {
+			button->prelight = 0;
+			*draw = 1;
+			if (button->active) {
+				button->active = 0;
+				return 1;
+			}
+		}
+		return 0;
+	}
+
+	int myKissGUI::kiss_upbutton_draw(kiss_upbutton* button, SDL_Renderer* renderer)
+	{
+		if (button && button->wdw) button->visible = button->wdw->visible;
+		if (!button || !button->visible || !renderer) return 0;
+		if (button->active)
+			kiss_renderimage(renderer, button->activeimg, button->rect.x,
+				button->rect.y, NULL);
+		else if (button->prelight && !button->active)
+			kiss_renderimage(renderer, button->prelightimg,
+				button->rect.x, button->rect.y, NULL);
+		else
+			kiss_renderimage(renderer, button->normalimg, button->rect.x,
+				button->rect.y, NULL);
+		//kiss_rendertext(renderer, button->text, button->textx, button->texty,
+		//	button->font, button->textcolor);
+		return 1;
+	}
+
+
+	int myKissGUI::kiss_downbutton_new(kiss_downbutton* button, kiss_window* wdw, int x, int y)
+	{
+		if (!button) return -1;
+		//if (button->font.magic != KISS_MAGIC) button->font = kiss_buttonfont;
+		if (button->normalimg.magic != KISS_MAGIC)
+			button->normalimg = kiss_down;
+		if (button->activeimg.magic != KISS_MAGIC)
+			button->activeimg = kiss_down;
+		if (button->prelightimg.magic != KISS_MAGIC)
+			button->prelightimg = kiss_down_prelight;
+		kiss_makerect(&button->rect, x, y, button->normalimg.w,
+			button->normalimg.h);
+		//button->textcolor = kiss_white;
+		//kiss_string_copy(button->text, KISS_MAX_LENGTH, text, NULL);
+		//button->textx = x + button->normalimg.w / 2 -
+		//	kiss_textwidth(button->font, text, NULL) / 2;
+		//button->texty = y + button->normalimg.h / 2 -
+		//	button->font.fontheight / 2;
+		button->active = 0;
+		button->prelight = 0;
+		button->visible = 0;
+		button->focus = 0;
+		button->wdw = wdw;
+		return 0;
+	}
+
+	int myKissGUI::kiss_downbutton_event(kiss_downbutton* button, SDL_Event* event, int* draw)
+	{
+		if (!button || !button->visible || !event) return 0;
+		if (event->type == SDL_WINDOWEVENT &&
+			event->window.event == SDL_WINDOWEVENT_EXPOSED)
+			*draw = 1;
+		if (!button->focus && (!button->wdw ||
+			(button->wdw && !button->wdw->focus)))
+			return 0;
+		if (event->type == SDL_MOUSEBUTTONDOWN &&
+			kiss_pointinrect(event->button.x, event->button.y,
+				&button->rect)) {
+			button->active = 1;
+			*draw = 1;
+		}
+		else if (event->type == SDL_MOUSEBUTTONUP &&
+			kiss_pointinrect(event->button.x, event->button.y,
+				&button->rect) && button->active) {
+			button->active = 0;
+			*draw = 1;
+			return 1;
+		}
+		else if (event->type == SDL_MOUSEMOTION &&
+			kiss_pointinrect(event->motion.x, event->motion.y,
+				&button->rect)) {
+			button->prelight = 1;
+			*draw = 1;
+		}
+		else if (event->type == SDL_MOUSEMOTION &&
+			!kiss_pointinrect(event->motion.x, event->motion.y,
+				&button->rect)) {
+			button->prelight = 0;
+			*draw = 1;
+			if (button->active) {
+				button->active = 0;
+				return 1;
+			}
+		}
+		return 0;
+	}
+
+	int myKissGUI::kiss_downbutton_draw(kiss_downbutton* button, SDL_Renderer* renderer)
+	{
+		if (button && button->wdw) button->visible = button->wdw->visible;
+		if (!button || !button->visible || !renderer) return 0;
+		if (button->active)
+			kiss_renderimage(renderer, button->activeimg, button->rect.x,
+				button->rect.y, NULL);
+		else if (button->prelight && !button->active)
+			kiss_renderimage(renderer, button->prelightimg,
+				button->rect.x, button->rect.y, NULL);
+		else
+			kiss_renderimage(renderer, button->normalimg, button->rect.x,
+				button->rect.y, NULL);
+		//kiss_rendertext(renderer, button->text, button->textx, button->texty,
+		//	button->font, button->textcolor);
 		return 1;
 	}
 

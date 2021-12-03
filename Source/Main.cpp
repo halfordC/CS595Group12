@@ -87,7 +87,8 @@ int main(int argc, char* args[])
 			//gui.browseEvent(&event, sceneViewWindow);
 			gui.addBindingEvent(&event);
 			gui.guiEvent(&event, myMidiModule, sceneViewWindow);
-
+			gui.scrollUpEvent(&event);
+			gui.scrollDownEvent(&event);
 
 			switch (event.type)
 			{
