@@ -24,6 +24,7 @@ public:
 	//void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
 	//void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
 	void addBindingEvent(SDL_Event* e);
+	void guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
 
 	std::filesystem::path selectedDirectory;
 	myKissGUI* kissGUI;

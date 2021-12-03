@@ -132,6 +132,14 @@ void UserGUI::cleanUp()
 	SDL_DestroyRenderer(renderer);
 }
 
+void UserGUI::guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow)
+{
+	for (int i = 0; i <= sceneIndex; ++i)
+	{
+		sceneArray[i]->sceneEvent(e, myMidiModule, myRenderWindow);
+	}
+}
+
 
 void UserGUI::selectMidiDropdownEvent(SDL_Event* e, MidiModule* myMidiModule)
 {
