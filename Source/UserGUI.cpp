@@ -40,6 +40,7 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	addSceneIndex++;
 
 
+
 	currentSceneTabX = 50;
 	staticSceneTabY = 34;
 
@@ -51,11 +52,16 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	currentSceneTabX += 75;
 	kissGUI->kiss_tab_new(&plusTab, &window, "+", currentSceneTabX, staticSceneTabY);
 
+
 	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 490,20,120,100);
 
 	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 370);
 
 	kissGUI->kiss_button_new(&startButton, &window, "Start", 550, 430);
+
+
+	kissGUI->kiss_upbutton_new(&scrollUp, &window, 530, 65);
+	kissGUI->kiss_downbutton_new(&scrollDown, &window, 530, 340);
 
 
 	label.textcolor.r = 255;
@@ -75,7 +81,8 @@ void UserGUI::render()
 
 	kissGUI->kiss_window_draw(&(sceneArray[sceneIndex]->sceneWindow), renderer);
 
-	kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
+  
+  kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
 
 	//For loop here, render all scene tabs that are not the current scene tab / current scene
 	for (int i = 0; i < addSceneTabIndex; i++) 
@@ -96,6 +103,8 @@ void UserGUI::render()
 	
 	kissGUI->kiss_combobox_draw(&midiDeviceDrop, renderer);
 
+	kissGUI->kiss_upbutton_draw(&scrollUp, renderer);
+	kissGUI->kiss_downbutton_draw(&scrollDown, renderer);
 
 	SDL_RenderPresent(renderer);
 }
@@ -195,5 +204,29 @@ void UserGUI::sceneTabEvent(SDL_Event* e)
 			sceneIndex = i;
 		}
 	}
+{
+	for (int i = 0; i <= sceneIndex; ++i)
+	{
+		sceneArray[i]->sceneEvent(e, myMidiModule, myRenderWindow);
+	}
+}
+
+void UserGUI::scrollUpEvent(SDL_Event* e)
+{
+	int draw = 1;
+	if (kissGUI->kiss_upbutton_event(&scrollUp, e, &draw)) 
+	{
+
+	}
+}
+
+void UserGUI::scrollDownEvent(SDL_Event* e)
+{
+	int draw = 1;
+	if (kissGUI->kiss_downbutton_event(&scrollDown, e, &draw)) 
+	{
+
+	}
+}
 
 }

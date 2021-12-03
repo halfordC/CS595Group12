@@ -89,7 +89,8 @@ int main(int argc, char* args[])
 			gui.guiEvent(&event, myMidiModule, sceneViewWindow);
 			gui.addSceneEvent(&event);
 			gui.sceneTabEvent(&event);
-
+			gui.scrollUpEvent(&event);
+			gui.scrollDownEvent(&event);
 
 			switch (event.type)
 			{
