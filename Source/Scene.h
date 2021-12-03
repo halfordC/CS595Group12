@@ -27,4 +27,5 @@ private:
 	myKissGUI* sceneKissGUI;
 	int currentY;
 	int staticX;
+	const int startY = 70;
 };

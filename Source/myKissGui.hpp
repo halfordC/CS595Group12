@@ -128,6 +128,23 @@ typedef struct kiss_button {
 	kiss_window* wdw;
 } kiss_button;
 
+typedef struct kiss_tab {
+	int visible;
+	int focus;
+	SDL_Rect rect;
+	int textx;
+	int texty;
+	char text[KISS_MAX_LENGTH];
+	int active;
+	int prelight;
+	SDL_Color textcolor;
+	kiss_font font;
+	kiss_image normalimg;
+	kiss_image selectedimg;
+	kiss_image hoverimg;
+	kiss_window* wdw;
+} kiss_tab;
+
 typedef struct kiss_selectbutton {
 	int visible;
 	int focus;
@@ -137,6 +154,8 @@ typedef struct kiss_selectbutton {
 	kiss_image unselectedimg;
 	kiss_window* wdw;
 } kiss_selectbutton;
+
+
 
 typedef struct kiss_vscrollbar {
 	int visible;
@@ -307,6 +326,11 @@ public:
 		SDL_Event* event, int* draw);
 	int kiss_selectbutton_draw(kiss_selectbutton* selectbutton,
 		SDL_Renderer* renderer);
+	int myKissGUI::kiss_tab_new(kiss_tab* tab, kiss_window* wdw, char* text,
+		int x, int y);
+	int myKissGUI::kiss_tab_event(kiss_tab* tab,
+		SDL_Event* event, int* draw);
+	int myKissGUI::kiss_tab_draw(kiss_tab* tab, SDL_Renderer* renderer);
 	int kiss_vscrollbar_new(kiss_vscrollbar* vscrollbar, kiss_window* wdw,
 		int x, int y, int h);
 	void vnewpos(kiss_vscrollbar* vscrollbar, double step, int* draw);
@@ -346,7 +370,8 @@ public:
 	kiss_font kiss_textfont, kiss_buttonfont;
 	kiss_image kiss_normal, kiss_prelight, kiss_active, kiss_bar,
 		kiss_up, kiss_down, kiss_left, kiss_right, kiss_vslider,
-		kiss_hslider, kiss_selected, kiss_unselected, kiss_combo;
+		kiss_hslider, kiss_selected, kiss_unselected, kiss_combo,
+		kiss_tabSelected, kiss_tabHover, kiss_tabNormal;
 	int kiss_screen_width, kiss_screen_height;
 	int kiss_textfont_size = 15;
 	int kiss_buttonfont_size = 12;

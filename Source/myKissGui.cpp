@@ -598,6 +598,9 @@
 		r += kiss_image_new(&kiss_right, "kiss_right.png", a, renderer);
 		r += kiss_image_new(&kiss_combo, "kiss_combo.png", a, renderer);
 		r += kiss_image_new(&kiss_selected, "kiss_selected.png", a, renderer);
+		r += kiss_image_new(&kiss_tabSelected, "kiss_tabSelected.png", a, renderer);
+		r += kiss_image_new(&kiss_tabHover, "kiss_tabHover.png", a, renderer);
+		r += kiss_image_new(&kiss_tabNormal, "kiss_tab.png", a, renderer);
 		r += kiss_image_new(&kiss_unselected, "kiss_unselected.png", a,
 			renderer);
 		if (r) {
@@ -848,6 +851,95 @@
 		else
 			kiss_renderimage(renderer, selectbutton->unselectedimg,
 				selectbutton->rect.x, selectbutton->rect.y, NULL);
+		return 1;
+	}
+
+	
+	int myKissGUI::kiss_tab_new(kiss_tab* tab, kiss_window* wdw, char* text,
+		int x, int y)
+	{
+		if (!tab || !text) return -1;
+		if (tab->font.magic != KISS_MAGIC) tab->font = kiss_buttonfont;
+		if (tab->normalimg.magic != KISS_MAGIC)
+			tab->normalimg = kiss_tabNormal;
+		if (tab->selectedimg.magic != KISS_MAGIC)
+			tab->selectedimg = kiss_tabSelected;
+		if (tab->hoverimg.magic != KISS_MAGIC)
+			tab->hoverimg = kiss_tabHover;
+		kiss_makerect(&tab->rect, x, y, tab->normalimg.w,
+			tab->normalimg.h);
+		tab->textcolor = kiss_black;
+		kiss_string_copy(tab->text, KISS_MAX_LENGTH, text, NULL);
+		tab->textx = x + tab->normalimg.w / 2 -
+			kiss_textwidth(tab->font, text, NULL) / 2;
+		tab->texty = y + tab->normalimg.h / 2 -
+			tab->font.fontheight / 2;
+		tab->active = 0;
+		tab->prelight = 0;
+		tab->visible = 0;
+		tab->focus = 0;
+		tab->wdw = wdw;
+		return 0;
+	}
+	
+	int myKissGUI::kiss_tab_event(kiss_tab* tab,
+		SDL_Event* event, int* draw)
+	{
+		if (!tab || !tab->visible || !event) return 0;
+		if (event->type == SDL_WINDOWEVENT &&
+			event->window.event == SDL_WINDOWEVENT_EXPOSED)
+			*draw = 1;
+		if (!tab->focus && (!tab->wdw ||
+			(tab->wdw && !tab->wdw->focus)))
+			return 0;
+		if (event->type == SDL_MOUSEBUTTONDOWN &&
+			kiss_pointinrect(event->button.x, event->button.y,
+				&tab->rect)) {
+			tab->active = 1;
+			*draw = 1;
+		}
+		else if (event->type == SDL_MOUSEBUTTONUP &&
+			kiss_pointinrect(event->button.x, event->button.y,
+				&tab->rect) && tab->active) {
+			tab->active = 0;
+			*draw = 1;
+			return 1;
+		}
+		else if (event->type == SDL_MOUSEMOTION &&
+			kiss_pointinrect(event->motion.x, event->motion.y,
+				&tab->rect)) {
+			tab->prelight = 1;
+			*draw = 1;
+		}
+		else if (event->type == SDL_MOUSEMOTION &&
+			!kiss_pointinrect(event->motion.x, event->motion.y,
+				&tab->rect)) {
+			tab->prelight = 0;
+			*draw = 1;
+			if (tab->active) {
+				tab->active = 0;
+				return 1;
+			}
+		}
+		return 0;
+
+	}
+	
+	int myKissGUI::kiss_tab_draw(kiss_tab* tab, SDL_Renderer* renderer)
+	{
+		if (tab && tab->wdw) tab->visible = tab->wdw->visible;
+		if (!tab || !tab->visible || !renderer) return 0;
+		if (tab->active)
+			kiss_renderimage(renderer, tab->selectedimg, tab->rect.x,
+				tab->rect.y, NULL);
+		else if (tab->prelight && !tab->active)
+			kiss_renderimage(renderer, tab->hoverimg,
+				tab->rect.x, tab->rect.y, NULL);
+		else
+			kiss_renderimage(renderer, tab->normalimg, tab->rect.x,
+				tab->rect.y, NULL);
+		kiss_rendertext(renderer, tab->text, tab->textx, tab->texty,
+			tab->font, tab->textcolor);
 		return 1;
 	}
 

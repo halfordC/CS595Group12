@@ -17,12 +17,12 @@ public:
 	void render();
 	void cleanUp();
 	void selectMidiDropdownEvent(SDL_Event* e, MidiModule * myMidiModule);
-	void selectMidiParamEvent(SDL_Event* e);
-	void selectImageParamEvent(SDL_Event* e);
-	void typeFilePath(SDL_Event* e);
-	void midiLearnEvent(SDL_Event* e);
-	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
-	void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
+	//void selectMidiParamEvent(SDL_Event* e);
+	//void selectImageParamEvent(SDL_Event* e);
+	//void typeFilePath(SDL_Event* e);
+	//void midiLearnEvent(SDL_Event* e);
+	//void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
+	//void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
 	void addBindingEvent(SDL_Event* e);
 
 	std::filesystem::path selectedDirectory;
@@ -61,6 +61,8 @@ public:
 	kiss_entry filePathEntry;
 
 	Scene* sceneArray[15]; //max of 15 scenes. If we can can't make Horizontal scroll tabs, we'll just make 3. 
+	kiss_tab sceneTab[15];
+
 
 private:
 	SDL_Renderer* renderer;

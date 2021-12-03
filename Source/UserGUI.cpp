@@ -44,6 +44,8 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	Scene* firstScene = new Scene(kissGUI, &window);
 	sceneArray[0] = firstScene;
 
+	kissGUI->kiss_tab_new(&(sceneTab[0]), &window, "Scene 1", 50, 34);
+
 
 
 	//kissGUI->kiss_window_new(&bindings, &window, 1, 30, 60, 500, 300);
@@ -87,6 +89,7 @@ void UserGUI::render()
 	kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
 
 	sceneArray[sceneIndex]->render(renderer);
+	kissGUI->kiss_tab_draw(&(sceneTab[0]), renderer);
 	
 	//if (allBindings.size() > 0) kissGUI->kiss_window_draw(&allBindings.back(), renderer);
 	/*for (kiss_window w : allBindings) kissGUI->kiss_window_draw(&w, renderer);
@@ -156,6 +159,7 @@ void UserGUI::selectMidiDropdownEvent(SDL_Event* e, MidiModule* myMidiModule)
 	}
 }
 
+/*
 void UserGUI::selectMidiParamEvent(SDL_Event* e) 
 {
 
@@ -187,8 +191,9 @@ void UserGUI::selectMidiParamEvent(SDL_Event* e)
 		}
 	}
 }
+*/
 
-
+/*
 void UserGUI::selectImageParamEvent(SDL_Event* e) 
 {
 	int draw = 1;
@@ -200,8 +205,9 @@ void UserGUI::selectImageParamEvent(SDL_Event* e)
 		}
 	}
 }
+*/
 
-
+/*
 void UserGUI::typeFilePath(SDL_Event* e) 
 {
 
@@ -217,7 +223,8 @@ void UserGUI::typeFilePath(SDL_Event* e)
 	//if (kissGUI->kiss_entry_event(&filePathEntry, e, &draw)) { char* inputText = filePathEntry.text; }
 }
 
-/*
+
+
 void UserGUI::midiLearnEvent(SDL_Event* e) 
 {
 	int draw = 1;
@@ -233,87 +240,12 @@ void UserGUI::midiLearnEvent(SDL_Event* e)
 }
 */
 
-
+/*
 void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule) 
 {
 	int draw = 1;
 	bool isMidiType = false;
 	char newText[200] = "newNote";
-	/*if (kissGUI->kiss_button_event(&midiLearn, e, &draw))
-	{
-
-		if (!myMidiModule->isConnected()) 
-		{
-			return; //if no connected devices, we will be in a loop forever. 
-		}
-		memset(noteEntry.text, 0, 200); //clear char array
-		strcat(noteEntry.text, "newNote"); //fill char array with new note value
-		while (!isMidiType) 
-		{
-			if (myMidiModule->hasNewMidiMessage())
-			{
-				std::vector<juce::MidiMessage> inBuffer = myMidiModule->getMidiBuffer();
-
-				for (int i = 0; i < inBuffer.size(); i++)
-				{
-					//std::cout << "message Recieved in Button: " << myMidiModule->printMessage(inBuffer[i]) << std::endl;
-
-					//this is kinda gross, sorry
-					switch(listenFilter)
-					{
-					case 0: //Note on
-						if (inBuffer[i].isNoteOn()) 
-						{
-							isMidiType = true;
-							memset(noteEntry.text, 0, 200); //clear char array
-
-							string noteString = juce::MidiMessage::getMidiNoteName(inBuffer[i].getNoteNumber(), true, true, 3).toStdString();
-							const char* newNote = noteString.c_str();
-							strcat(noteEntry.text, newNote); //fill char array with new note value
-
-							//Also, add this note to the translator app for the selected image param
-						}
-
-						break;
-
-					case 1: //Note off
-						if (inBuffer[i].isNoteOff())
-						{
-							isMidiType = true;
-							memset(noteEntry.text, 0, 200); //clear char array
-							string noteString = juce::MidiMessage::getMidiNoteName(inBuffer[i].getNoteNumber(), true, true, 3).toStdString();
-							const char* newNote = noteString.c_str();
-							strcat(noteEntry.text, newNote); //fill char array with new note value
-
-							//Also, add this note to the translator app for the selected image param
-						}
-
-						break;
-
-					case 2: //CC
-						if (inBuffer[i].isController())
-						{
-							isMidiType = true;
-							memset(noteEntry.text, 0, 200); //clear char array
-							string CCstr = "CC " + std::to_string(inBuffer[i].getControllerNumber());
-							const char* newCC = CCstr.c_str(); //really long function to get note number / letter
-							strcat(noteEntry.text, newCC); //fill char array with new note value
-
-							//Also, add this note to the translator app for the selected image param
-						}
-
-						break;
-
-					}
-
-				}
-				myMidiModule->messagesParsed(); //this clears the flag, and waits for a new message. 
-
-			}
-		}
-		
-
-	}*/
 	for (int j = 0; j < midiLearnButtons.size(); j++)
 	{
 		if (kissGUI->kiss_button_event(&midiLearnButtons.at(j), e, &draw))
@@ -393,8 +325,12 @@ void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 		}
 	}
 
+
 }
 
+*/
+
+/*
 void UserGUI::browseEvent(SDL_Event* e, RenderWindow myRenderWindow) 
 {
 	int draw = 1;
@@ -407,6 +343,7 @@ void UserGUI::browseEvent(SDL_Event* e, RenderWindow myRenderWindow)
 		}
 	}
 }
+*/
 
 void UserGUI::addBindingEvent(SDL_Event* e)
 {
@@ -414,40 +351,6 @@ void UserGUI::addBindingEvent(SDL_Event* e)
 	if (kissGUI->kiss_button_event(&addBinding, e, &draw))
 	{
 		sceneArray[sceneIndex]->addImg();
-		/*
-		kissGUI->fillMidiParam(&midiParamList);
-		kissGUI->fillImageParam(&imageParamList);
-		int loc = (allBindings.size() * 90) + 70;
-		kissGUI->kiss_window_new(&binding, &bindings, 1, 40, loc, 480, 90);
-
-		kissGUI->kiss_combobox_new(&imgParam, &binding, "Image Param", &imageParamList, 45, loc + 50, 120, 100);
-		imgParam.visible = 1;
-
-		kissGUI->kiss_combobox_new(&midiParam, &binding, "Midi Param", &midiParamList, 180, loc+50, 110, 100);
-		midiParam.visible = 1;
-
-		kissGUI->kiss_entry_new(&noteEntry, &binding, 1, "Note/CC", 310, loc+50, 100);
-		noteEntry.visible = 1;
 		
-		kissGUI->kiss_entry_new(&filePathEntry, &binding, 1, "FilePath", 45, loc+10, 400);
-		filePathEntry.visible = 1;
-
-		kissGUI->kiss_button_new(&browsePath, &binding, "Browse", 450, loc+15);
-		browsePath.visible = 1;
-
-		kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", 420, loc+55);
-		midiLearn.visible = 1;
-
-		binding.visible = 1;
-		//bindings.focus = 0;
-		//binding.focus = 1;
-		imgParams.push_back(imgParam);
-		midiParams.push_back(midiParam);
-		noteEntrys.push_back(noteEntry);
-		filePathEntrys.push_back(filePathEntry);
-		browsePathButtons.push_back(browsePath);
-		midiLearnButtons.push_back(midiLearn);
-		allBindings.push_back(binding);
-		*/
 	}
 }

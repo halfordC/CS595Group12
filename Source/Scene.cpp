@@ -50,8 +50,8 @@ void Scene::render(SDL_Renderer* renderer)
 	
 	sceneKissGUI->kiss_window_draw(&sceneWindow, renderer);
 	
-	for (int i = 0; i < addImgParamIndex; i++) 
+	for (int i = 0; i <= addImgParamIndex; i++) 
 	{
-		imgParArray[i]->render(renderer);
+		imgParArray[i]->render(staticX, (startY +i*90), renderer);
 	}
 }
