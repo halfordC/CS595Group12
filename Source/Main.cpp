@@ -6,10 +6,11 @@
 //#include <unistd.h>
 #include <filesystem>
 
-#include "kiss_sdl.h"
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
 #include "midiModule.h"
+#include "UserGUI.hpp"
+#include "myKissGui.hpp"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
@@ -17,32 +18,14 @@ using std::endl; using std::string;
 uint8_t numDevices = 0;
 bool programRunning = true;
 
+//keep this global, so other libraries can call it with extern. 
+
+
 
 int main(int argc, char* args[])
 {
 
-	//init Midi Module, get midi input
 	MidiModule* myMidiModule = new MidiModule();
-	
-	std::vector<std::string> midiInputDeviceNames;
-
-	std::cout << "Which of these devices would you like to connect to?" << std::endl;
-	myMidiModule->getMidiDeviceNames(&midiInputDeviceNames);
-
-	for (auto i = midiInputDeviceNames.begin(); i != midiInputDeviceNames.end(); i++)
-	{
-		std::cout << *i << std::endl;
-	}
-
-	if(midiInputDeviceNames.size()>0)
-	{
-		std::string inputRequest;
-		std::cin >> inputRequest;
-		myMidiModule->connectToMidiDevice(inputRequest);
-	}
-	
-
-
 	///Initialze SDL stuff
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
 	{
@@ -56,8 +39,7 @@ int main(int argc, char* args[])
 
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
-	RenderWindow sceneViewWindow2("Scene View Window");
-	sceneViewWindow2.enterViewMode();
+	UserGUI gui("GUI Test", myMidiModule);
 	//sceneViewWindow.openSceneFolder();
 
 	SDL_Event event;
@@ -69,10 +51,15 @@ int main(int argc, char* args[])
 	/* Start paths to simulate directory changing.*/
 	int secondCounter = 0;
 	bool one = true;
-	
+
+	//myMidiModule->connectToMidiDevice("Launchkey Mini MK3");
+
+
+
+
 	std::filesystem::path dir1 = std::filesystem::current_path();
 	std::filesystem::path dir2 = std::filesystem::current_path();
-	
+
 #ifdef __APPLE__
 	dir1 += "/scenes/scene1";
 	dir2 += "/scenes/scene2";
@@ -87,17 +74,23 @@ int main(int argc, char* args[])
 	{
 		// Do Events
 		currentTime = SDL_GetTicks();
-		
-		while ( SDL_PollEvent(&event) != 0 )
+
+		while (SDL_PollEvent(&event) != 0)
 		{
-      
 			//GUI callback events go here.
 			gui.selectMidiDropdownEvent(&event, myMidiModule);
+			//gui.selectMidiParamEvent(&event);
+			//gui.selectImageParamEvent(&event);
+			//gui.typeFilePath(&event);
+			//gui.midiLearnEvent(&event);
+			//gui.midiListenButton(&event, myMidiModule);
+			//gui.browseEvent(&event, sceneViewWindow);
 			gui.addBindingEvent(&event);
 			gui.guiEvent(&event, myMidiModule, sceneViewWindow);
 			gui.addSceneEvent(&event);
 			gui.sceneTabEvent(&event);
 			gui.scrollEvent(&event);
+
 			switch (event.type)
 			{
 			case SDL_QUIT:
@@ -116,12 +109,15 @@ int main(int argc, char* args[])
 				break;
 			}
 		}
+		int draw = 1;
+		gui.kissGUI->kiss_combobox_event((&gui.midiDeviceDrop), NULL, &draw); //we probably need to do this to for the other dropdowns, but I don't know why, or remember how
 
 		/* Do updates */
 		/* Do renders */
 		if (((float)(currentTime - lastTime)) >= (16.67f * fpsCounter))
 		{
 			sceneViewWindow.render();
+			gui.render();
 			fpsCounter++;
 			if (myMidiModule->hasNewMidiMessage())
 			{
@@ -136,6 +132,7 @@ int main(int argc, char* args[])
 
 			}
 		}
+
 		upsCounter++;
 		if (currentTime - lastTime >= 1000)
 		{
@@ -167,13 +164,11 @@ int main(int argc, char* args[])
 	myMidiModule->~MidiModule();
 	SDL_Quit();
 
-		/* End Program Loop */
-	
+	/* End Program Loop */
+
 	myMidiModule->~MidiModule();
 	sceneViewWindow.cleanUp();
-	sceneViewWindow2.cleanUp();
-	
-	
+	gui.cleanUp();
 
 	return 0;
 
