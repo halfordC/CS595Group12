@@ -24,7 +24,8 @@ bool programRunning = true;
 
 int main(int argc, char* args[])
 {
-
+	Translator* t = new Translator();
+	
 	MidiModule* myMidiModule = new MidiModule();
 	///Initialze SDL stuff
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
@@ -39,7 +40,7 @@ int main(int argc, char* args[])
 
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
-	UserGUI gui("GUI Test", myMidiModule);
+	UserGUI gui("GUI Test", myMidiModule, t);
 	//sceneViewWindow.openSceneFolder();
 
 	SDL_Event event;
@@ -86,7 +87,7 @@ int main(int argc, char* args[])
 			//gui.midiListenButton(&event, myMidiModule);
 			//gui.browseEvent(&event, sceneViewWindow);
 			gui.addBindingEvent(&event);
-			gui.guiEvent(&event, myMidiModule, sceneViewWindow);
+			gui.guiEvent(&event, myMidiModule, sceneViewWindow, t);
 			gui.addSceneEvent(&event);
 			gui.sceneTabEvent(&event);
 			gui.scrollEvent(&event);

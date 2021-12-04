@@ -9,6 +9,8 @@
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
 
+#pragma once
+
 class Translator
 {
 public:

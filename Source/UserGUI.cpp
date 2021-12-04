@@ -19,7 +19,6 @@ using std::endl; using std::string;
 
 UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule, Translator* t) : renderer(NULL)
 {
-	translator = t;
 	kissGUI = new myKissGUI();
 	kissGUI->kiss_array_new(&objects );
 	renderer = kissGUI->kiss_init(p_title, &objects, 640, 480);
