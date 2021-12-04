@@ -23,11 +23,12 @@ public:
 	imgParameters* imgParArray[15]; // setting a hard limit of 15 images for now. Might change later.
 	kiss_button addImgButton;
 	kiss_window sceneWindow;
+	int currentY;
 private:
 	int imgParamIndex; //should not go over 15. 
 	int addImgParamIndex;
 	myKissGUI* sceneKissGUI;
-	int currentY;
+	
 	int staticX;
 	const int startY = 70;
 	int displayIndex; //the first image item to be rendered in the scene window

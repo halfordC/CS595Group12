@@ -210,10 +210,12 @@ void UserGUI::scrollEvent(SDL_Event* e)
 	int draw = 1;
 	if (kissGUI->kiss_upbutton_event(&scrollUp, e, &draw)) 
 	{
-		sceneArray[sceneIndex]->sceneScroll(e, -1);
+		sceneArray[sceneIndex]->sceneScroll(e, 1);
+		sceneArray[sceneIndex]->currentY += 90;
 	}
 	if (kissGUI->kiss_downbutton_event(&scrollDown, e, &draw))
 	{
-		sceneArray[sceneIndex]->sceneScroll(e, 1);
+		sceneArray[sceneIndex]->sceneScroll(e, -1);
+		sceneArray[sceneIndex]->currentY -= 90;
 	}
 }

@@ -43,8 +43,6 @@ void Scene::addImg()
 		imgParArray[addImgParamIndex] = nextIMPar;
 		currentY += 90;
 		addImgParamIndex++;
-
-		displayIndex++;
 	}
 }
 
@@ -54,17 +52,24 @@ void Scene::render(SDL_Renderer* renderer)
 	
 	sceneKissGUI->kiss_window_draw(&sceneWindow, renderer);
 	
-	for (int i = addImgParamIndex - 1; i >= 0; i--) 
+	for (int i = displayIndex +2; i >= displayIndex; i--) 
 	{
-		imgParArray[i]->render(0, renderer);
+		if(i<addImgParamIndex)
+		{
+			imgParArray[i]->render(0, renderer);
+		}
 	}
 }
 
 void Scene::sceneScroll(SDL_Event* e, int direction)
 {
-	for (int i = addImgParamIndex - 1; i >= 0; i--)
-	{
-		imgParArray[i]->imgScroll(e, direction);
+	if(displayIndex-direction >= 0){
+
+		for (int i = addImgParamIndex - 1; i >= 0; i--)
+		{
+			imgParArray[i]->imgScroll(e, direction);
+		}
+		displayIndex -= direction;
 	}
 }
 
