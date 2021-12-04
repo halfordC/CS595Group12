@@ -20,7 +20,7 @@ using std::vector;
 //namespace fs = std::filesystem;
 	Translator::Translator() //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
 	{
-		vector<std::string> txtbindings;
+		vector<string> txtbindings;
 		vector<string> bindingtokens;
 
 		string str;
@@ -34,7 +34,10 @@ using std::vector;
 		infile.close(); //saves lines in txtbindings
 
 		string p = "";
+		int sx;
+		int sy;
 		int trig;
+		int mTyp;
 		int tar;
 		int typ;
 		int amnt;
@@ -51,17 +54,21 @@ using std::vector;
 			}
 
 			//Check if there are any missing values and reject any incomplete bindings
-			if (bindingtokens.size() == 12)
+			if (bindingtokens.size() == 14)
 			{
 				//grab every other value since even ones are the 
-				for (int i = 0; i < 6; i++)
+				for (int i = 0; i < 7; i++)
 				{
 					if (bindingtokens[(int)i * 2] == "Path")
 						p = bindingtokens[(int)i + 1];
+					else if (bindingtokens[(int)i * 2] == "StartX")
+						sx = stoi(bindingtokens[(int)i + 1]);
+					else if (bindingtokens[(int)i * 2] == "StartY")
+						sy = stoi(bindingtokens[(int)i + 1]);
 					else if (bindingtokens[(int)i * 2] == "Trigger")
 						trig = stoi(bindingtokens[(int)i + 1]);
 					else if (bindingtokens[(int)i * 2] == "MessageType")
-						typ = stoi(bindingtokens[(int)i + 1]);
+						mTyp = stoi(bindingtokens[(int)i + 1]);
 					else if (bindingtokens[(int)i * 2] == "Target")
 						tar = stoi(bindingtokens[(int)i + 1]);
 					else if (bindingtokens[(int)i * 2] == "ChangeType")
@@ -71,11 +78,11 @@ using std::vector;
 				}
 			}
 			else
-				cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
+				cout << "Incorrect Bindings for: " << txtbindings[0] << endl;
 
-			if (p != "" && trig != NULL && typ != NULL && tar != NULL && typ != NULL && amnt != NULL)
+			if (p != "" && trig != NULL && sx != NULL && sy != NULL && mTyp != NULL && tar != NULL && typ != NULL && amnt != NULL)
 			{
-				Binding temp(bindingtokens[1], stoi(bindingtokens[3]), stoi(bindingtokens[5]), stoi(bindingtokens[7]), stoi(bindingtokens[9]), stof(bindingtokens[11]));
+				Binding temp(p, sx, sy, trig, mTyp, tar, typ, amnt);
 				bindings.push_back(temp);
 			}
 			else
