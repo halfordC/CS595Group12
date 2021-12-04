@@ -118,7 +118,7 @@ void UserGUI::cleanUp()
 void UserGUI::guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow)
 {
 	
-		sceneArray[sceneIndex]->sceneEvent(e, myMidiModule, myRenderWindow);
+	sceneArray[sceneIndex]->sceneEvent(e, myMidiModule, myRenderWindow);
 }
 
 
@@ -205,20 +205,15 @@ void UserGUI::sceneTabEvent(SDL_Event* e)
 	}
 }
 
-void UserGUI::scrollUpEvent(SDL_Event* e)
+void UserGUI::scrollEvent(SDL_Event* e)
 {
 	int draw = 1;
 	if (kissGUI->kiss_upbutton_event(&scrollUp, e, &draw)) 
 	{
-
+		sceneArray[sceneIndex]->sceneScroll(e, -1);
 	}
-}
-
-void UserGUI::scrollDownEvent(SDL_Event* e)
-{
-	int draw = 1;
-	if (kissGUI->kiss_downbutton_event(&scrollDown, e, &draw)) 
+	if (kissGUI->kiss_downbutton_event(&scrollDown, e, &draw))
 	{
-
+		sceneArray[sceneIndex]->sceneScroll(e, 1);
 	}
 }

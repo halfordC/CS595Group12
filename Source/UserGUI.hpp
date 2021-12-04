@@ -22,8 +22,7 @@ public:
 
 	void addSceneEvent(SDL_Event* e);
 	void sceneTabEvent(SDL_Event* e);
-	void scrollUpEvent(SDL_Event* e);
-	void scrollDownEvent(SDL_Event* e);
+	void scrollEvent(SDL_Event* e);
 
 
 	std::filesystem::path selectedDirectory;

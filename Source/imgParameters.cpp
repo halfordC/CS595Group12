@@ -16,7 +16,7 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-imgParameters::imgParameters(int x, int y, myKissGUI* kissGUI, kiss_window *inWindow)
+imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow)
 {
 	imgKissGUI = kissGUI;
 	kissGUI->fillMidiParam(&midiParamList);
@@ -27,12 +27,13 @@ imgParameters::imgParameters(int x, int y, myKissGUI* kissGUI, kiss_window *inWi
 	kissGUI->kiss_entry_new(&noteEntry, &binding, 1, "Note/CC", binding.rect.x + 270, binding.rect.y + 50, 100);
 	kissGUI->kiss_entry_new(&filePathEntry, &binding, 1, "FilePath", binding.rect.x + 5, binding.rect.y + 10, 400);
 	kissGUI->kiss_button_new(&browsePath, &binding, "Browse", binding.rect.x + 410, binding.rect.y + 15);
-	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 380, binding.rect.y + 55);
+	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 370, binding.rect.y + 55);
+	kissGUI->kiss_label_new(&IDNum, &binding, "#", binding.rect.x + 440, binding.rect.y + 57);
 
 	binding.visible = 1;
 }
 
-void imgParameters::render(int x, int y, SDL_Renderer* renderer)
+void imgParameters::render(int newY, SDL_Renderer* renderer)
 {
 	//SDL_RenderClear(renderer);
 
@@ -43,8 +44,14 @@ void imgParameters::render(int x, int y, SDL_Renderer* renderer)
 	imgKissGUI->kiss_combobox_draw(&midiParam, renderer);
 	imgKissGUI->kiss_entry_draw(&noteEntry, renderer);
 	imgKissGUI->kiss_entry_draw(&filePathEntry, renderer);
+	imgKissGUI->kiss_label_draw(&IDNum, renderer);
 
 	//SDL_RenderPresent(renderer);
+}
+
+void imgParameters::imgScroll(SDL_Event* e, int direction)//shift should be the same distance both ways so direction will just be a negative for up and a positive for down
+{
+
 }
 
 void imgParameters::cleanUp()

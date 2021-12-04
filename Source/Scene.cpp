@@ -25,13 +25,13 @@ Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow)
 	addImgParamIndex = 0; //this is the number of imgParam objects in our ImgParam array.
 	staticX = 40;
 	currentY = 70;
-	imgParameters *firstIMPar = new imgParameters(staticX, currentY, kissGUI, &sceneWindow);
+	imgParameters *firstIMPar = new imgParameters(staticX, currentY, addImgParamIndex + 1, kissGUI, &sceneWindow);
 	imgParArray[addImgParamIndex] = firstIMPar;
 	imgParamIndex = 0;
 	currentY += 90;
 	addImgParamIndex = 1;
 
-
+	displayIndex = 0;
 }
 
 void Scene::addImg()
@@ -39,10 +39,12 @@ void Scene::addImg()
 	if (addImgParamIndex < 15)
 	{
 		 
-		imgParameters* nextIMPar = new imgParameters(40, currentY, sceneKissGUI, &sceneWindow);
+		imgParameters* nextIMPar = new imgParameters(40, currentY, addImgParamIndex + 1, sceneKissGUI, &sceneWindow);
 		imgParArray[addImgParamIndex] = nextIMPar;
 		currentY += 90;
 		addImgParamIndex++;
+
+		displayIndex++;
 	}
 }
 
@@ -54,7 +56,15 @@ void Scene::render(SDL_Renderer* renderer)
 	
 	for (int i = addImgParamIndex - 1; i >= 0; i--) 
 	{
-		imgParArray[i]->render(0, 0, renderer);
+		imgParArray[i]->render(0, renderer);
+	}
+}
+
+void Scene::sceneScroll(SDL_Event* e, int direction)
+{
+	for (int i = addImgParamIndex - 1; i >= 0; i--)
+	{
+		imgParArray[i]->imgScroll(e, direction);
 	}
 }
 
