@@ -51,7 +51,30 @@ void imgParameters::render(int newY, SDL_Renderer* renderer)
 
 void imgParameters::imgScroll(SDL_Event* e, int direction)//shift should be the same distance both ways so direction will just be a negative for up and a positive for down
 {
+	binding.rect.y += (direction * 90);
+	browsePath.rect.y += (direction * 90);
+	browsePath.texty += (direction * 90);
+	midiLearn.rect.y += (direction * 90);
+	midiLearn.texty += (direction * 90);
+	/*imgParam.textbox.rect.y += (direction * 90);
+	imgParam.vscrollbar.downrect.y += (direction * 90);
+	imgParam.vscrollbar.sliderrect.y += (direction * 90);
+	imgParam.vscrollbar.uprect.y += (direction * 90);
+	imgParam.entry.rect.y += (direction * 90);*/
 
+	/*int line = imgParam.textbox.selectedline;
+	if (line) {
+		void** p = imgParam.textbox.array->data + line;
+		void* s = *p;
+		char* selection = (char*)s;
+	}
+	imgKissGUI->kiss_combobox_new(&imgParam, &binding, selection, &imageParamList, binding.rect.x + 5, binding.rect.y + 50, 120, 100);
+	imgParam.textbox.selectedline = line;*/
+
+	noteEntry.rect.y += (direction * 90);
+	noteEntry.texty += (direction * 90);
+	filePathEntry.rect.y += (direction * 90);
+	filePathEntry.texty += (direction * 90);
 }
 
 void imgParameters::cleanUp()
