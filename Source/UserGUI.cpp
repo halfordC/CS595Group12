@@ -7,16 +7,13 @@
 
 
 #include "UserGUI.hpp"
-//#include "kiss_sdl.h"
 #include "myKissGui.hpp"
 #include "midiModule.h"
 #include "RenderWindow.hpp"
+#include "Scene.h"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
-
-
-
 
 
 UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
@@ -30,27 +27,42 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 
 	
 	kissGUI->fillConnectedMidiDevices(&connectedMidiDevices, myMidiModule); // fill midi device dropdown
-	kissGUI->fillMidiParam(&midiParamList); //fill midi param dropdown
 
-	kissGUI->fillImageParam(&imageParamList);
-
-	
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
 	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 480);
 
+
+	//We want to instantite the first scene after we instantiate the window. 
+	sceneIndex = 0;
+	addSceneIndex = 0;
+	Scene* firstScene = new Scene(kissGUI, &window);
+	sceneArray[addSceneIndex] = firstScene;
+	addSceneIndex++;
+
+
+
+	currentSceneTabX = 50;
+	staticSceneTabY = 34;
+
+	addSceneTabIndex = 0;
+	currentSceneTab = 0;
+	kissGUI->kiss_tab_new(&(sceneTab[addSceneTabIndex]), &window, "Scene 1", currentSceneTabX, staticSceneTabY);
+	addSceneTabIndex = 1;
+
+	currentSceneTabX += 75;
+	kissGUI->kiss_tab_new(&plusTab, &window, "+", currentSceneTabX, staticSceneTabY);
+
+
 	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 490,20,120,100);
-	kissGUI->kiss_combobox_new(&imgParam, &window, "Image Param", &imageParamList, 40, 140, 120, 100);
-	kissGUI->kiss_combobox_new(&midiParam, &window, "Midi Param", &midiParamList, 180, 140, 110, 100);
-	kissGUI->kiss_entry_new(&noteEntry, &window,1, "Note/CC", 310, 140, 100);
-	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 220);
+
+	kissGUI->kiss_button_new(&addBinding, &window, "+", 40, 370);
 
 	kissGUI->kiss_button_new(&startButton, &window, "Start", 550, 430);
 
-	kissGUI->kiss_entry_new(&filePathEntry, &window, 1, "FilePath", 40, 100, 450);
 
-	kissGUI->kiss_button_new(&browsePath, &window, "Browse", 500, 105);
+	kissGUI->kiss_upbutton_new(&scrollUp, &window, 530, 65);
+	kissGUI->kiss_downbutton_new(&scrollDown, &window, 530, 340);
 
-	kissGUI->kiss_button_new(&midiLearn, &window, "Listen", 420, 146);
 
 	label.textcolor.r = 255;
 	window.visible = 1;
@@ -66,15 +78,34 @@ void UserGUI::render()
 	SDL_RenderClear(renderer);
 
 	kissGUI->kiss_window_draw(&window, renderer);
-	kissGUI->kiss_button_draw(&browsePath, renderer);
+
+	kissGUI->kiss_window_draw(&(sceneArray[sceneIndex]->sceneWindow), renderer);
+
+  
+  kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
+  kissGUI->kiss_upbutton_draw(&scrollUp, renderer);
+  kissGUI->kiss_downbutton_draw(&scrollDown, renderer);
+
+	//For loop here, render all scene tabs that are not the current scene tab / current scene
+	for (int i = 0; i < addSceneTabIndex; i++) 
+	{
+		if(addSceneTabIndex!=currentSceneTab)
+		{
+			kissGUI->kiss_tab_draw(&(sceneTab[i]), renderer);
+		}		
+	}
+
+
+	kissGUI->kiss_tab_draw(&plusTab, renderer);
+	sceneArray[sceneIndex]->render(renderer);
+	kissGUI->kiss_tab_draw(&(sceneTab[currentSceneTab]), renderer);
+	
 	kissGUI->kiss_button_draw(&startButton, renderer);
-	kissGUI->kiss_button_draw(&midiLearn, renderer);
-	kissGUI->kiss_button_draw(&addBinding, renderer); //If it's a button, draw it first.
+
+	
 	kissGUI->kiss_combobox_draw(&midiDeviceDrop, renderer);
-	kissGUI->kiss_combobox_draw(&imgParam, renderer);
-	kissGUI->kiss_combobox_draw(&midiParam, renderer);
-	kissGUI->kiss_entry_draw(&noteEntry, renderer);
-	kissGUI->kiss_entry_draw(&filePathEntry, renderer);
+
+
 
 	SDL_RenderPresent(renderer);
 }
@@ -82,6 +113,12 @@ void UserGUI::render()
 void UserGUI::cleanUp()
 {
 	SDL_DestroyRenderer(renderer);
+}
+
+void UserGUI::guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow)
+{
+	
+	sceneArray[sceneIndex]->sceneEvent(e, myMidiModule, myRenderWindow);
 }
 
 
@@ -112,158 +149,73 @@ void UserGUI::selectMidiDropdownEvent(SDL_Event* e, MidiModule* myMidiModule)
 	}
 }
 
-void UserGUI::selectMidiParamEvent(SDL_Event* e) 
-{
-
-	int draw = 1;
-	if (kissGUI->kiss_combobox_event(&midiParam,e,&draw)) 
-	{
-		//An item has been clicked! but which one? 
-		//normally, we would use bsearch, but we can't really do that in c++ with how this is setup.
-		//so we must mannualy search through and find the entry. 
-		int length = midiParam.textbox.array->length;
-		for (int i = 0; i< length; i++) 
-		{
-			void** p = midiParam.textbox.array->data+i; //data is of type void pointer pointer
-			void* s = *p; //derefference p, and get S. 
-			char* contents = (char*)s; //contents is the char* string stored at data location i.;
-
-			//now we need to compare this string with the string that was clicked. where does that string come from?
-			bool result = kissGUI->dropBoxcompare(midiParam.entry, contents);
-			if (result) 
-			{
-				//We are at the text box entry index of what we clicked on, do the clicked action. 
-				//so it is important we know what is here. 
-
-				listenFilter = i;
-			}
-		}
-	}
-}
-
-
-void UserGUI::selectImageParamEvent(SDL_Event* e) 
+void UserGUI::addBindingEvent(SDL_Event* e)
 {
 	int draw = 1;
-	if(kissGUI->kiss_combobox_event(&imgParam, e, &draw))
+	if (kissGUI->kiss_button_event(&addBinding, e, &draw))
 	{
-		//do stuff like the previous box up there
-	}
-}
-
-
-void UserGUI::typeFilePath(SDL_Event* e) 
-{
-
-	int draw = 1;
-	if (kissGUI->kiss_entry_event(&filePathEntry, e, &draw)) 
-	{
-		char* inputText = filePathEntry.text;
-		//do stuff with inputText
-
-	}
-}
-
-void UserGUI::midiLearnEvent(SDL_Event* e) 
-{
-	int draw = 1;
-	if (kissGUI->kiss_entry_event(&noteEntry, e, &draw)) 
-	{
-		char* inputText = noteEntry.text;
-		//check if the note is infact a note. 
-
-	}
-}
-
-void UserGUI::midiListenButton(SDL_Event* e, MidiModule* myMidiModule) 
-{
-	int draw = 1;
-	bool isMidiType = false;
-	char newText[200] = "newNote";
-	if (kissGUI->kiss_button_event(&midiLearn, e, &draw))
-	{
-
-		if (!myMidiModule->isConnected()) 
-		{
-			return; //if no connected devices, we will be in a loop forever. 
-		}
-		memset(noteEntry.text, 0, 200); //clear char array
-		strcat(noteEntry.text, "newNote"); //fill char array with new note value
-		while (!isMidiType) 
-		{
-			if (myMidiModule->hasNewMidiMessage())
-			{
-				std::vector<juce::MidiMessage> inBuffer = myMidiModule->getMidiBuffer();
-
-				for (int i = 0; i < inBuffer.size(); i++)
-				{
-					//std::cout << "message Recieved in Button: " << myMidiModule->printMessage(inBuffer[i]) << std::endl;
-
-					//this is kinda gross, sorry
-					switch(listenFilter)
-					{
-					case 0: //Note on
-						if (inBuffer[i].isNoteOn()) 
-						{
-							isMidiType = true;
-							memset(noteEntry.text, 0, 200); //clear char array
-
-							string noteString = juce::MidiMessage::getMidiNoteName(inBuffer[i].getNoteNumber(), true, true, 3).toStdString();
-							const char* newNote = noteString.c_str();
-							strcat(noteEntry.text, newNote); //fill char array with new note value
-
-							//Also, add this note to the translator app for the selected image param
-						}
-
-						break;
-
-					case 1: //Note off
-						if (inBuffer[i].isNoteOff())
-						{
-							isMidiType = true;
-							memset(noteEntry.text, 0, 200); //clear char array
-							string noteString = juce::MidiMessage::getMidiNoteName(inBuffer[i].getNoteNumber(), true, true, 3).toStdString();
-							const char* newNote = noteString.c_str();
-							strcat(noteEntry.text, newNote); //fill char array with new note value
-
-							//Also, add this note to the translator app for the selected image param
-						}
-
-						break;
-
-					case 2: //CC
-						if (inBuffer[i].isController())
-						{
-							isMidiType = true;
-							memset(noteEntry.text, 0, 200); //clear char array
-							string CCstr = "CC " + std::to_string(inBuffer[i].getControllerNumber());
-							const char* newCC = CCstr.c_str(); //really long function to get note number / letter
-							strcat(noteEntry.text, newCC); //fill char array with new note value
-
-							//Also, add this note to the translator app for the selected image param
-						}
-
-						break;
-
-					}
-
-				}
-				myMidiModule->messagesParsed(); //this clears the flag, and waits for a new message. 
-
-			}
-		}
+		sceneArray[sceneIndex]->addImg();
 		
+	}
+}
 
+void UserGUI::addSceneEvent(SDL_Event* e) 
+{
+	int draw = 1;
+	if (kissGUI->kiss_tab_event(&plusTab, e, &draw)) 
+	{
+		//first Add the scene
+		if(addSceneIndex < 15 && addSceneTabIndex < 5) // eventually, more than 5 scenes will make new scroll tabs appear
+		{
+			Scene* nextScene = new Scene(kissGUI, &window);
+			sceneArray[addSceneIndex] = nextScene;
+			addSceneIndex++;
+			//then add the scene tab
+
+
+			char sceneNumber = addSceneIndex + 48; //turn the number into an ascii character
+			char newScene[8] = { 'S', 'c', 'e', 'n','e', ' ', sceneNumber };
+
+
+			kissGUI->kiss_tab_new(&(sceneTab[addSceneTabIndex]), &window, newScene, currentSceneTabX, staticSceneTabY);
+			addSceneTabIndex++;
+
+			int textXOffset = plusTab.textx - currentSceneTabX;
+			currentSceneTabX += 75; 
+			plusTab.rect.x = currentSceneTabX;
+			plusTab.textx = currentSceneTabX+textXOffset;
+
+		}
 	}
 
 }
 
-void UserGUI::browseEvent(SDL_Event* e, RenderWindow myRenderWindow) 
+
+void UserGUI::sceneTabEvent(SDL_Event* e)
 {
 	int draw = 1;
-	if (kissGUI->kiss_button_event(&browsePath, e, &draw)) 
+	for (int i = 0; i < addSceneTabIndex; i++) 
 	{
-		myRenderWindow.openSceneFolder();
+		if (kissGUI->kiss_tab_event(&(sceneTab[i]), e, &draw)) 
+		{
+			//changing the active scene to the one clicked. 
+			currentSceneTab = i;
+			sceneIndex = i;
+		}
 	}
+}
 
+void UserGUI::scrollEvent(SDL_Event* e)
+{
+	int draw = 1;
+	if (kissGUI->kiss_upbutton_event(&scrollUp, e, &draw)) 
+	{
+		sceneArray[sceneIndex]->sceneScroll(e, 1);
+		sceneArray[sceneIndex]->currentY += 90;
+	}
+	if (kissGUI->kiss_downbutton_event(&scrollDown, e, &draw))
+	{
+		sceneArray[sceneIndex]->sceneScroll(e, -1);
+		sceneArray[sceneIndex]->currentY -= 90;
+	}
 }

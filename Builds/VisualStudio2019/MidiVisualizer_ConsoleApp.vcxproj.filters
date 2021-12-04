@@ -927,6 +927,12 @@
     <ClCompile Include="..\..\Source\myKissGui.cpp">
       <Filter>MidiVisualizer\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\imgParameters.cpp">
+      <Filter>MidiVisualizer\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Scene.cpp">
+      <Filter>MidiVisualizer\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
@@ -1860,6 +1866,12 @@
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\myKissGui.hpp">
+      <Filter>MidiVisualizer\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\imgParameters.hpp">
+      <Filter>MidiVisualizer\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Scene.h">
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
   </ItemGroup>

@@ -90,6 +90,14 @@ int main(int argc, char* args[])
 		
 		while ( SDL_PollEvent(&event) != 0 )
 		{
+      
+			//GUI callback events go here.
+			gui.selectMidiDropdownEvent(&event, myMidiModule);
+			gui.addBindingEvent(&event);
+			gui.guiEvent(&event, myMidiModule, sceneViewWindow);
+			gui.addSceneEvent(&event);
+			gui.sceneTabEvent(&event);
+			gui.scrollEvent(&event);
 			switch (event.type)
 			{
 			case SDL_QUIT:
