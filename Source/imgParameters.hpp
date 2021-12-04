@@ -13,7 +13,7 @@
 class imgParameters
 {
 public:
-	imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow);
+	imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum);
 
 	void render(int newY, SDL_Renderer* renderer);//Alternatively could modify coordinates for scrolling in their own method
 	void cleanUp();

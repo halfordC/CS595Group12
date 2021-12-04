@@ -16,8 +16,10 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow)
+imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum)
 {
+	char layerChar = layerNum + 48;
+	char layerArray[2] = { layerChar, };
 	imgKissGUI = kissGUI;
 	kissGUI->fillMidiParam(&midiParamList);
 	kissGUI->fillImageParam(&imageParamList);
@@ -28,7 +30,7 @@ imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_wind
 	kissGUI->kiss_entry_new(&filePathEntry, &binding, 1, "FilePath", binding.rect.x + 5, binding.rect.y + 10, 400);
 	kissGUI->kiss_button_new(&browsePath, &binding, "Browse", binding.rect.x + 410, binding.rect.y + 15);
 	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 370, binding.rect.y + 55);
-	kissGUI->kiss_label_new(&IDNum, &binding, "#", binding.rect.x + 440, binding.rect.y + 57);
+	kissGUI->kiss_label_new(&IDNum, &binding, layerArray, binding.rect.x + 440, binding.rect.y + 57);
 
 	binding.visible = 1;
 }
