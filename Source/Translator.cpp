@@ -90,9 +90,9 @@ using std::vector;
 		}
 	}
 
-	void Translator::updateBindings()
+	void updateBindings()
 	{
-		std::ofstream file;
+		ofstream file;
 		file.open("bindings.txt");
 		string bindingstr = "";
 		if (file.is_open())
@@ -103,15 +103,19 @@ using std::vector;
 
 				bindingstr.append(strcat("Path:", b.getPath().c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Trigger:", std::to_string(b.getTrigger()).c_str()));
+				bindingstr.append(strcat("StartX:", to_string(b.getStartX()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("MessageType:", std::to_string(b.getMessageType()).c_str()));
+				bindingstr.append(strcat("StartY:", to_string(b.getStartY()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Target:", std::to_string(b.getTarget()).c_str()));
+				bindingstr.append(strcat("Trigger:", to_string(b.getTrigger()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("ChangeType:", std::to_string(b.getType()).c_str()));
+				bindingstr.append(strcat("MessageType:", to_string(b.getMessageType()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Amount:", std::to_string(b.getAmount()).c_str()));
+				bindingstr.append(strcat("Target:", to_string(b.getTarget()).c_str()));
+				bindingstr.append(",");
+				bindingstr.append(strcat("ChangeType:", to_string(b.getType()).c_str()));
+				bindingstr.append(",");
+				bindingstr.append(strcat("Amount:", to_string(b.getAmount()).c_str()));
 				bindingstr.append("\n");
 
 				file << bindingstr;
