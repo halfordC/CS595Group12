@@ -82,7 +82,7 @@ using std::vector;
 
 			if (p != "" && trig != NULL && sx != NULL && sy != NULL && mTyp != NULL && tar != NULL && typ != NULL && amnt != NULL)
 			{
-				Binding temp(p, sx, sy, trig, mTyp, tar, typ, amnt);
+				Binding* temp = new Binding(p, sx, sy, trig, mTyp, tar, typ, amnt);
 				bindings.push_back(temp);
 			}
 			else
@@ -90,32 +90,32 @@ using std::vector;
 		}
 	}
 
-	void updateBindings()
+	void Translator::updateBindings()
 	{
-		ofstream file;
+		std::ofstream file;
 		file.open("bindings.txt");
 		string bindingstr = "";
 		if (file.is_open())
 		{
-			for (Binding b : bindings)
+			for (Binding* b : bindings)
 			{
 				bindingstr = "";
 
-				bindingstr.append(strcat("Path:", b.getPath().c_str()));
+				bindingstr.append(strcat("Path:", b->getPath().c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("StartX:", to_string(b.getStartX()).c_str()));
+				bindingstr.append(strcat("StartX:", std::to_string(b->getStartX()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("StartY:", to_string(b.getStartY()).c_str()));
+				bindingstr.append(strcat("StartY:", std::to_string(b->getStartY()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Trigger:", to_string(b.getTrigger()).c_str()));
+				bindingstr.append(strcat("Trigger:", std::to_string(b->getTrigger()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("MessageType:", to_string(b.getMessageType()).c_str()));
+				bindingstr.append(strcat("MessageType:", std::to_string(b->getMessageType()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Target:", to_string(b.getTarget()).c_str()));
+				bindingstr.append(strcat("Target:", std::to_string(b->getTarget()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("ChangeType:", to_string(b.getType()).c_str()));
+				bindingstr.append(strcat("ChangeType:", std::to_string(b->getType()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Amount:", to_string(b.getAmount()).c_str()));
+				bindingstr.append(strcat("Amount:", std::to_string(b->getAmount()).c_str()));
 				bindingstr.append("\n");
 
 				file << bindingstr;
@@ -135,13 +135,13 @@ using std::vector;
 			{
 				for (int j = 0; j < bindings.size(); j++)
 				{
-					if (bindings[j].getTrigger() != NULL && bindings[j].getTrigger() == buffer[i].getNoteNumber())
+					if (bindings[j]->getTrigger() != NULL && bindings[j]->getTrigger() == buffer[i].getNoteNumber())
 					{
-						switch (bindings[j].getTarget())
+						switch (bindings[j]->getTarget())
 						{
 							case 0: //target = 1 | X
 							{
-								if (bindings[j].getType() == 0) //type = 0: Set
+								if (bindings[j]->getType() == 0) //type = 0: Set
 									setX(bindings[j], a, j);
 								else //Scale
 									scaleX(bindings[j], a, j);
@@ -150,7 +150,7 @@ using std::vector;
 
 							case 1: //target = 2 | Y
 							{
-								if (bindings[j].getType() == 0) //type = 0: Set
+								if (bindings[j]->getType() == 0) //type = 0: Set
 									setY(bindings[j], a, j);
 								else //Scale
 									scaleY(bindings[j], a, j);
@@ -159,7 +159,7 @@ using std::vector;
 
 							case 2: //target = 3 | Size
 							{
-								if (bindings[j].getType() == 0) //type = 0: Set
+								if (bindings[j]->getType() == 0) //type = 0: Set
 									setSize(bindings[j], a, j);
 								else //Scale
 									scaleSize(bindings[j], a, j);
@@ -168,7 +168,7 @@ using std::vector;
 
 							case 3: //target = 4 | Rotation
 							{
-								if (bindings[j].getType() == 0) //type = 0: Set
+								if (bindings[j]->getType() == 0) //type = 0: Set
 									setRotation(bindings[j], a, j);
 								else //Scale
 									scaleRotation(bindings[j], a, j);
@@ -194,75 +194,75 @@ using std::vector;
 	}
 
 #pragma region X
-	void Translator::setX(Binding b, RenderWindow* a, int i)
+	void Translator::setX(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setX(b.getAmount());
+		s->setX(b->getAmount());
 	}
-	void scaleX(Binding b, RenderWindow* a, int i)
+	void scaleX(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setX(s->getX() * b.getAmount());
+		s->setX(s->getX() * b->getAmount());
 	}
 #pragma endregion
 #pragma region Y
-	void Translator::setY(Binding b, RenderWindow* a, int i)
+	void Translator::setY(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setY(b.getAmount());
+		s->setY(b->getAmount());
 	}
-	void Translator::scaleY(Binding b, RenderWindow* a, int i)
+	void Translator::scaleY(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setY(s->getX() * b.getAmount());
+		s->setY(s->getX() * b->getAmount());
 	}
 #pragma endregion
 #pragma region Width
-	void Translator::setWidth(Binding b, RenderWindow* a, int i)
+	void Translator::setWidth(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setWidth(b.getAmount());
+		s->setWidth(b->getAmount());
 	}
-	void Translator::scaleWidth(Binding b, RenderWindow* a, int i)
+	void Translator::scaleWidth(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setWidth(s->getX() * b.getAmount());
+		s->setWidth(s->getX() * b->getAmount());
 	}
 #pragma endregion
 #pragma region Height
-	void Translator::setHeight(Binding b, RenderWindow* a, int i)
+	void Translator::setHeight(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setHeight(b.getAmount());
+		s->setHeight(b->getAmount());
 	}
-	void Translator::scaleHeight(Binding b, RenderWindow* a, int i)
+	void Translator::scaleHeight(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setHeight(s->getX() * b.getAmount());
+		s->setHeight(s->getX() * b->getAmount());
 	}
 #pragma endregion
 #pragma region Size
-	void Translator::setSize(Binding b, RenderWindow* a, int i)
+	void Translator::setSize(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setScale(b.getAmount());
+		s->setScale(b->getAmount());
 	}
-	void Translator::scaleSize(Binding b, RenderWindow* a, int i)
+	void Translator::scaleSize(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setScale(s->getX() * b.getAmount());
+		s->setScale(s->getX() * b->getAmount());
 	}
 #pragma endregion
 #pragma region Rotation
-	void Translator::setRotation(Binding b, RenderWindow* a, int i)
+	void Translator::setRotation(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setRotation(b.getAmount());
+		s->setRotation(b->getAmount());
 	}
-	void Translator::scaleRotation(Binding b, RenderWindow* a, int i)
+	void Translator::scaleRotation(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
-		s->setRotation(s->getX() * b.getAmount());
+		s->setRotation(s->getX() * b->getAmount());
 	}
 #pragma endregion
 //#pragma region Alpha

@@ -5,17 +5,6 @@
 class Binding
 {
 public:
-    Binding()
-    {
-        path = "";
-        startX = 0.0f;
-        startY = 0.0f;
-        trigger = 0;
-        messageType = 0;
-        target = 0;
-        type = 0;
-        amount = 0.0f;
-    }
     Binding(std::string path, float sx, float sy, int trigger, int mtype, int target, int type, float amount)
     {
         startX = sx;
