@@ -63,8 +63,8 @@ void Scene::render(SDL_Renderer* renderer)
 
 void Scene::sceneScroll(SDL_Event* e, int direction)
 {
-	if(displayIndex-direction >= 0){
-
+	if(displayIndex-direction >= 0)
+	{
 		for (int i = addImgParamIndex - 1; i >= 0; i--)
 		{
 			imgParArray[i]->imgScroll(e, direction);
