@@ -3,7 +3,6 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <string>
-//#include <unistd.h>
 #include <filesystem>
 
 #include "RenderWindow.hpp"
@@ -11,6 +10,7 @@
 #include "midiModule.h"
 #include "UserGUI.hpp"
 #include "myKissGui.hpp"
+#include "Translator.h"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
@@ -41,7 +41,6 @@ int main(int argc, char* args[])
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
 	UserGUI gui("GUI Test", myMidiModule, t);
-	//sceneViewWindow.openSceneFolder();
 
 	SDL_Event event;
 	unsigned int lastTime = SDL_GetTicks();
@@ -80,12 +79,6 @@ int main(int argc, char* args[])
 		{
 			//GUI callback events go here.
 			gui.selectMidiDropdownEvent(&event, myMidiModule);
-			//gui.selectMidiParamEvent(&event);
-			//gui.selectImageParamEvent(&event);
-			//gui.typeFilePath(&event);
-			//gui.midiLearnEvent(&event);
-			//gui.midiListenButton(&event, myMidiModule);
-			//gui.browseEvent(&event, sceneViewWindow);
 			gui.addBindingEvent(&event);
 			gui.guiEvent(&event, myMidiModule, sceneViewWindow, t);
 			gui.addSceneEvent(&event);

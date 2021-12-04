@@ -8,22 +8,23 @@
 #include "Binding.hpp"
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
+#include "Translator.h"
 
 extern std::vector<Sprite>* sprites;
 
-using namespace std;
-namespace fs = std::filesystem;
+using std::cout; using std::cin;
+using std::endl; using std::string;
+using std::vector;
 
-class Translator
-{
-public:
-	Translator() //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
+//using namespace std;
+//namespace fs = std::filesystem;
+	Translator::Translator() //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
 	{
-		vector<string> txtbindings;
+		vector<std::string> txtbindings;
 		vector<string> bindingtokens;
 
 		string str;
-		ifstream infile;
+		std::ifstream infile;
 		infile.open("bindings.txt");
 		while (!infile.eof()) // To get you all the lines.
 		{
@@ -82,9 +83,9 @@ public:
 		}
 	}
 
-	void updateBindings()
+	void Translator::updateBindings()
 	{
-		ofstream file;
+		std::ofstream file;
 		file.open("bindings.txt");
 		string bindingstr = "";
 		if (file.is_open())
@@ -95,15 +96,15 @@ public:
 
 				bindingstr.append(strcat("Path:", b.getPath().c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Trigger:", to_string(b.getTrigger()).c_str()));
+				bindingstr.append(strcat("Trigger:", std::to_string(b.getTrigger()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("MessageType:", to_string(b.getMessageType()).c_str()));
+				bindingstr.append(strcat("MessageType:", std::to_string(b.getMessageType()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Target:", to_string(b.getTarget()).c_str()));
+				bindingstr.append(strcat("Target:", std::to_string(b.getTarget()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("ChangeType:", to_string(b.getType()).c_str()));
+				bindingstr.append(strcat("ChangeType:", std::to_string(b.getType()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Amount:", to_string(b.getAmount()).c_str()));
+				bindingstr.append(strcat("Amount:", std::to_string(b.getAmount()).c_str()));
 				bindingstr.append("\n");
 
 				file << bindingstr;
@@ -111,7 +112,7 @@ public:
 		}
 	}
 
-	void translate(RenderWindow* a, MidiModule* myMidiModule)
+	void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 	{
 		if (midimod->hasNewMidiMessage())
 		{
@@ -182,7 +183,7 @@ public:
 	}
 
 #pragma region X
-	void setX(Binding b, RenderWindow* a, int i)
+	void Translator::setX(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setX(b.getAmount());
@@ -194,60 +195,60 @@ public:
 	}
 #pragma endregion
 #pragma region Y
-	void setY(Binding b, RenderWindow* a, int i)
+	void Translator::setY(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setY(b.getAmount());
 	}
-	void scaleY(Binding b, RenderWindow* a, int i)
+	void Translator::scaleY(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setY(s->getX() * b.getAmount());
 	}
 #pragma endregion
 #pragma region Width
-	void setWidth(Binding b, RenderWindow* a, int i)
+	void Translator::setWidth(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setWidth(b.getAmount());
 	}
-	void scaleWidth(Binding b, RenderWindow* a, int i)
+	void Translator::scaleWidth(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setWidth(s->getX() * b.getAmount());
 	}
 #pragma endregion
 #pragma region Height
-	void setHeight(Binding b, RenderWindow* a, int i)
+	void Translator::setHeight(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setHeight(b.getAmount());
 	}
-	void scaleHeight(Binding b, RenderWindow* a, int i)
+	void Translator::scaleHeight(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setHeight(s->getX() * b.getAmount());
 	}
 #pragma endregion
 #pragma region Size
-	void setSize(Binding b, RenderWindow* a, int i)
+	void Translator::setSize(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setScale(b.getAmount());
 	}
-	void scaleSize(Binding b, RenderWindow* a, int i)
+	void Translator::scaleSize(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setScale(s->getX() * b.getAmount());
 	}
 #pragma endregion
 #pragma region Rotation
-	void setRotation(Binding b, RenderWindow* a, int i)
+	void Translator::setRotation(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setRotation(b.getAmount());
 	}
-	void scaleRotation(Binding b, RenderWindow* a, int i)
+	void Translator::scaleRotation(Binding b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setRotation(s->getX() * b.getAmount());
@@ -263,7 +264,3 @@ public:
 //
 //	}
 //#pragma endregion
-private:
-	MidiModule* midimod;
-	vector<Binding> bindings;
-};

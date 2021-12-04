@@ -12,6 +12,7 @@
 #include "midiModule.h"
 #include "RenderWindow.hpp"
 #include "imgParameters.hpp"
+#include "Translator.h"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
