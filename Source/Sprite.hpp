@@ -21,6 +21,7 @@ public:
     h = height;
     rot = 0;
     scale = 1.0f;
+    alpha = 120;
     res = resource;
   };
   void setX(float xPos) { x = xPos; };
@@ -29,6 +30,14 @@ public:
   void setHeight(int height) { if( height > 0 ) { h = height; } };
   void setRotation(int rotation) { rot = rotation; };
   void setScale(float s){ if(s > 0) { scale = s; } };
+  void setAlpha(Uint8 a) 
+  { 
+    if (0 <= a <= 255) 
+    {  
+      alpha = a; 
+      SDL_SetTextureAlphaMod(res, alpha); 
+    } 
+  };
   float getX() { return x; };
   float getY() { return y; };
   int getWidth() { return w; };
@@ -45,5 +54,6 @@ private:
   int h;
   int rot;
   float scale;
+  Uint8 alpha;
   SDL_Texture* res;
 };

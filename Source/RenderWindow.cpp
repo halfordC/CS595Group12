@@ -13,14 +13,18 @@ using std::endl; using std::string;
 
 namespace fs = std::filesystem;
 
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1080
+
 RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(NULL), image(NULL)
 {
+	fullscreen = true;
 	/* Get current display mode to initialize a window with native screen resolution. */
 	if (SDL_GetCurrentDisplayMode(0, &mode) != 0)
 	{
 		cout << "Failed to get current display mode. Error: " << SDL_GetError() << endl;
 	}
-	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mode.w, mode.h, SDL_WINDOW_HIDDEN); //title, xpos, ypos, width, height, and show the window.
+	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1366, 768, SDL_WINDOW_HIDDEN); //title, xpos, ypos, width, height, and show the window.
 	if (window == NULL)
 	{
 		cout << "Window failed to init. Error: " << SDL_GetError() << endl;
@@ -50,17 +54,24 @@ RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(
    and borderless. This method should be triggered by the "START" button on the GUI. */
 void RenderWindow::enterViewMode()
 {
-	/*
-	SDL_SetWindowSize(window, mode.w, mode.h);
 	SDL_ShowWindow(window);
-	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
-	*/
-	
-	//just to get a cool example screenshot
-	SDL_SetWindowSize(window, 640, 480);
-	SDL_SetWindowPosition(window, 50, 50);
-	SDL_ShowWindow(window);
-	
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+
+void RenderWindow::toggleFullScreen()
+{
+	if (fullscreen)
+	{
+		SDL_SetWindowFullscreen(window, 0);
+		SDL_SetWindowSize(window, 1366, 768);
+		fullscreen = false;
+	}
+	else
+	{
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		SDL_SetWindowSize(window, WINDOW_WIDTH, WINDOW_HEIGHT);
+		fullscreen = true;
+	}
 }
 
 /* This method will open the scenes folder in file explorer(windows) or finder(macOSx).
@@ -107,8 +118,8 @@ void RenderWindow::initializeScene()
 				Sprite* temp = new Sprite(i * 0.1f, i * 0.1f, w, h, image);
 
 				/* calls to setScale() and setRotation() are for demonstrative purposes. */
-				temp->setScale((i + 1) * 0.2);
 				temp->setRotation((i * 36));
+				temp->setAlpha(120);
 				sprites.push_back(temp);
 				i++;
 			}

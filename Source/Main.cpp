@@ -38,7 +38,6 @@ int main(int argc, char* args[])
 	}
 
 	RenderWindow sceneViewWindow("Scene View Window");
-	sceneViewWindow.enterViewMode();
 	UserGUI gui("GUI Test", myMidiModule);
 	//sceneViewWindow.openSceneFolder();
 
@@ -103,6 +102,17 @@ int main(int argc, char* args[])
 					programRunning = false;
 					break;
 				default:
+					break;
+				}
+				break;
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym)
+				{
+				case SDLK_F11:
+					sceneViewWindow.toggleFullScreen();
+					break;
+				case SDLK_F10:
+					sceneViewWindow.enterViewMode();
 					break;
 				}
 			default:
