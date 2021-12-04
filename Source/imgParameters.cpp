@@ -56,11 +56,20 @@ void imgParameters::imgScroll(SDL_Event* e, int direction)//shift should be the 
 	browsePath.texty += (direction * 90);
 	midiLearn.rect.y += (direction * 90);
 	midiLearn.texty += (direction * 90);
-	/*imgParam.textbox.rect.y += (direction * 90);
+
+	imgParam.textbox.rect.y += (direction * 90);
 	imgParam.vscrollbar.downrect.y += (direction * 90);
 	imgParam.vscrollbar.sliderrect.y += (direction * 90);
 	imgParam.vscrollbar.uprect.y += (direction * 90);
-	imgParam.entry.rect.y += (direction * 90);*/
+	imgParam.entry.rect.y += (direction * 90);
+	imgParam.entry.texty += (direction * 90);
+
+	midiParam.textbox.rect.y += (direction * 90);
+	midiParam.vscrollbar.downrect.y += (direction * 90);
+	midiParam.vscrollbar.sliderrect.y += (direction * 90);
+	midiParam.vscrollbar.uprect.y += (direction * 90);
+	midiParam.entry.rect.y += (direction * 90);
+	midiParam.entry.texty += (direction * 90);
 
 	/*int line = imgParam.textbox.selectedline;
 	if (line) {
@@ -75,6 +84,7 @@ void imgParameters::imgScroll(SDL_Event* e, int direction)//shift should be the 
 	noteEntry.texty += (direction * 90);
 	filePathEntry.rect.y += (direction * 90);
 	filePathEntry.texty += (direction * 90);
+	IDNum.rect.y += (direction * 90);
 }
 
 void imgParameters::cleanUp()
