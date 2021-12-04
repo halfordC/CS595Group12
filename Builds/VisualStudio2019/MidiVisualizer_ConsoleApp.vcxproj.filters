@@ -1874,6 +1874,9 @@
     <ClInclude Include="..\..\Source\Scene.h">
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Translator.h">
+      <Filter>MidiVisualizer\Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">

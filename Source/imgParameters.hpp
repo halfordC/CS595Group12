@@ -9,11 +9,12 @@
 #include "myKissGui.hpp"
 #include "midiModule.h"
 #include "RenderWindow.hpp"
+#include "Translator.h"
 
 class imgParameters
 {
 public:
-	imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum);
+	imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, Translator* t);
 
 	void render(int newY, SDL_Renderer* renderer);//Alternatively could modify coordinates for scrolling in their own method
 	void cleanUp();
@@ -40,5 +41,6 @@ public:
 private:
 	SDL_Event* e;
 	myKissGUI* imgKissGUI;
+	Translator* translator;
 	int listenFilter;
 };

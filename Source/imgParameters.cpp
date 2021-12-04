@@ -16,11 +16,12 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum)
+imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, Translator* t)
 {
 	char layerChar = layerNum + 48;
 	char layerArray[2] = { layerChar, };
 	imgKissGUI = kissGUI;
+	translator = t;
 	kissGUI->fillMidiParam(&midiParamList);
 	kissGUI->fillImageParam(&imageParamList);
 	kissGUI->kiss_window_new(&binding, inWindow, 1, x, y, 480, 90);
@@ -226,12 +227,10 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 
 				}
 				myMidiModule->messagesParsed(); //this clears the flag, and waits for a new message.
-
 			}
 		}
-
-
 	}
+	translator->updateBindings();
 }
 
 void imgParameters::browseEvent(SDL_Event* e, RenderWindow myRenderWindow)

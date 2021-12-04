@@ -9,14 +9,15 @@
 #include "midiModule.h"
 #include "RenderWindow.hpp"
 #include "Scene.h"
+#include "Translator.h"
 
 class UserGUI
 {
 public:
-	UserGUI(char* p_title, MidiModule* myMidiModule);
+	UserGUI(char* p_title, MidiModule* myMidiModule, Translator* t);
 	void render();
 	void cleanUp();
-	void guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
+	void guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow, Translator* t);
 	void selectMidiDropdownEvent(SDL_Event* e, MidiModule * myMidiModule);
 	void addBindingEvent(SDL_Event* e);
 
@@ -66,7 +67,7 @@ private:
 	int addSceneTabIndex;
 	int currentSceneTabX;
 	int staticSceneTabY;
-
+	Translator* translator;
 
 
 };

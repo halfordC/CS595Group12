@@ -9,12 +9,13 @@
 #include "midiModule.h"
 #include "RenderWindow.hpp"
 #include "imgParameters.hpp"
+#include "Translator.h"
 
 
 class Scene 
 {
 public:
-	Scene::Scene(myKissGUI* kissGUI, kiss_window* mainWindow);
+	Scene::Scene(myKissGUI* kissGUI, kiss_window* mainWindow, Translator* t);
 	void addImg(); //not an event, called by the event in Main Window. 
 	void render(SDL_Renderer* renderer);
 	void sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
@@ -28,6 +29,7 @@ private:
 	int imgParamIndex; //should not go over 15. 
 	int addImgParamIndex;
 	myKissGUI* sceneKissGUI;
+	Translator* translator;
 	
 	int staticX;
 	const int startY = 70;

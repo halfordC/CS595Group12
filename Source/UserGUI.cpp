@@ -11,13 +11,15 @@
 #include "midiModule.h"
 #include "RenderWindow.hpp"
 #include "Scene.h"
+#include "Translator.h"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
 
-UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
+UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule, Translator* t) : renderer(NULL)
 {
+	translator = t;
 	kissGUI = new myKissGUI();
 	kissGUI->kiss_array_new(&objects );
 	renderer = kissGUI->kiss_init(p_title, &objects, 640, 480);
@@ -35,7 +37,7 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	//We want to instantite the first scene after we instantiate the window. 
 	sceneIndex = 0;
 	addSceneIndex = 0;
-	Scene* firstScene = new Scene(kissGUI, &window);
+	Scene* firstScene = new Scene(kissGUI, &window, translator);
 	sceneArray[addSceneIndex] = firstScene;
 	addSceneIndex++;
 
@@ -115,7 +117,7 @@ void UserGUI::cleanUp()
 	SDL_DestroyRenderer(renderer);
 }
 
-void UserGUI::guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow)
+void UserGUI::guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow, Translator* t)
 {
 	
 	sceneArray[sceneIndex]->sceneEvent(e, myMidiModule, myRenderWindow);
@@ -167,7 +169,7 @@ void UserGUI::addSceneEvent(SDL_Event* e)
 		//first Add the scene
 		if(addSceneIndex < 15 && addSceneTabIndex < 5) // eventually, more than 5 scenes will make new scroll tabs appear
 		{
-			Scene* nextScene = new Scene(kissGUI, &window);
+			Scene* nextScene = new Scene(kissGUI, &window, translator);
 			sceneArray[addSceneIndex] = nextScene;
 			addSceneIndex++;
 			//then add the scene tab
