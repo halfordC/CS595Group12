@@ -11,6 +11,9 @@
 #include "RenderWindow.hpp"
 #include "Translator.h"
 
+#define windowWidth 480
+#define windowHeight 90
+
 class imgParameters
 {
 public:
@@ -34,6 +37,9 @@ public:
 	kiss_button browsePath;
 	kiss_button midiLearn;
 	kiss_label IDNum;
+	kiss_label warningLabel;
+	kiss_window warningWindow;
+	kiss_button warningButton;
 
 	kiss_array midiParamList;
 	kiss_array imageParamList;

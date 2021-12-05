@@ -2,6 +2,7 @@
 .vs
 
 # Files built by Visual Studio
+*.exe
 *_i.c
 *_p.c
 *_h.h
