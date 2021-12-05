@@ -24,55 +24,63 @@ Translator::Translator() //const RenderWindow &a maybe as a argument to get spri
 	string str;
 	std::ifstream infile;
 	infile.open("bindings.txt");
-	while (!infile.eof()) // To get you all the lines.
+	if(infile.good())
 	{
-		getline(infile, str); // Saves the line in str.
-		txtbindings.push_back(str);
+		while (!infile.eof()) // To get you all the lines.
+		{
+			getline(infile, str); // Saves the line in str.
+			if(str != "")
+				txtbindings.push_back(str);
+		}
 	}
+	else
+		return;
 	infile.close(); //saves lines in txtbindings
 
 	string p = "";
-	int sx;
-	int sy;
-	int trig;
-	int mTyp;
-	int tar;
-	int typ;
-	int amnt;
+	int sx = 0;
+	int sy = 0;
+	int trig = 0;
+	int mTyp = 0;
+	int tar = 0;
+	int typ = 0;
+	int amnt = 0;
 
 	//For each binding line tokenize and create bindings
 	for (int i = 0; i < txtbindings.size(); i++)
 	{
 			//split bindings by their label and values
-			str = strtok(&*txtbindings[i].begin(), ",:");
+			str = strtok(&*txtbindings[i].begin(), ",;");
 			while (str.size() != NULL)
 			{
 				bindingtokens.push_back(str);
-				str = strtok(NULL, ",");
+				str = strtok(NULL, ",;");
+				if (str == "$")
+					break;
 			}
 
 			//Check if there are any missing values and reject any incomplete bindings
-			if (bindingtokens.size() == 14)
+			if (bindingtokens.size() == 16)
 			{
 				//grab every other value since even ones are the 
-				for (int i = 0; i < 7; i++)
+				for (int i = 0; i < 8; i++)
 				{
 					if (bindingtokens[(int)i * 2] == "Path")
-						p = bindingtokens[(int)i + 1];
+						p = bindingtokens[((int)i * 2) + 1];
 					else if (bindingtokens[(int)i * 2] == "StartX")
-						sx = stoi(bindingtokens[(int)i + 1]);
+						sx = stoi(bindingtokens[((int)i * 2) + 1]);
 					else if (bindingtokens[(int)i * 2] == "StartY")
-						sy = stoi(bindingtokens[(int)i + 1]);
+						sy = stoi(bindingtokens[((int)i * 2) + 1]);
 					else if (bindingtokens[(int)i * 2] == "Trigger")
-						trig = stoi(bindingtokens[(int)i + 1]);
+						trig = stoi(bindingtokens[((int)i * 2) + 1]);
 					else if (bindingtokens[(int)i * 2] == "MessageType")
-						mTyp = stoi(bindingtokens[(int)i + 1]);
+						mTyp = stoi(bindingtokens[((int)i * 2) + 1]);
 					else if (bindingtokens[(int)i * 2] == "Target")
-						tar = stoi(bindingtokens[(int)i + 1]);
+						tar = stoi(bindingtokens[((int)i * 2) + 1]);
 					else if (bindingtokens[(int)i * 2] == "ChangeType")
-						typ = stoi(bindingtokens[(int)i + 1]);
+						typ = stoi(bindingtokens[((int)i * 2) + 1]);
 					else if (bindingtokens[(int)i * 2] == "Amount")
-						amnt = stoi(bindingtokens[(int)i + 1]);
+						amnt = stoi(bindingtokens[((int)i * 2) + 1]);
 				}
 			}
 			else
@@ -120,6 +128,16 @@ void Translator::updateBindings()
 			}
 		}
 	}
+
+void Translator::pushBinding(Binding* b)
+{
+	bindings.push_back(b);
+}
+
+std::vector<Binding*> Translator::getBindings()
+{
+	return bindings;
+}
 
 	void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 	{

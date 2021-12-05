@@ -230,8 +230,8 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 				myMidiModule->messagesParsed(); //this clears the flag, and waits for a new message.
 			}
 		}
+		translator->updateBindings();
 	}
-	translator->updateBindings();
 }
 
 void imgParameters::browseEvent(SDL_Event* e, RenderWindow myRenderWindow)

@@ -16,6 +16,8 @@ class Translator
 public:
 	Translator();
 	void updateBindings();
+	void pushBinding(Binding* b);
+	std::vector<Binding*> getBindings();
 	void translate(RenderWindow* a, MidiModule* myMidiModule);
 	void setX(Binding* b, RenderWindow* a, int i);
 	void scaleX(Binding* b, RenderWindow* a, int i);

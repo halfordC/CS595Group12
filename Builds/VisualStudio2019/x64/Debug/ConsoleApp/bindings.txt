@@ -1,0 +1,1 @@
+Path,C://this/is/a/test;StartX,0.0;StartY,0.0;Trigger,76;MessageType,1;Target,5;ChangeType,1;Amount,1.1
