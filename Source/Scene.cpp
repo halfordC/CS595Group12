@@ -85,5 +85,6 @@ void Scene::sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRe
 		//imgParArray[i]->midiLearnEvent(e);
 		imgParArray[i]->midiListenButton(e, myMidiModule);
 		imgParArray[i]->browseEvent(e, myRenderWindow);
+		imgParArray[i]->warningEvent(e);
 	}
 }

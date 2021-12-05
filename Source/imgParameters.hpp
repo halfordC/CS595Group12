@@ -28,6 +28,8 @@ public:
 	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
 	void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
 	void imgScroll(SDL_Event* e, int direction);
+	void warningEvent(SDL_Event* e);
+	void updateWarning(char* newText);
 
 	kiss_window binding;
 	kiss_combobox imgParam;
@@ -49,4 +51,7 @@ private:
 	myKissGUI* imgKissGUI;
 	Translator* translator;
 	int listenFilter;
+	bool warning;
+	bool imageParamSelected;
+	bool midiParamSelected;
 };

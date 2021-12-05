@@ -22,7 +22,10 @@ imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_wind
 	char layerChar = layerNum + 48;
 	char layerArray[2] = { layerChar, };
 
-	char* warningText = "No Image Parameter Selected";
+	char* warningText = "No Midi Device Selected";
+	warning = false;
+	imageParamSelected = false;
+	midiParamSelected = false;
 
 	imgKissGUI = kissGUI;
 	translator = t;
@@ -47,18 +50,25 @@ imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_wind
 void imgParameters::render(int newY, SDL_Renderer* renderer)
 {
 	//SDL_RenderClear(renderer);
+	if (warning) 
+	{
+		imgKissGUI->kiss_window_draw(&warningWindow, renderer);
+		imgKissGUI->kiss_button_draw(&warningButton, renderer);
+		imgKissGUI->kiss_label_draw(&warningLabel, renderer);
+	}
+	else 
+	{
+		imgKissGUI->kiss_window_draw(&binding, renderer);
+		imgKissGUI->kiss_button_draw(&browsePath, renderer);
+		imgKissGUI->kiss_button_draw(&midiLearn, renderer);
+		imgKissGUI->kiss_combobox_draw(&imgParam, renderer);
+		imgKissGUI->kiss_combobox_draw(&midiParam, renderer);
+		imgKissGUI->kiss_entry_draw(&noteEntry, renderer);
+		imgKissGUI->kiss_entry_draw(&filePathEntry, renderer);
+		imgKissGUI->kiss_label_draw(&IDNum, renderer);
 
-	imgKissGUI->kiss_window_draw(&binding, renderer);
-	imgKissGUI->kiss_button_draw(&browsePath, renderer);
-	imgKissGUI->kiss_button_draw(&midiLearn, renderer);
-	imgKissGUI->kiss_combobox_draw(&imgParam, renderer);
-	imgKissGUI->kiss_combobox_draw(&midiParam, renderer);
-	imgKissGUI->kiss_entry_draw(&noteEntry, renderer);
-	imgKissGUI->kiss_entry_draw(&filePathEntry, renderer);
-	imgKissGUI->kiss_label_draw(&IDNum, renderer);
-	imgKissGUI->kiss_label_draw(&warningLabel, renderer);
-	imgKissGUI->kiss_window_draw(&warningWindow, renderer);
-	imgKissGUI->kiss_button_draw(&warningButton, renderer);
+	}
+
 
 	//SDL_RenderPresent(renderer);
 }
@@ -112,10 +122,12 @@ void imgParameters::selectMidiParamEvent(SDL_Event* e)
 	int draw = 1;
 	if (imgKissGUI->kiss_combobox_event(&midiParam, e, &draw))
 	{
+		midiParamSelected = true;
 		//An item has been clicked! but which one? 
 		//normally, we would use bsearch, but we can't really do that in c++ with how this is setup.
 		//so we must mannualy search through and find the entry. 
-		int length = midiParam.textbox.array->length;
+		
+		/*int length = midiParam.textbox.array->length;
 		for (int i = 0; i < length; i++)
 		{
 			void** p = midiParam.textbox.array->data + i; //data is of type void pointer pointer
@@ -131,7 +143,8 @@ void imgParameters::selectMidiParamEvent(SDL_Event* e)
 
 				listenFilter = i;
 			}
-		}
+		}*/
+
 	}
 }
 
@@ -141,6 +154,7 @@ void imgParameters::selectImageParamEvent(SDL_Event* e)
 	if (imgKissGUI->kiss_combobox_event(&imgParam, e, &draw))
 	{
 		//do stuff like the previous box up there
+		imageParamSelected = true;
 	}
 }
 
@@ -182,9 +196,27 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 		{
 
 			//display warning
+			warning = true;
+			updateWarning("No Midi Device Connected");
 			return; //if no connected devices, we will be in a loop forever.
 		}
+		
+		if (!imageParamSelected) 
+		{
+			warning = true;
+			updateWarning("No Image Parameter selected");
+			return;
+		}
 
+		///Weird bug wher if this statement equates to true, we go into this block of code. Litterally no idea why. 
+		/*
+		if (midiParamSelected==false);
+		{
+			warning = true;
+			updateWarning("No Midi Message type selected");
+			return;
+		}
+		*/
 
 		memset(noteEntry.text, 0, 200); //clear char array
 		strcat(noteEntry.text, "newNote"); //fill char array with new note value
@@ -261,4 +293,20 @@ void imgParameters::browseEvent(SDL_Event* e, RenderWindow myRenderWindow)
 	{
 		myRenderWindow.openSceneFolder();
 	}
+}
+
+void imgParameters::warningEvent(SDL_Event *e) 
+{
+	int draw = 1;
+	if (imgKissGUI->kiss_button_event(&warningButton, e, &draw))
+	{
+		warning = false;
+	}
+
+}
+
+void imgParameters::updateWarning(char* newText) 
+{
+	imgKissGUI->kiss_label_new(&warningLabel, &warningWindow, newText, warningWindow.rect.x + 10, warningWindow.rect.y + 10);
+
 }

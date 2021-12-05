@@ -64,8 +64,6 @@ public:
                 std::cout << deviceName + " connected!" << std::endl;
 
                 return;
-
-
             }
         }
         std::cout << "Input Midi device is not connected" << std::endl;
