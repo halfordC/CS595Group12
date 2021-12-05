@@ -54,4 +54,6 @@ private:
 	bool warning;
 	bool imageParamSelected;
 	bool midiParamSelected;
+	Binding* layerBinding;
+
 };

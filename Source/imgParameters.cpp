@@ -19,6 +19,8 @@ using std::endl; using std::string;
 
 imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, Translator* t)
 {
+	layerBinding = new Binding("NoPath", 0, 0, 0, 0, 0, 0, 0); //set bindings for this layer to 0. 
+
 	char layerChar = layerNum + 48;
 	char layerArray[2] = { layerChar, };
 
@@ -225,6 +227,8 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 			if (myMidiModule->hasNewMidiMessage())
 			{
 				std::vector<juce::MidiMessage> inBuffer = myMidiModule->getMidiBuffer();
+
+				
 
 				for (int i = 0; i < inBuffer.size(); i++)
 				{
