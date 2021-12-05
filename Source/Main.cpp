@@ -74,6 +74,7 @@ int main(int argc, char* args[])
 			//GUI callback events go here.
 			gui.selectMidiDropdownEvent(&event, myMidiModule);
 			gui.addBindingEvent(&event);
+			gui.removeBindingEvent(&event);
 			gui.guiEvent(&event, myMidiModule, sceneViewWindow);
 			gui.addSceneEvent(&event);
 			gui.sceneTabEvent(&event);

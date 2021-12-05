@@ -51,7 +51,7 @@ void imgParameters::render(int newY, SDL_Renderer* renderer)
 	//SDL_RenderPresent(renderer);
 }
 
-void imgParameters::imgScroll(SDL_Event* e, int direction)//shift should be the same distance both ways so direction will just be a negative for up and a positive for down
+void imgParameters::imgScroll(int direction)//shift should be the same distance both ways so direction will just be a negative for up and a positive for down
 {
 	binding.rect.y += (direction * 90);
 	browsePath.rect.y += (direction * 90);

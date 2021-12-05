@@ -19,6 +19,7 @@ public:
 	void guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
 	void selectMidiDropdownEvent(SDL_Event* e, MidiModule * myMidiModule);
 	void addBindingEvent(SDL_Event* e);
+	void removeBindingEvent(SDL_Event* e);
 
 	void addSceneEvent(SDL_Event* e);
 	void sceneTabEvent(SDL_Event* e);
@@ -32,6 +33,7 @@ public:
 	kiss_array objects;
 	kiss_button addScene;
 	kiss_button addBinding;
+	kiss_button removeBinding;
 	kiss_combobox midiDeviceDrop;
 	char message[KISS_MAX_LENGTH];
 	kiss_label label;

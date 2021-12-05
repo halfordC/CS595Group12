@@ -46,6 +46,20 @@ void Scene::addImg()
 	}
 }
 
+void Scene::removeImg()
+{
+	if (addImgParamIndex > 1) 
+	{ 
+		imgParArray[--addImgParamIndex] = NULL; 
+		
+		if (addImgParamIndex == displayIndex)
+		{
+			sceneScroll(1);
+		}
+		else currentY -= 90;
+	}
+}
+
 void Scene::render(SDL_Renderer* renderer)
 {
 	//SDL_RenderClear(renderer);
@@ -63,14 +77,14 @@ void Scene::render(SDL_Renderer* renderer)
 
 
 //if we are successfully able to scroll, return 1. else, return 0. 
-int Scene::sceneScroll(SDL_Event* e, int direction)
+int Scene::sceneScroll(int direction)
 {
 
 	if((displayIndex-direction >= 0 && direction==1)||(addImgParamIndex + direction >= displayIndex + 1 && direction==(-1)))
 	{
 		for (int i = addImgParamIndex - 1; i >= 0; i--)
 		{
-			imgParArray[i]->imgScroll(e, direction);
+			imgParArray[i]->imgScroll(direction);
 		}
 		displayIndex -= direction;
 		return 1;

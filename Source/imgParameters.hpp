@@ -23,7 +23,7 @@ public:
 	void midiLearnEvent(SDL_Event* e);
 	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
 	void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
-	void imgScroll(SDL_Event* e, int direction);
+	void imgScroll(int direction);
 
 	kiss_window binding;
 	kiss_combobox imgParam;
