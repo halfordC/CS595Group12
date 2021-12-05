@@ -18,7 +18,7 @@ public:
 	void addImg(); //not an event, called by the event in Main Window. 
 	void render(SDL_Renderer* renderer);
 	void sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
-	void sceneScroll(SDL_Event* e, int direction);
+	int sceneScroll(SDL_Event* e, int direction);
 
 	imgParameters* imgParArray[15]; // setting a hard limit of 15 images for now. Might change later.
 	kiss_button addImgButton;

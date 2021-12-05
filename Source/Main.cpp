@@ -79,12 +79,6 @@ int main(int argc, char* args[])
 		{
 			//GUI callback events go here.
 			gui.selectMidiDropdownEvent(&event, myMidiModule);
-			//gui.selectMidiParamEvent(&event);
-			//gui.selectImageParamEvent(&event);
-			//gui.typeFilePath(&event);
-			//gui.midiLearnEvent(&event);
-			//gui.midiListenButton(&event, myMidiModule);
-			//gui.browseEvent(&event, sceneViewWindow);
 			gui.addBindingEvent(&event);
 			gui.guiEvent(&event, myMidiModule, sceneViewWindow);
 			gui.addSceneEvent(&event);
