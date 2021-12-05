@@ -53,7 +53,7 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	kissGUI->kiss_tab_new(&plusTab, &window, "+", currentSceneTabX, staticSceneTabY);
 
 
-	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 490,20,120,100);
+	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 465,20,150,100);
 
 	kissGUI->kiss_button_new(&addBinding, &window, "Add", 40, 370);
 	kissGUI->kiss_button_new(&removeBinding, &window, "Remove", 120, 370);
