@@ -25,25 +25,6 @@ int main(int argc, char* args[])
 	//init Midi Module, get midi input
 	MidiModule* myMidiModule = new MidiModule();
 	
-	std::vector<std::string> midiInputDeviceNames;
-
-	std::cout << "Which of these devices would you like to connect to?" << std::endl;
-	myMidiModule->getMidiDeviceNames(&midiInputDeviceNames);
-
-	for (auto i = midiInputDeviceNames.begin(); i != midiInputDeviceNames.end(); i++)
-	{
-		std::cout << *i << std::endl;
-	}
-
-	if(midiInputDeviceNames.size()>0)
-	{
-		std::string inputRequest;
-		std::cin >> inputRequest;
-		myMidiModule->connectToMidiDevice(inputRequest);
-	}
-	
-
-
 	///Initialze SDL stuff
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
 	{
