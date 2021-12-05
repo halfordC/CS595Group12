@@ -16,35 +16,33 @@ using std::cout; using std::cin;
 using std::endl; using std::string;
 using std::vector;
 
-//using namespace std;
-//namespace fs = std::filesystem;
-	Translator::Translator() //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
+Translator::Translator() //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
+{
+	vector<string> txtbindings;
+	vector<string> bindingtokens;
+
+	string str;
+	std::ifstream infile;
+	infile.open("bindings.txt");
+	while (!infile.eof()) // To get you all the lines.
 	{
-		vector<string> txtbindings;
-		vector<string> bindingtokens;
+		getline(infile, str); // Saves the line in str.
+		txtbindings.push_back(str);
+	}
+	infile.close(); //saves lines in txtbindings
 
-		string str;
-		std::ifstream infile;
-		infile.open("bindings.txt");
-		while (!infile.eof()) // To get you all the lines.
-		{
-			getline(infile, str); // Saves the line in str.
-			txtbindings.push_back(str);
-		}
-		infile.close(); //saves lines in txtbindings
+	string p = "";
+	int sx;
+	int sy;
+	int trig;
+	int mTyp;
+	int tar;
+	int typ;
+	int amnt;
 
-		string p = "";
-		int sx;
-		int sy;
-		int trig;
-		int mTyp;
-		int tar;
-		int typ;
-		int amnt;
-
-		//For each binding line tokenize and create bindings
-		for (int i = 0; i < txtbindings.size(); i++)
-		{
+	//For each binding line tokenize and create bindings
+	for (int i = 0; i < txtbindings.size(); i++)
+	{
 			//split bindings by their label and values
 			str = strtok(&*txtbindings[i].begin(), ",:");
 			while (str.size() != NULL)
@@ -90,8 +88,8 @@ using std::vector;
 		}
 	}
 
-	void Translator::updateBindings()
-	{
+void Translator::updateBindings()
+{
 		std::ofstream file;
 		file.open("bindings.txt");
 		string bindingstr = "";
@@ -193,18 +191,17 @@ using std::vector;
 		}
 	}
 
-#pragma region X
 	void Translator::setX(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setX(b->getAmount());
 	}
-	void scaleX(Binding* b, RenderWindow* a, int i)
+	void Translator::scaleX(Binding* b, RenderWindow* a, int i)
 	{
 		Sprite* s = a->sprites[i];
 		s->setX(s->getX() * b->getAmount());
 	}
-#pragma endregion
+
 #pragma region Y
 	void Translator::setY(Binding* b, RenderWindow* a, int i)
 	{

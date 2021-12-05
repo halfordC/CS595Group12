@@ -1,3 +1,4 @@
+#pragma once
 #include <stdint.h>
 #include <iostream>
 #include <string>
@@ -5,16 +6,16 @@
 class Binding
 {
 public:
-    Binding(std::string path, float sx, float sy, int trigger, int mtype, int target, int type, float amount)
+    Binding(std::string pathIn, float sx, float sy, int triggerIn, int mtype, int targetIn, int typeIn, float amountIn)
     {
         startX = sx;
         startY = sy;
-        path = path;
-        trigger = trigger;
+        path = pathIn;
+        trigger = triggerIn;
         messageType = mtype;
-        target = target;
-        type = type;
-        amount = amount;
+        target = targetIn;
+        type = typeIn;
+        amount = amountIn;
     };
     void setTrigger(float trigger) { trigger = trigger; };
     void setStartX(int x) { startX = x; };
