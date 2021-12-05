@@ -3,13 +3,14 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <string>
-//#include <unistd.h>
 #include <filesystem>
 
-#include "kiss_sdl.h"
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
 #include "midiModule.h"
+#include "UserGUI.hpp"
+#include "myKissGui.hpp"
+//#include "Translator.h"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
@@ -56,9 +57,7 @@ int main(int argc, char* args[])
 
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
-	RenderWindow sceneViewWindow2("Scene View Window");
-	sceneViewWindow2.enterViewMode();
-	//sceneViewWindow.openSceneFolder();
+	UserGUI gui("GUI Test", myMidiModule);
 
 	SDL_Event event;
 	unsigned int lastTime = SDL_GetTicks();
@@ -171,7 +170,7 @@ int main(int argc, char* args[])
 	
 	myMidiModule->~MidiModule();
 	sceneViewWindow.cleanUp();
-	sceneViewWindow2.cleanUp();
+	gui.cleanUp();
 	
 	
 
