@@ -9,20 +9,18 @@
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
 
-
+extern std::vector<Sprite>* sprites;
 
 using namespace std;
+namespace fs = std::filesystem;
 
 class Translator
 {
 public:
-	Translator(const RenderWindow& a) //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
+	Translator() //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
 	{
-		midimod = new MidiModule();
-		vector<Sprite*> sprites = a.sprites;
 		vector<string> txtbindings;
 		vector<string> bindingtokens;
-		//midiModule = a.midiModule;
 
 		string str;
 		ifstream infile;
@@ -34,28 +32,91 @@ public:
 		}
 		infile.close(); //saves lines in txtbindings
 
+		string p = "";
+		int trig;
+		int tar;
+		int typ;
+		int amnt;
+
 		//For each binding line tokenize and create bindings
 		for (int i = 0; i < txtbindings.size(); i++)
 		{
-			str = strtok(&*txtbindings[i].begin(), ",");
+			//split bindings by their label and values
+			str = strtok(&*txtbindings[i].begin(), ",:");
 			while (str.size() != NULL)
 			{
 				bindingtokens.push_back(str);
 				str = strtok(NULL, ",");
 			}
 
-			Binding temp(stoi(bindingtokens[1]), stoi(bindingtokens[2]), stoi(bindingtokens[3]), stof(bindingtokens[4]));
+			//Check if there are any missing values and reject any incomplete bindings
+			if (bindingtokens.size() == 12)
+			{
+				//grab every other value since even ones are the 
+				for (int i = 0; i < 6; i++)
+				{
+					if (bindingtokens[(int)i * 2] == "Path")
+						p = bindingtokens[(int)i + 1];
+					else if (bindingtokens[(int)i * 2] == "Trigger")
+						trig = stoi(bindingtokens[(int)i + 1]);
+					else if (bindingtokens[(int)i * 2] == "MessageType")
+						typ = stoi(bindingtokens[(int)i + 1]);
+					else if (bindingtokens[(int)i * 2] == "Target")
+						tar = stoi(bindingtokens[(int)i + 1]);
+					else if (bindingtokens[(int)i * 2] == "ChangeType")
+						typ = stoi(bindingtokens[(int)i + 1]);
+					else if (bindingtokens[(int)i * 2] == "Amount")
+						amnt = stoi(bindingtokens[(int)i + 1]);
+				}
+			}
+			else
+				cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
 
-			bindings.push_back(temp);
+			if (p != "" && trig != NULL && typ != NULL && tar != NULL && typ != NULL && amnt != NULL)
+			{
+				Binding temp(bindingtokens[1], stoi(bindingtokens[3]), stoi(bindingtokens[5]), stoi(bindingtokens[7]), stoi(bindingtokens[9]), stof(bindingtokens[11]));
+				bindings.push_back(temp);
+			}
+			else
+				cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
 		}
 	}
 
-	void translate(const RenderWindow& a)
+	void updateBindings()
+	{
+		ofstream file;
+		file.open("bindings.txt");
+		string bindingstr = "";
+		if (file.is_open())
+		{
+			for (Binding b : bindings)
+			{
+				bindingstr = "";
+
+				bindingstr.append(strcat("Path:", b.getPath().c_str()));
+				bindingstr.append(",");
+				bindingstr.append(strcat("Trigger:", to_string(b.getTrigger()).c_str()));
+				bindingstr.append(",");
+				bindingstr.append(strcat("MessageType:", to_string(b.getMessageType()).c_str()));
+				bindingstr.append(",");
+				bindingstr.append(strcat("Target:", to_string(b.getTarget()).c_str()));
+				bindingstr.append(",");
+				bindingstr.append(strcat("ChangeType:", to_string(b.getType()).c_str()));
+				bindingstr.append(",");
+				bindingstr.append(strcat("Amount:", to_string(b.getAmount()).c_str()));
+				bindingstr.append("\n");
+
+				file << bindingstr;
+			}
+		}
+	}
+
+	void translate(RenderWindow* a, MidiModule* myMidiModule)
 	{
 		if (midimod->hasNewMidiMessage())
 		{
 			//Grab the offered up midiMessage from the midi input/controller
-			vector<juce::MidiMessage> buffer = midimod->getMidiBuffer();
+			vector<juce::MidiMessage> buffer = myMidiModule->getMidiBuffer();
 			int bufferlength = buffer.size();
 			//int bufferLength = pollMidiBufferLength();
 			for (int i = 0; i < bufferlength; i++)
@@ -66,104 +127,142 @@ public:
 					{
 						switch (bindings[j].getTarget())
 						{
-						case 0: //target = 1 | X
-						{
-							if (bindings[j].getType() == 0) //type = 0: Set
-								setX(bindings[j]);
-							else //Scale
-								scaleX(bindings[j]);
-							break;
-						}
-						case 1: //target = 2 | Y
-						{
-							if (bindings[j].getType() == 0) //type = 0: Set
-								setY(bindings[j]);
-							else //Scale
-								scaleY(bindings[j]);
-							break;
-						}
-						case 2: //target = 3 | Size
-						{
-							if (bindings[j].getType() == 0) //type = 0: Set
-								setSize(bindings[j]);
-							else //Scale
-								scaleSize(bindings[j]);
-							break;
-						}
-						case 3: //target = 4 | Rotation
-						{
-							if (bindings[j].getType() == 0) //type = 0: Set
-								setRotation(bindings[j]);
-							else //Scale
-								scaleRotation(bindings[j]);
-							break;
-						}
-						case 4: //target = 5 | Alpha
-						{
-							if (bindings[j].getType() == 0) //type = 0: Set
-								setAlpha(bindings[j]);
-							else //Scale
-								scaleAlpha(bindings[j]);
-							break;
-						}
-						default: // code to be executed if n doesn't match any cases
-							cout << "Failed to execute Binding!" << endl;
+							case 0: //target = 1 | X
+							{
+								if (bindings[j].getType() == 0) //type = 0: Set
+									setX(bindings[j], a, j);
+								else //Scale
+									scaleX(bindings[j], a, j);
+								break;
+							}
+
+							case 1: //target = 2 | Y
+							{
+								if (bindings[j].getType() == 0) //type = 0: Set
+									setY(bindings[j], a, j);
+								else //Scale
+									scaleY(bindings[j], a, j);
+								break;
+							}
+
+							case 2: //target = 3 | Size
+							{
+								if (bindings[j].getType() == 0) //type = 0: Set
+									setSize(bindings[j], a, j);
+								else //Scale
+									scaleSize(bindings[j], a, j);
+								break;
+							}
+
+							case 3: //target = 4 | Rotation
+							{
+								if (bindings[j].getType() == 0) //type = 0: Set
+									setRotation(bindings[j], a, j);
+								else //Scale
+									scaleRotation(bindings[j], a, j);
+								break;
+							}
+
+							//case 4: //target = 5 | Alpha
+							//{
+							//	if (bindings[j].getType() == 0) //type = 0: Set
+							//		setAlpha(bindings[j], a);
+							//	else //Scale
+							//		scaleAlpha(bindings[j], a);
+							//	break;
+							//}
+
+							default: // code to be executed if n doesn't match any cases
+								cout << "Failed to execute Binding!" << endl;
 						}
 					}
 				}
 			}
 		}
 	}
+
 #pragma region X
-	void setX(Binding b)
+	void setX(Binding b, RenderWindow* a, int i)
 	{
-
+		Sprite* s = a->sprites[i];
+		s->setX(b.getAmount());
 	}
-	void scaleX(Binding b)
+	void scaleX(Binding b, RenderWindow* a, int i)
 	{
-
+		Sprite* s = a->sprites[i];
+		s->setX(s->getX() * b.getAmount());
 	}
 #pragma endregion
 #pragma region Y
-	void setY(Binding b)
+	void setY(Binding b, RenderWindow* a, int i)
 	{
-
+		Sprite* s = a->sprites[i];
+		s->setY(b.getAmount());
 	}
-	void scaleY(Binding b)
+	void scaleY(Binding b, RenderWindow* a, int i)
 	{
-
+		Sprite* s = a->sprites[i];
+		s->setY(s->getX() * b.getAmount());
+	}
+#pragma endregion
+#pragma region Width
+	void setWidth(Binding b, RenderWindow* a, int i)
+	{
+		Sprite* s = a->sprites[i];
+		s->setWidth(b.getAmount());
+	}
+	void scaleWidth(Binding b, RenderWindow* a, int i)
+	{
+		Sprite* s = a->sprites[i];
+		s->setWidth(s->getX() * b.getAmount());
+	}
+#pragma endregion
+#pragma region Height
+	void setHeight(Binding b, RenderWindow* a, int i)
+	{
+		Sprite* s = a->sprites[i];
+		s->setHeight(b.getAmount());
+	}
+	void scaleHeight(Binding b, RenderWindow* a, int i)
+	{
+		Sprite* s = a->sprites[i];
+		s->setHeight(s->getX() * b.getAmount());
 	}
 #pragma endregion
 #pragma region Size
-	void setSize(Binding b)
+	void setSize(Binding b, RenderWindow* a, int i)
 	{
-
+		Sprite* s = a->sprites[i];
+		s->setScale(b.getAmount());
 	}
-	void scaleSize(Binding b)
+	void scaleSize(Binding b, RenderWindow* a, int i)
 	{
-
+		Sprite* s = a->sprites[i];
+		s->setScale(s->getX() * b.getAmount());
 	}
 #pragma endregion
 #pragma region Rotation
-	void setRotation(Binding b)
+	void setRotation(Binding b, RenderWindow* a, int i)
 	{
-
+		Sprite* s = a->sprites[i];
+		s->setRotation(b.getAmount());
 	}
-	void scaleRotation(Binding b)
+	void scaleRotation(Binding b, RenderWindow* a, int i)
 	{
-
-	}
-#pragma endregion
-#pragma region Alpha
-	void scaleAlpha(Binding b)
-	{
-
-	}
-	void setAlpha(Binding b)
-	{
-
+		Sprite* s = a->sprites[i];
+		s->setRotation(s->getX() * b.getAmount());
 	}
 #pragma endregion
+//#pragma region Alpha
+//	void scaleAlpha(Binding b, RenderWindow* a)
+//	{
+//
+//	}
+//	void setAlpha(Binding b, RenderWindow* a)
+//	{
+//
+//	}
+//#pragma endregion
 private:
 	MidiModule* midimod;
 	vector<Binding> bindings;
