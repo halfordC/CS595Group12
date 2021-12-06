@@ -17,7 +17,7 @@ public:
 	Translator();
 	void updateBindings();
 	void pushBinding(Binding* b);
-	std::vector<Binding*> getBindings();
+	Binding** getBindings();
 	void translate(RenderWindow* a, MidiModule* myMidiModule);
 	void setX(Binding* b, RenderWindow* a, int i);
 	void scaleX(Binding* b, RenderWindow* a, int i);
@@ -33,5 +33,6 @@ public:
 	void scaleRotation(Binding* b, RenderWindow* a, int i);
 private:
 	MidiModule* midimod;
-	std::vector<Binding*> bindings;
+	Binding* bindings[200];
+	int bindingsAddIndex;
 };

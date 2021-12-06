@@ -13,6 +13,7 @@
 #include "RenderWindow.hpp"
 #include "imgParameters.hpp"
 #include "Translator.h"
+#include "Binding.hpp"
 
 
 using std::cout; using std::cin;
@@ -21,6 +22,8 @@ using std::endl; using std::string;
 imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, Translator* t)
 {
 	layerBinding = new Binding("NoPath", 0, 0, 0, 0, 0, 0, 0); //set bindings for this layer to 0. 
+
+	//layerImageBinder = new ImageBinder();
 
 	char layerChar = layerNum + 48;
 	char layerArray[2] = { layerChar, };
@@ -31,7 +34,7 @@ imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_wind
 	midiParamSelected = false;
 
 	imgKissGUI = kissGUI;
-	translator = t;
+	imgTranslator = t;
 	kissGUI->fillMidiParam(&midiParamList);
 	kissGUI->fillImageParam(&imageParamList);
 	kissGUI->kiss_window_new(&binding, inWindow, 1, x, y, windowWidth, windowHeight);
@@ -144,9 +147,9 @@ void imgParameters::selectMidiParamEvent(SDL_Event* e)
 				//We are at the text box entry index of what we clicked on, do the clicked action. 
 				//so it is important we know what is here. 
 
-				if (!strcmp(contents, "Note Off")) layerBinding->setMessageType(0);
-				else if (!strcmp(contents, "Note On")) layerBinding->setMessageType(1);
-				else if (!strcmp(contents, "Control Change")) layerBinding->setMessageType(2);
+				//if (!strcmp(contents, "Note Off")) layerBinding->setMessageType(0);
+				//else if (!strcmp(contents, "Note On")) layerBinding->setMessageType(1);
+				//else if (!strcmp(contents, "Control Change")) layerBinding->setMessageType(2);
 				listenFilter = i;
 			}
 		}
@@ -162,13 +165,14 @@ void imgParameters::selectImageParamEvent(SDL_Event* e)
 		//do stuff like the previous box up there
 		
 		char* contents = imgParam.entry.text;
+		/*
 		if (!strcmp(contents, "Scale X")) layerBinding->setTarget(0);
 		else if (!strcmp(contents, "Scale Y")) layerBinding->setTarget(1);
 		else if (!strcmp(contents, "Scale Width")) layerBinding->setTarget(2);
 		else if (!strcmp(contents, "Scale Height")) layerBinding->setTarget(3);
 		else if (!strcmp(contents, "Scale Rotation")) layerBinding->setTarget(4);
 		else if (!strcmp(contents, "Scale Size")) layerBinding->setTarget(5);
-
+		*/
 		imageParamSelected = true;
 	}
 }
@@ -180,7 +184,7 @@ void imgParameters::typeFilePath(SDL_Event* e)
 	{
 		char* inputText = filePathEntry.text;
 		//do stuff with inputText
-		layerBinding->setPath(inputText);
+		//layerBinding->setPath(inputText);
 	}
 }
 
@@ -299,7 +303,7 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
 				myMidiModule->messagesParsed(); //this clears the flag, and waits for a new message.
 			}
 		}
-		//translator->pushBinding(layerBinding);
+		imgTranslator->pushBinding(layerBinding);
 		//translator->updateBindings();
 	}
 }

@@ -136,6 +136,7 @@ int main(int argc, char* args[])
 			upsCounter = 0;
 
 			// Simulate directory change every 4 seconds.
+			/*
 			secondCounter++;
 			if (secondCounter == 4)
 			{
@@ -151,6 +152,7 @@ int main(int argc, char* args[])
 				}
 				secondCounter = 0;
 			}
+			*/
 		}
 
 	}

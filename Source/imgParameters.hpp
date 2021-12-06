@@ -10,6 +10,7 @@
 #include "midiModule.h"
 #include "RenderWindow.hpp"
 #include "Translator.h"
+#include "ImageBinder.h"
 
 #define windowWidth 480
 #define windowHeight 90
@@ -49,11 +50,12 @@ public:
 private:
 	SDL_Event* e;
 	myKissGUI* imgKissGUI;
-	Translator* translator;
+	Translator* imgTranslator;
 	int listenFilter;
 	bool warning;
 	bool imageParamSelected;
 	bool midiParamSelected;
 	Binding* layerBinding;
+	ImageBinder* layerImageBinder;
 
 };

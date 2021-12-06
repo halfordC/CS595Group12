@@ -21,6 +21,8 @@ Translator::Translator() //const RenderWindow &a maybe as a argument to get spri
 	vector<string> txtbindings;
 	vector<string> bindingtokens;
 
+	bindingsAddIndex = 0;
+
 	string str;
 	std::ifstream infile;
 	infile.open("bindings.txt");
@@ -89,7 +91,9 @@ Translator::Translator() //const RenderWindow &a maybe as a argument to get spri
 			if (p != "" && trig != NULL && sx != NULL && sy != NULL && mTyp != NULL && tar != NULL && typ != NULL && amnt != NULL)
 			{
 				Binding* temp = new Binding(p, sx, sy, trig, mTyp, tar, typ, amnt);
-				bindings.push_back(temp);
+				bindings[bindingsAddIndex] = temp;
+				bindingsAddIndex++;
+				//bindings.push_back(temp);
 			}
 			else
 				cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
@@ -104,25 +108,25 @@ void Translator::updateBindings()
 		if (file.is_open())
 		{
 			//for (Binding* b : bindings)
-			for (int i = 0; i < bindings.size(); ++i)
+			for (int i = 0; i < bindingsAddIndex-1; ++i)
 			{
 				bindingstr = "";
 
-				bindingstr.append(strcat("Path:", bindings.at(i)->getPath().c_str()));
+				bindingstr.append(strcat("Path:", bindings[i]->getPath().c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("StartX:", std::to_string(bindings.at(i)->getStartX()).c_str()));
+				bindingstr.append(strcat("StartX:", std::to_string(bindings[i]->getStartX()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("StartY:", std::to_string(bindings.at(i)->getStartY()).c_str()));
+				bindingstr.append(strcat("StartY:", std::to_string(bindings[i]->getStartY()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Trigger:", std::to_string(bindings.at(i)->getTrigger()).c_str()));
+				bindingstr.append(strcat("Trigger:", std::to_string(bindings[i]->getTrigger()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("MessageType:", std::to_string(bindings.at(i)->getMessageType()).c_str()));
+				bindingstr.append(strcat("MessageType:", std::to_string(bindings[i]->getMessageType()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Target:", std::to_string(bindings.at(i)->getTarget()).c_str()));
+				bindingstr.append(strcat("Target:", std::to_string(bindings[i]->getTarget()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("ChangeType:", std::to_string(bindings.at(i)->getType()).c_str()));
+				bindingstr.append(strcat("ChangeType:", std::to_string(bindings[i]->getType()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Amount:", std::to_string(bindings.at(i)->getAmount()).c_str()));
+				bindingstr.append(strcat("Amount:", std::to_string(bindings[i]->getAmount()).c_str()));
 				bindingstr.append("\n");
 
 				file << bindingstr;
@@ -132,10 +136,11 @@ void Translator::updateBindings()
 
 void Translator::pushBinding(Binding* b)
 {
-	bindings.push_back(b);
+	bindings[bindingsAddIndex] = b;
+	bindingsAddIndex++;
 }
 
-std::vector<Binding*> Translator::getBindings()
+Binding** Translator::getBindings()
 {
 	return bindings;
 }
@@ -150,7 +155,7 @@ std::vector<Binding*> Translator::getBindings()
 			//int bufferLength = pollMidiBufferLength();
 			for (int i = 0; i < bufferlength; i++)
 			{
-				for (int j = 0; j < bindings.size(); j++)
+				for (int j = 0; j < bindingsAddIndex-1; j++)
 				{
 					if (bindings[j]->getTrigger() != NULL && bindings[j]->getTrigger() == buffer[i].getNoteNumber())
 					{
