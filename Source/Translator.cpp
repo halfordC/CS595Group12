@@ -103,25 +103,26 @@ void Translator::updateBindings()
 		string bindingstr = "";
 		if (file.is_open())
 		{
-			for (Binding* b : bindings)
+			//for (Binding* b : bindings)
+			for (int i = 0; i < bindings.size(); ++i)
 			{
 				bindingstr = "";
 
-				bindingstr.append(strcat("Path:", b->getPath().c_str()));
+				bindingstr.append(strcat("Path:", bindings.at(i)->getPath().c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("StartX:", std::to_string(b->getStartX()).c_str()));
+				bindingstr.append(strcat("StartX:", std::to_string(bindings.at(i)->getStartX()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("StartY:", std::to_string(b->getStartY()).c_str()));
+				bindingstr.append(strcat("StartY:", std::to_string(bindings.at(i)->getStartY()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Trigger:", std::to_string(b->getTrigger()).c_str()));
+				bindingstr.append(strcat("Trigger:", std::to_string(bindings.at(i)->getTrigger()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("MessageType:", std::to_string(b->getMessageType()).c_str()));
+				bindingstr.append(strcat("MessageType:", std::to_string(bindings.at(i)->getMessageType()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Target:", std::to_string(b->getTarget()).c_str()));
+				bindingstr.append(strcat("Target:", std::to_string(bindings.at(i)->getTarget()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("ChangeType:", std::to_string(b->getType()).c_str()));
+				bindingstr.append(strcat("ChangeType:", std::to_string(bindings.at(i)->getType()).c_str()));
 				bindingstr.append(",");
-				bindingstr.append(strcat("Amount:", std::to_string(b->getAmount()).c_str()));
+				bindingstr.append(strcat("Amount:", std::to_string(bindings.at(i)->getAmount()).c_str()));
 				bindingstr.append("\n");
 
 				file << bindingstr;
@@ -141,7 +142,7 @@ std::vector<Binding*> Translator::getBindings()
 
 	void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 	{
-		if (midimod->hasNewMidiMessage())
+		if (myMidiModule->hasNewMidiMessage())
 		{
 			//Grab the offered up midiMessage from the midi input/controller
 			vector<juce::MidiMessage> buffer = myMidiModule->getMidiBuffer();
