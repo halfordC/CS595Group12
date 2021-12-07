@@ -33,6 +33,10 @@ public:
 	kiss_button browsePath;
 	kiss_button midiLearn;
 	kiss_label IDNum;
+	kiss_button removeBinding;
+	kiss_entry startX;
+	kiss_entry startY;
+	kiss_combobox selector;
 
 	kiss_array midiParamList;
 	kiss_array imageParamList;

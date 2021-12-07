@@ -23,14 +23,15 @@ imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_wind
 	imgKissGUI = kissGUI;
 	kissGUI->fillMidiParam(&midiParamList);
 	kissGUI->fillImageParam(&imageParamList);
-	kissGUI->kiss_window_new(&binding, inWindow, 1, x, y, 480, 90);
-	kissGUI->kiss_combobox_new(&imgParam, &binding, "Image Param", &imageParamList, binding.rect.x + 5, binding.rect.y + 50, 120, 100);
-	kissGUI->kiss_combobox_new(&midiParam, &binding, "Midi Param", &midiParamList, binding.rect.x + 140, binding.rect.y + 50, 110, 100);
-	kissGUI->kiss_entry_new(&noteEntry, &binding, 1, "Note/CC", binding.rect.x + 270, binding.rect.y + 50, 100);
-	kissGUI->kiss_entry_new(&filePathEntry, &binding, 1, "FilePath", binding.rect.x + 5, binding.rect.y + 10, 400);
-	kissGUI->kiss_button_new(&browsePath, &binding, "Browse", binding.rect.x + 410, binding.rect.y + 15);
-	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 370, binding.rect.y + 55);
-	kissGUI->kiss_label_new(&IDNum, &binding, layerArray, binding.rect.x + 440, binding.rect.y + 57);
+	kissGUI->kiss_window_new(&binding, inWindow, 1, inWindow->rect.x + 10, y, inWindow->rect.w - 20, 130);
+	kissGUI->kiss_combobox_new(&imgParam, &binding, "Image Param", &imageParamList, binding.rect.x + 70, binding.rect.y + 50, 120, 100);
+	kissGUI->kiss_combobox_new(&midiParam, &binding, "Midi Param", &midiParamList, binding.rect.x + 210, binding.rect.y + 50, 110, 100);
+	kissGUI->kiss_entry_new(&noteEntry, &binding, 1, "Note/CC", binding.rect.x + 340, binding.rect.y + 50, 100);
+	kissGUI->kiss_entry_new(&filePathEntry, &binding, 1, "FilePath", binding.rect.x + 35, binding.rect.y + 10, 465);
+	
+	kissGUI->kiss_button_new(&browsePath, &binding, "Browse", binding.rect.x + 505, binding.rect.y + 14);
+	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 440, binding.rect.y + 55);
+	kissGUI->kiss_label_new(&IDNum, &binding, layerArray, binding.rect.x + 15, binding.rect.y + 15);
 
 	binding.visible = 1;
 }

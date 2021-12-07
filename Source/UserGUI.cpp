@@ -55,13 +55,13 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 
 	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 465,20,150,100);
 
-	kissGUI->kiss_button_new(&addBinding, &window, "Add", 40, 370);
-	kissGUI->kiss_button_new(&removeBinding, &window, "Remove", 120, 370);
-	kissGUI->kiss_button_new(&startButton, &window, "Start", 550, 430);
+	kissGUI->kiss_button_new(&addBinding, &window, "Add", 40, 440);
+	kissGUI->kiss_button_new(&removeBinding, &window, "Remove", 120, 440);
+	kissGUI->kiss_button_new(&startButton, &window, "Start", 555, 440);
 
 
-	kissGUI->kiss_upbutton_new(&scrollUp, &window, 530, 65);
-	kissGUI->kiss_downbutton_new(&scrollDown, &window, 530, 340);
+	kissGUI->kiss_upbutton_new(&scrollUp, &window, 610, 65);
+	kissGUI->kiss_downbutton_new(&scrollDown, &window, 610, 410);
 
 
 	label.textcolor.r = 255;

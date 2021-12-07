@@ -20,10 +20,10 @@ using std::endl; using std::string;
 Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow)
 {
 	sceneKissGUI = kissGUI;
-	sceneKissGUI->kiss_window_new(&sceneWindow, mainWindow, 1, 30, 60, 500, 300);
+	sceneKissGUI->kiss_window_new(&sceneWindow, mainWindow, 1, mainWindow->rect.x + 10, mainWindow->rect.y + 60, mainWindow->rect.w - 40, mainWindow->rect.h - 110);
 
 	addImgParamIndex = 0; //this is the number of imgParam objects in our ImgParam array.
-	staticX = 40;
+	staticX = 20;
 	currentY = 70;
 	imgParameters *firstIMPar = new imgParameters(staticX, currentY, addImgParamIndex + 1, kissGUI, &sceneWindow, addImgParamIndex + 1);
 	imgParArray[addImgParamIndex] = firstIMPar;
@@ -39,7 +39,7 @@ void Scene::addImg()
 	if (addImgParamIndex < 15)
 	{
 		 
-		imgParameters* nextIMPar = new imgParameters(40, currentY, addImgParamIndex + 1, sceneKissGUI, &sceneWindow, addImgParamIndex + 1);
+		imgParameters* nextIMPar = new imgParameters(10, currentY, addImgParamIndex + 1, sceneKissGUI, &sceneWindow, addImgParamIndex + 1);
 		imgParArray[addImgParamIndex] = nextIMPar;
 		currentY += 90;
 		addImgParamIndex++;
