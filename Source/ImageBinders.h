@@ -1,3 +1,4 @@
+#pragma once
 #include <stdint.h>
 #include <stdio.h>
 #include <iostream>
@@ -12,7 +13,7 @@ class ImageBinders
 {
 public:
 	ImageBinders();
-	~ImageBinders();
+	//~ImageBinders();
 
 	std::string path;
 	std::vector<CCBinding*> ImageCCBindings;

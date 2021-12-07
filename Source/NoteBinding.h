@@ -1,3 +1,4 @@
+#pragma once
 #include <stdint.h>
 #include <iostream>
 #include <string>
@@ -7,8 +8,8 @@
 class NoteBinding 
 {
 public:
-	NoteBinding();
-	~NoteBinding();
+	NoteBinding::NoteBinding();
+	//~NoteBinding();
 
 	uint8_t noteNumber; //value from 0 to 127
 	uint8_t noteChannel; //value from 0 to 15

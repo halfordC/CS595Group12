@@ -33,9 +33,9 @@ public:
 	kiss_button browsePath;
 	kiss_button midiLearn;
 	kiss_label IDNum;
-	kiss_button removeBinding;
-	kiss_entry startX;
-	kiss_entry startY;
+	kiss_button remove;
+	kiss_entry start;
+	kiss_entry end;
 	kiss_combobox selector;
 
 	kiss_array midiParamList;

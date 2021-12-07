@@ -24,13 +24,16 @@ imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_wind
 	kissGUI->fillMidiParam(&midiParamList);
 	kissGUI->fillImageParam(&imageParamList);
 	kissGUI->kiss_window_new(&binding, inWindow, 1, inWindow->rect.x + 10, y, inWindow->rect.w - 20, 130);
-	kissGUI->kiss_combobox_new(&imgParam, &binding, "Image Param", &imageParamList, binding.rect.x + 70, binding.rect.y + 50, 120, 100);
-	kissGUI->kiss_combobox_new(&midiParam, &binding, "Midi Param", &midiParamList, binding.rect.x + 210, binding.rect.y + 50, 110, 100);
-	kissGUI->kiss_entry_new(&noteEntry, &binding, 1, "Note/CC", binding.rect.x + 340, binding.rect.y + 50, 100);
+	kissGUI->kiss_combobox_new(&imgParam, &binding, "Image Param", &imageParamList, binding.rect.x + 80, binding.rect.y + 50, 120, 100);
+	kissGUI->kiss_combobox_new(&midiParam, &binding, "Midi Param", &midiParamList, binding.rect.x + 220, binding.rect.y + 50, 110, 100);
+	kissGUI->kiss_combobox_new(&selector, &binding, "Binding Selector", &midiParamList, binding.rect.x + 310, binding.rect.y + 90, 200, 100);
+	kissGUI->kiss_entry_new(&noteEntry, &binding, 1, "Note/CC", binding.rect.x + 350, binding.rect.y + 50, 100);
 	kissGUI->kiss_entry_new(&filePathEntry, &binding, 1, "FilePath", binding.rect.x + 35, binding.rect.y + 10, 465);
-	
+	kissGUI->kiss_entry_new(&start, &binding, 1, "Start (0-1)", binding.rect.x + 10, binding.rect.y + 90, 130);
+	kissGUI->kiss_entry_new(&end, &binding, 1, "End (0-1)", binding.rect.x + 150, binding.rect.y + 90, 130);
+	kissGUI->kiss_button_new(&remove, &binding, "Remove", binding.rect.x + 10, binding.rect.y + 54);
 	kissGUI->kiss_button_new(&browsePath, &binding, "Browse", binding.rect.x + 505, binding.rect.y + 14);
-	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 440, binding.rect.y + 55);
+	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 460, binding.rect.y + 54);
 	kissGUI->kiss_label_new(&IDNum, &binding, layerArray, binding.rect.x + 15, binding.rect.y + 15);
 
 	binding.visible = 1;
@@ -41,12 +44,16 @@ void imgParameters::render(int newY, SDL_Renderer* renderer)
 	//SDL_RenderClear(renderer);
 
 	imgKissGUI->kiss_window_draw(&binding, renderer);
+	imgKissGUI->kiss_button_draw(&remove, renderer);
 	imgKissGUI->kiss_button_draw(&browsePath, renderer);
 	imgKissGUI->kiss_button_draw(&midiLearn, renderer);
 	imgKissGUI->kiss_combobox_draw(&imgParam, renderer);
 	imgKissGUI->kiss_combobox_draw(&midiParam, renderer);
+	imgKissGUI->kiss_combobox_draw(&selector, renderer);
 	imgKissGUI->kiss_entry_draw(&noteEntry, renderer);
 	imgKissGUI->kiss_entry_draw(&filePathEntry, renderer);
+	imgKissGUI->kiss_entry_draw(&start, renderer);
+	imgKissGUI->kiss_entry_draw(&end, renderer);
 	imgKissGUI->kiss_label_draw(&IDNum, renderer);
 
 	//SDL_RenderPresent(renderer);

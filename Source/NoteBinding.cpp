@@ -14,7 +14,3 @@ NoteBinding::NoteBinding()
 	amountOrPosition = 0.0;
 }
 
-NoteBinding::~NoteBinding() 
-{
-	//what goes in a destructor?
-}
