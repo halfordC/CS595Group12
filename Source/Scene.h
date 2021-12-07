@@ -9,6 +9,7 @@
 #include "midiModule.h"
 #include "RenderWindow.hpp"
 #include "imgParameters.hpp"
+#include "ImageBinders.h"
 
 
 class Scene 
@@ -25,6 +26,7 @@ public:
 	kiss_button addImgButton;
 	kiss_window sceneWindow;
 	int currentY;
+	std::vector<ImageBinders*> SceneImageBindings;
 private:
 	int imgParamIndex; //should not go over 15. 
 	int addImgParamIndex;

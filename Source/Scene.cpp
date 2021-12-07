@@ -7,7 +7,6 @@
 
 
 #include "UserGUI.hpp"
-//#include "kiss_sdl.h"
 #include "myKissGui.hpp"
 #include "midiModule.h"
 #include "RenderWindow.hpp"
@@ -43,6 +42,9 @@ void Scene::addImg()
 		imgParArray[addImgParamIndex] = nextIMPar;
 		currentY += 90;
 		addImgParamIndex++;
+
+		ImageBinders* addImageBinding = new ImageBinders();
+		SceneImageBindings.push_back(addImageBinding);
 	}
 }
 
