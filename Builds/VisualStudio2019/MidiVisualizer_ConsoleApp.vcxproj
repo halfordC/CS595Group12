@@ -865,9 +865,13 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_devices.cpp" />
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_core.cpp" />
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_events.cpp" />
+    <ClCompile Include="..\..\Source\CCBinding.cpp" />
+    <ClCompile Include="..\..\Source\ImageBinders.cpp" />
     <ClCompile Include="..\..\Source\imgParameters.cpp" />
+    <ClCompile Include="..\..\Source\LayerBinding.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\myKissGui.cpp" />
+    <ClCompile Include="..\..\Source\NoteBinding.cpp" />
     <ClCompile Include="..\..\Source\RenderWindow.cpp" />
     <ClCompile Include="..\..\Source\Scene.cpp" />
     <ClCompile Include="..\..\Source\Translator.cpp" />
@@ -1180,9 +1184,13 @@
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_events\juce_events.h" />
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h" />
     <ClInclude Include="..\..\Source\Binding.hpp" />
+    <ClInclude Include="..\..\Source\CCBinding.h" />
+    <ClInclude Include="..\..\Source\ImageBinders.h" />
     <ClInclude Include="..\..\Source\imgParameters.hpp" />
+    <ClInclude Include="..\..\Source\LayerBinding.h" />
     <ClInclude Include="..\..\Source\midiModule.h" />
     <ClInclude Include="..\..\Source\myKissGui.hpp" />
+    <ClInclude Include="..\..\Source\NoteBinding.h" />
     <ClInclude Include="..\..\Source\RenderWindow.hpp" />
     <ClInclude Include="..\..\Source\Scene.h" />
     <ClInclude Include="..\..\Source\Sprite.hpp" />
