@@ -46,8 +46,8 @@ void Scene::addImg()
 		currentY += 90;
 		addImgParamIndex++;
 
-		//ImageBinders* addImageBinding = new ImageBinders();
-		//SceneImageBindings.push_back(addImageBinding);
+		ImageBinders* addImageBinding = new ImageBinders();
+		SceneImageBindings.push_back(addImageBinding);
 	}
 }
 
