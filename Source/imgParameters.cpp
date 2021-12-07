@@ -26,7 +26,7 @@ imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_wind
 	kissGUI->kiss_window_new(&binding, inWindow, 1, inWindow->rect.x + 10, y, inWindow->rect.w - 20, 130);
 	kissGUI->kiss_combobox_new(&imgParam, &binding, "Image Param", &imageParamList, binding.rect.x + 80, binding.rect.y + 50, 120, 100);
 	kissGUI->kiss_combobox_new(&midiParam, &binding, "Midi Param", &midiParamList, binding.rect.x + 220, binding.rect.y + 50, 110, 100);
-	kissGUI->kiss_combobox_new(&selector, &binding, "Binding Selector", &midiParamList, binding.rect.x + 310, binding.rect.y + 90, 200, 100);
+	kissGUI->kiss_combobox_new(&selector, &binding, "Binding Selector", &bindingList, binding.rect.x + 310, binding.rect.y + 90, 200, 100);
 	kissGUI->kiss_entry_new(&noteEntry, &binding, 1, "Note/CC", binding.rect.x + 350, binding.rect.y + 50, 100);
 	kissGUI->kiss_entry_new(&filePathEntry, &binding, 1, "FilePath", binding.rect.x + 35, binding.rect.y + 10, 465);
 	kissGUI->kiss_entry_new(&start, &binding, 1, "Start (0-1)", binding.rect.x + 10, binding.rect.y + 90, 130);
@@ -138,6 +138,15 @@ void imgParameters::selectImageParamEvent(SDL_Event* e)
 	}
 }
 
+void imgParameters::bindingSelectorEvent(SDL_Event* e)
+{
+	int draw = 1;
+	if (imgKissGUI->kiss_combobox_event(&selector, e, &draw))
+	{
+
+	}
+}
+
 void imgParameters::typeFilePath(SDL_Event* e)
 {
 	int draw = 1;
@@ -145,6 +154,24 @@ void imgParameters::typeFilePath(SDL_Event* e)
 	{
 		char* inputText = filePathEntry.text;
 		//do stuff with inputText
+
+	}
+}
+
+void imgParameters::startLocation(SDL_Event* e)
+{
+	int draw = 1;
+	if (imgKissGUI->kiss_entry_event(&start, e, &draw))
+	{
+
+	}
+}
+
+void imgParameters::endLocation(SDL_Event* e)
+{
+	int draw = 1;
+	if (imgKissGUI->kiss_entry_event(&end, e, &draw))
+	{
 
 	}
 }
@@ -160,7 +187,7 @@ void imgParameters::midiLearnEvent(SDL_Event* e)
 	}
 }
 
-void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)
+void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)//save binding and add it to the binding selector dropdown?
 {
 	int draw = 1;
 	bool isMidiType = false;

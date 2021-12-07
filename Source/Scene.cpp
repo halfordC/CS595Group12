@@ -106,7 +106,10 @@ void Scene::sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRe
 	{
 		imgParArray[i]->selectMidiParamEvent(e);
 		imgParArray[i]->selectImageParamEvent(e);
+		imgParArray[i]->bindingSelectorEvent(e);
 		imgParArray[i]->typeFilePath(e);
+		imgParArray[i]->startLocation(e);
+		imgParArray[i]->endLocation(e);
 		imgParArray[i]->midiLearnEvent(e);
 		imgParArray[i]->midiListenButton(e, myMidiModule);
 		imgParArray[i]->browseEvent(e, myRenderWindow);

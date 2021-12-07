@@ -19,6 +19,9 @@ public:
 	void cleanUp();
 	void selectMidiParamEvent(SDL_Event* e);
 	void selectImageParamEvent(SDL_Event* e);
+	void bindingSelectorEvent(SDL_Event* e);
+	void startLocation(SDL_Event* e);
+	void endLocation(SDL_Event* e);
 	void typeFilePath(SDL_Event* e);
 	void midiLearnEvent(SDL_Event* e);
 	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
@@ -40,6 +43,7 @@ public:
 
 	kiss_array midiParamList;
 	kiss_array imageParamList;
+	kiss_array bindingList;
 
 private:
 	SDL_Event* e;
