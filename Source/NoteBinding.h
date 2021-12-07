@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
+#include <stdio.h>
+
 
 class NoteBinding 
 {
