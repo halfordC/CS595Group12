@@ -21,7 +21,7 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 {
 	kissGUI = new myKissGUI();
 	kissGUI->kiss_array_new(&objects );
-	renderer = kissGUI->kiss_init(p_title, &objects, 640, 480);
+	renderer = kissGUI->kiss_init(p_title, &objects, 640, 530);
 
 	char message[KISS_MAX_LENGTH];
 	strcpy(message, "Hello World!");
@@ -30,7 +30,7 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	kissGUI->fillConnectedMidiDevices(&connectedMidiDevices, myMidiModule); // fill midi device dropdown
 
 	kissGUI->kiss_array_new(&objects); //init all the stuff that kiss expects in an array
-	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 480);
+	kissGUI->kiss_window_new(&window, NULL, 1, 0, 0, 640, 530);
 
 
 	//We want to instantite the first scene after we instantiate the window. 
@@ -55,13 +55,13 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 
 	kissGUI->kiss_combobox_new(&midiDeviceDrop, &window, "Midi Devices", &connectedMidiDevices, 465,20,150,100);
 
-	kissGUI->kiss_button_new(&addBinding, &window, "Add", 40, 440);
-	kissGUI->kiss_button_new(&removeBinding, &window, "Remove", 120, 440);
-	kissGUI->kiss_button_new(&startButton, &window, "Start", 555, 440);
+	kissGUI->kiss_button_new(&addBinding, &window, "Add", 20, 490);
+	kissGUI->kiss_button_new(&removeBinding, &window, "Remove", 100, 490);
+	kissGUI->kiss_button_new(&startButton, &window, "Start", 535, 490);
 
 
 	kissGUI->kiss_upbutton_new(&scrollUp, &window, 610, 65);
-	kissGUI->kiss_downbutton_new(&scrollDown, &window, 610, 410);
+	kissGUI->kiss_downbutton_new(&scrollDown, &window, 610, 460);
 
 
 	label.textcolor.r = 255;

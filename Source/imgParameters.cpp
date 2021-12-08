@@ -95,6 +95,21 @@ void imgParameters::imgScroll(int direction)//shift should be the same distance 
 	filePathEntry.rect.y += (direction * addY);
 	filePathEntry.texty += (direction * addY);
 	IDNum.rect.y += (direction * addY);
+
+	start.rect.y += (direction * addY);
+	start.texty += (direction * addY);
+	end.rect.y += (direction * addY);
+	end.texty += (direction * addY);
+
+	remove.rect.y += (direction * addY);
+	remove.texty += (direction * addY);
+
+	selector.textbox.rect.y += (direction * addY);
+	selector.vscrollbar.downrect.y += (direction * addY);
+	selector.vscrollbar.sliderrect.y += (direction * addY);
+	selector.vscrollbar.uprect.y += (direction * addY);
+	selector.entry.rect.y += (direction * addY);
+	selector.entry.texty += (direction * addY);
 }
 
 void imgParameters::cleanUp()
