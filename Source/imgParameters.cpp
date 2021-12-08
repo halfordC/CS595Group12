@@ -289,6 +289,5 @@ void imgParameters::browseEvent(SDL_Event* e, RenderWindow myRenderWindow)
 	if (imgKissGUI->kiss_button_event(&browsePath, e, &draw))
 	{
 		myRenderWindow.openSceneFolder();
-		cout << index << "\n";
 	}
 }
