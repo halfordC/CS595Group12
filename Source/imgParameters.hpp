@@ -14,7 +14,7 @@
 class imgParameters
 {
 public:
-	imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum);
+	imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum);
 
 	void render(int newY, SDL_Renderer* renderer);//Alternatively could modify coordinates for scrolling in their own method
 	void cleanUp();
@@ -28,6 +28,8 @@ public:
 	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
 	void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
 	void imgScroll(int direction);
+
+	int getIndex() { return index; };
 
 	kiss_window binding;
 	kiss_combobox imgParam;
@@ -50,4 +52,5 @@ private:
 	SDL_Event* e;
 	myKissGUI* imgKissGUI;
 	int listenFilter;
+	int index;
 };

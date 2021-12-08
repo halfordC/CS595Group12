@@ -20,10 +20,14 @@ public:
 	void cleanUp();
 	void setSprites(std::vector<Sprite*>);
 	std::vector<Sprite*> getSprites();
-  std::filesystem::path cwd;
+	std::filesystem::path cwd;
 	std::vector<Sprite*> sprites;
 	SDL_DisplayMode mode;
 	SDL_Window* window;
+
+	// Trying to connect shit
+	Sprite* arr_sprites[15];
+
 private:
 	SDL_Renderer* renderer;
 	SDL_Texture* image;

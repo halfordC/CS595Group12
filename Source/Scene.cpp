@@ -27,7 +27,7 @@ Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow)
 	addImgParamIndex = 0; //this is the number of imgParam objects in our ImgParam array.
 	staticX = 20;
 	currentY = 70;
-	imgParameters *firstIMPar = new imgParameters(staticX, currentY, addImgParamIndex + 1, kissGUI, &sceneWindow, addImgParamIndex + 1);
+	imgParameters *firstIMPar = new imgParameters(staticX, currentY, addImgParamIndex, kissGUI, &sceneWindow, addImgParamIndex + 1);
 	imgParArray[addImgParamIndex] = firstIMPar;
 	imgParamIndex = 0;
 	currentY += addY;
@@ -44,7 +44,7 @@ void Scene::addImg()
 	if (addImgParamIndex < 15)
 	{
 		 
-		imgParameters* nextIMPar = new imgParameters(10, currentY, addImgParamIndex + 1, sceneKissGUI, &sceneWindow, addImgParamIndex + 1);
+		imgParameters* nextIMPar = new imgParameters(10, currentY, addImgParamIndex, sceneKissGUI, &sceneWindow, addImgParamIndex + 1);
 		imgParArray[addImgParamIndex] = nextIMPar;
 		currentY += addY;
 		addImgParamIndex++;

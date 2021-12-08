@@ -29,6 +29,9 @@ public:
 	kiss_window sceneWindow;
 	int currentY;
 	std::vector<ImageBinders*> SceneImageBindings;
+
+	// Using for connecting - Noah
+	std::vector<ImageBinders*> arr_SceneImageBindings[15];
 private:
 	int imgParamIndex; //should not go over 15. 
 	int addImgParamIndex;

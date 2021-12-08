@@ -15,7 +15,10 @@ public:
 	ImageBinders();
 	//~ImageBinders();
 
+	// Not using path
 	std::string path;
+
+	// Using for connecting - Noah
 	std::vector<CCBinding*> ImageCCBindings;
 	std::vector<NoteBinding*> ImageNoteBindings;
 

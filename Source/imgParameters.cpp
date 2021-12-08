@@ -16,10 +16,10 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum)
+imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum)
 {
-	char layerChar = layerNum + 48;
-	char layerArray[2] = { layerChar, };
+	std::string tmp = "" + std::to_string(layerNum);
+	char* layerNumber = const_cast<char*>(tmp.c_str());
 	imgKissGUI = kissGUI;
 	kissGUI->fillMidiParam(&midiParamList);
 	kissGUI->fillImageParam(&imageParamList);
@@ -34,9 +34,10 @@ imgParameters::imgParameters(int x, int y, int id, myKissGUI* kissGUI, kiss_wind
 	kissGUI->kiss_button_new(&remove, &binding, "Remove", binding.rect.x + 10, binding.rect.y + 54);
 	kissGUI->kiss_button_new(&browsePath, &binding, "Browse", binding.rect.x + 505, binding.rect.y + 14);
 	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 460, binding.rect.y + 54);
-	kissGUI->kiss_label_new(&IDNum, &binding, layerArray, binding.rect.x + 15, binding.rect.y + 15);
+	kissGUI->kiss_label_new(&IDNum, &binding, layerNumber, binding.rect.x + 15, binding.rect.y + 15);
 
 	binding.visible = 1;
+	index = p_index;
 }
 
 void imgParameters::render(int newY, SDL_Renderer* renderer)
@@ -288,5 +289,6 @@ void imgParameters::browseEvent(SDL_Event* e, RenderWindow myRenderWindow)
 	if (imgKissGUI->kiss_button_event(&browsePath, e, &draw))
 	{
 		myRenderWindow.openSceneFolder();
+		cout << index << "\n";
 	}
 }
