@@ -108,8 +108,6 @@ void UserGUI::render()
 	
 	kissGUI->kiss_combobox_draw(&midiDeviceDrop, renderer);
 
-
-
 	SDL_RenderPresent(renderer);
 }
 

@@ -1194,6 +1194,7 @@
     <ClInclude Include="..\..\Source\RenderWindow.hpp" />
     <ClInclude Include="..\..\Source\Scene.h" />
     <ClInclude Include="..\..\Source\Sprite.hpp" />
+    <ClInclude Include="..\..\Source\Translator.h" />
     <ClInclude Include="..\..\Source\UserGUI.hpp" />
   </ItemGroup>
   <ItemGroup>

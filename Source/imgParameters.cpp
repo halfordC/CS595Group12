@@ -147,13 +147,18 @@ void imgParameters::bindingSelectorEvent(SDL_Event* e)
 	}
 }
 
-void imgParameters::typeFilePath(SDL_Event* e)
+void imgParameters::typeFilePath(SDL_Event* e, std::string* inString)
 {
 	int draw = 1;
 	if (imgKissGUI->kiss_entry_event(&filePathEntry, e, &draw))
 	{
 		char* inputText = filePathEntry.text;
 		//do stuff with inputText
+
+		std::string returnString(inputText);
+
+		*inString = returnString;
+
 
 	}
 }

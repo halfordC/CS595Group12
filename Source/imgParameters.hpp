@@ -23,7 +23,7 @@ public:
 	void bindingSelectorEvent(SDL_Event* e);
 	void startLocation(SDL_Event* e);
 	void endLocation(SDL_Event* e);
-	void typeFilePath(SDL_Event* e);
+	void typeFilePath(SDL_Event* e, std::string* inString);
 	void midiLearnEvent(SDL_Event* e);
 	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
 	void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);

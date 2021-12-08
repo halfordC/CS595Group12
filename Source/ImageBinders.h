@@ -8,7 +8,7 @@
 #include "CCBinding.h"
 #include "NoteBinding.h"
 
-
+//This class hold the path to an image, and all the bindings associated with that image
 class ImageBinders
 {
 public:
