@@ -61,25 +61,25 @@ void imgParameters::render(int newY, SDL_Renderer* renderer)
 
 void imgParameters::imgScroll(int direction)//shift should be the same distance both ways so direction will just be a negative for up and a positive for down
 {
-	binding.rect.y += (direction * 90);
-	browsePath.rect.y += (direction * 90);
-	browsePath.texty += (direction * 90);
-	midiLearn.rect.y += (direction * 90);
-	midiLearn.texty += (direction * 90);
+	binding.rect.y += (direction * addY);
+	browsePath.rect.y += (direction * addY);
+	browsePath.texty += (direction * addY);
+	midiLearn.rect.y += (direction * addY);
+	midiLearn.texty += (direction * addY);
 
-	imgParam.textbox.rect.y += (direction * 90);
-	imgParam.vscrollbar.downrect.y += (direction * 90);
-	imgParam.vscrollbar.sliderrect.y += (direction * 90);
-	imgParam.vscrollbar.uprect.y += (direction * 90);
-	imgParam.entry.rect.y += (direction * 90);
-	imgParam.entry.texty += (direction * 90);
+	imgParam.textbox.rect.y += (direction * addY);
+	imgParam.vscrollbar.downrect.y += (direction * addY);
+	imgParam.vscrollbar.sliderrect.y += (direction * addY);
+	imgParam.vscrollbar.uprect.y += (direction * addY);
+	imgParam.entry.rect.y += (direction * addY);
+	imgParam.entry.texty += (direction * addY);
 
-	midiParam.textbox.rect.y += (direction * 90);
-	midiParam.vscrollbar.downrect.y += (direction * 90);
-	midiParam.vscrollbar.sliderrect.y += (direction * 90);
-	midiParam.vscrollbar.uprect.y += (direction * 90);
-	midiParam.entry.rect.y += (direction * 90);
-	midiParam.entry.texty += (direction * 90);
+	midiParam.textbox.rect.y += (direction * addY);
+	midiParam.vscrollbar.downrect.y += (direction * addY);
+	midiParam.vscrollbar.sliderrect.y += (direction * addY);
+	midiParam.vscrollbar.uprect.y += (direction * addY);
+	midiParam.entry.rect.y += (direction * addY);
+	midiParam.entry.texty += (direction * addY);
 
 	/*int line = imgParam.textbox.selectedline;
 	if (line) {
@@ -90,11 +90,11 @@ void imgParameters::imgScroll(int direction)//shift should be the same distance 
 	imgKissGUI->kiss_combobox_new(&imgParam, &binding, selection, &imageParamList, binding.rect.x + 5, binding.rect.y + 50, 120, 100);
 	imgParam.textbox.selectedline = line;*/
 
-	noteEntry.rect.y += (direction * 90);
-	noteEntry.texty += (direction * 90);
-	filePathEntry.rect.y += (direction * 90);
-	filePathEntry.texty += (direction * 90);
-	IDNum.rect.y += (direction * 90);
+	noteEntry.rect.y += (direction * addY);
+	noteEntry.texty += (direction * addY);
+	filePathEntry.rect.y += (direction * addY);
+	filePathEntry.texty += (direction * addY);
+	IDNum.rect.y += (direction * addY);
 }
 
 void imgParameters::cleanUp()

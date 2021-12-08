@@ -12,6 +12,7 @@
 #include "RenderWindow.hpp"
 #include "Scene.h"
 
+
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
@@ -38,7 +39,6 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	Scene* firstScene = new Scene(kissGUI, &window);
 	sceneArray[addSceneIndex] = firstScene;
 	addSceneIndex++;
-
 
 
 	currentSceneTabX = 50;
@@ -69,6 +69,8 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	
 	cout << "GUI started" << endl;
 }
+
+
 
 /* This method will render the sprites that are held in the sprite vector to the screen.
 	 Sprites are going to be rendered with the center of their rect at the x and y percentages that are
@@ -114,6 +116,12 @@ void UserGUI::render()
 void UserGUI::cleanUp()
 {
 	SDL_DestroyRenderer(renderer);
+}
+
+std::vector<Scene*> UserGUI::getCurrentSceneArray()
+{
+	return sceneArray;
+
 }
 
 void UserGUI::guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow)
@@ -178,10 +186,10 @@ void UserGUI::addSceneEvent(SDL_Event* e)
 		if(addSceneIndex < 15 && addSceneTabIndex < 5) // eventually, more than 5 scenes will make new scroll tabs appear
 		{
 			Scene* nextScene = new Scene(kissGUI, &window);
-			sceneArray[addSceneIndex] = nextScene;
-			addSceneIndex++;
+			sceneArray.push_back(nextScene);
+			addSceneIndex++;  //we don't really need this anymore, but we'll keep it around for now.
 			//then add the scene tab
-
+			addSceneFlag = 1;
 
 			char sceneNumber = addSceneIndex + 48; //turn the number into an ascii character
 			char newScene[8] = { 'S', 'c', 'e', 'n','e', ' ', sceneNumber };

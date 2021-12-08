@@ -30,8 +30,11 @@ Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow)
 	imgParameters *firstIMPar = new imgParameters(staticX, currentY, addImgParamIndex + 1, kissGUI, &sceneWindow, addImgParamIndex + 1);
 	imgParArray[addImgParamIndex] = firstIMPar;
 	imgParamIndex = 0;
-	currentY += 90;
+	currentY += addY;
 	addImgParamIndex = 1;
+
+	ImageBinders* addImageBinding = new ImageBinders();
+	SceneImageBindings.push_back(addImageBinding);
 
 	displayIndex = 0;
 }
@@ -43,7 +46,7 @@ void Scene::addImg()
 		 
 		imgParameters* nextIMPar = new imgParameters(10, currentY, addImgParamIndex + 1, sceneKissGUI, &sceneWindow, addImgParamIndex + 1);
 		imgParArray[addImgParamIndex] = nextIMPar;
-		currentY += 90;
+		currentY += addY;
 		addImgParamIndex++;
 
 		ImageBinders* addImageBinding = new ImageBinders();
@@ -61,7 +64,7 @@ void Scene::removeImg()
 		{
 			sceneScroll(1);
 		}
-		else currentY -= 90;
+		else currentY -= addY;
 	}
 }
 

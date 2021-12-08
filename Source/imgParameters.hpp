@@ -10,6 +10,7 @@
 #include "midiModule.h"
 #include "RenderWindow.hpp"
 
+
 class imgParameters
 {
 public:

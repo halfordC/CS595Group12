@@ -10,7 +10,7 @@
 #include "midiModule.h"
 #include "UserGUI.hpp"
 #include "myKissGui.hpp"
-//#include "Translator.h"
+#include "Translator.h"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
@@ -24,6 +24,7 @@ int main(int argc, char* args[])
 
 	//init Midi Module, get midi input
 	MidiModule* myMidiModule = new MidiModule();
+
 	
 	///Initialze SDL stuff
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
@@ -39,6 +40,8 @@ int main(int argc, char* args[])
 	RenderWindow sceneViewWindow("Scene View Window");
 	sceneViewWindow.enterViewMode();
 	UserGUI gui("GUI Test", myMidiModule);
+
+	Translator* translator = new Translator(&gui);
 
 	SDL_Event event;
 	unsigned int lastTime = SDL_GetTicks();

@@ -5,161 +5,197 @@
 #include <string>
 
 #include "midiModule.h"
-#include "Binding.hpp"
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
+#include "ImageBinders.h"
+#include "NoteBinding.h"
+#include "CCBinding.h"
+#include "Translator.h"
+#include "UserGUI.hpp"
 
 extern std::vector<Sprite>* sprites;
 
-using namespace std;
-namespace fs = std::filesystem;
+//using namespace std;
+using std::cout; using std::cin;
+using std::endl; using std::string;
+using std::vector;
 
-class Translator
+//namespace fs = std::filesystem;
+
+
+
+
+Translator::Translator(UserGUI* InGUI) //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
 {
-public:
-	Translator() //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
+	translatorGUI = InGUI;
+	translatorScenes = translatorGUI->getCurrentSceneArray(); //this may not work? I'm not sure if we need to copy vectors or not. 
+
+	//we will fix the constructor once we get translation working. If we can get midi stuff moving, then we'll work on file io.
+	/*
+	vector<string> txtbindings;
+	vector<string> bindingtokens;
+
+	string str;
+	std::ifstream infile;
+	infile.open("bindings.txt");
+	while (!infile.eof()) // To get you all the lines.
 	{
-		vector<string> txtbindings;
-		vector<string> bindingtokens;
+		getline(infile, str); // Saves the line in str.
+		txtbindings.push_back(str);
+	}
+	infile.close(); //saves lines in txtbindings
 
-		string str;
-		ifstream infile;
-		infile.open("bindings.txt");
-		while (!infile.eof()) // To get you all the lines.
+	string p = "";
+	int trig;
+	int tar;
+	int typ;
+	int amnt;
+
+	//For each binding line tokenize and create bindings
+	for (int i = 0; i < txtbindings.size(); i++)
+	{
+		//split bindings by their label and values
+		str = strtok(&*txtbindings[i].begin(), ",:");
+		while (str.size() != NULL)
 		{
-			getline(infile, str); // Saves the line in str.
-			txtbindings.push_back(str);
+			bindingtokens.push_back(str);
+			str = strtok(NULL, ",");
 		}
-		infile.close(); //saves lines in txtbindings
 
-		string p = "";
-		int trig;
-		int tar;
-		int typ;
-		int amnt;
-
-		//For each binding line tokenize and create bindings
-		for (int i = 0; i < txtbindings.size(); i++)
+		//Check if there are any missing values and reject any incomplete bindings
+		if (bindingtokens.size() == 12)
 		{
-			//split bindings by their label and values
-			str = strtok(&*txtbindings[i].begin(), ",:");
-			while (str.size() != NULL)
+			//grab every other value since even ones are the 
+			for (int i = 0; i < 6; i++)
 			{
-				bindingtokens.push_back(str);
-				str = strtok(NULL, ",");
+				if (bindingtokens[(int)i * 2] == "Path")
+					p = bindingtokens[(int)i + 1];
+				else if (bindingtokens[(int)i * 2] == "Trigger")
+					trig = stoi(bindingtokens[(int)i + 1]);
+				else if (bindingtokens[(int)i * 2] == "MessageType")
+					typ = stoi(bindingtokens[(int)i + 1]);
+				else if (bindingtokens[(int)i * 2] == "Target")
+					tar = stoi(bindingtokens[(int)i + 1]);
+				else if (bindingtokens[(int)i * 2] == "ChangeType")
+					typ = stoi(bindingtokens[(int)i + 1]);
+				else if (bindingtokens[(int)i * 2] == "Amount")
+					amnt = stoi(bindingtokens[(int)i + 1]);
 			}
+		}
+		else
+			cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
 
-			//Check if there are any missing values and reject any incomplete bindings
-			if (bindingtokens.size() == 12)
-			{
-				//grab every other value since even ones are the 
-				for (int i = 0; i < 6; i++)
-				{
-					if (bindingtokens[(int)i * 2] == "Path")
-						p = bindingtokens[(int)i + 1];
-					else if (bindingtokens[(int)i * 2] == "Trigger")
-						trig = stoi(bindingtokens[(int)i + 1]);
-					else if (bindingtokens[(int)i * 2] == "MessageType")
-						typ = stoi(bindingtokens[(int)i + 1]);
-					else if (bindingtokens[(int)i * 2] == "Target")
-						tar = stoi(bindingtokens[(int)i + 1]);
-					else if (bindingtokens[(int)i * 2] == "ChangeType")
-						typ = stoi(bindingtokens[(int)i + 1]);
-					else if (bindingtokens[(int)i * 2] == "Amount")
-						amnt = stoi(bindingtokens[(int)i + 1]);
-				}
-			}
-			else
-				cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
+		if (p != "" && trig != NULL && typ != NULL && tar != NULL && typ != NULL && amnt != NULL)
+		{
+			Binding temp(bindingtokens[1], stoi(bindingtokens[3]), stoi(bindingtokens[5]), stoi(bindingtokens[7]), stoi(bindingtokens[9]), stof(bindingtokens[11]));
+			bindings.push_back(temp);
+		}
+		else
+			cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
+			
+	}
+	*/
+}
 
-			if (p != "" && trig != NULL && typ != NULL && tar != NULL && typ != NULL && amnt != NULL)
-			{
-				Binding temp(bindingtokens[1], stoi(bindingtokens[3]), stoi(bindingtokens[5]), stoi(bindingtokens[7]), stoi(bindingtokens[9]), stof(bindingtokens[11]));
-				bindings.push_back(temp);
-			}
-			else
-				cout << "Incorrect Binding for Path: " << bindingtokens[0] << endl;
+void Translator::updateBindings()
+{
+	//see constructor
+	/*
+	std::ofstream file;
+	file.open("bindings.txt");
+	string bindingstr = "";
+	if (file.is_open())
+	{
+		for (Binding b : bindings)
+		{
+			bindingstr = "";
+
+			bindingstr.append(strcat("Path:", b.getPath().c_str()));
+			bindingstr.append(",");
+			bindingstr.append(strcat("Trigger:", std::to_string(b.getTrigger()).c_str()));
+			bindingstr.append(",");
+			bindingstr.append(strcat("MessageType:", std::to_string(b.getMessageType()).c_str()));
+			bindingstr.append(",");
+			bindingstr.append(strcat("Target:", std::to_string(b.getTarget()).c_str()));
+			bindingstr.append(",");
+			bindingstr.append(strcat("ChangeType:", std::to_string(b.getType()).c_str()));
+			bindingstr.append(",");
+			bindingstr.append(strcat("Amount:", std::to_string(b.getAmount()).c_str()));
+			bindingstr.append("\n");
+
+			file << bindingstr;
 		}
 	}
 
-	void updateBindings()
+	*/
+}
+
+
+//TODO: Refactor with Image Bindings
+void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
+{
+	if (translatorGUI->addSceneFlag) 
 	{
-		ofstream file;
-		file.open("bindings.txt");
-		string bindingstr = "";
-		if (file.is_open())
-		{
-			for (Binding b : bindings)
-			{
-				bindingstr = "";
-
-				bindingstr.append(strcat("Path:", b.getPath().c_str()));
-				bindingstr.append(",");
-				bindingstr.append(strcat("Trigger:", to_string(b.getTrigger()).c_str()));
-				bindingstr.append(",");
-				bindingstr.append(strcat("MessageType:", to_string(b.getMessageType()).c_str()));
-				bindingstr.append(",");
-				bindingstr.append(strcat("Target:", to_string(b.getTarget()).c_str()));
-				bindingstr.append(",");
-				bindingstr.append(strcat("ChangeType:", to_string(b.getType()).c_str()));
-				bindingstr.append(",");
-				bindingstr.append(strcat("Amount:", to_string(b.getAmount()).c_str()));
-				bindingstr.append("\n");
-
-				file << bindingstr;
-			}
-		}
+		translatorScenes = translatorGUI->getCurrentSceneArray();
 	}
-
-	void translate(RenderWindow* a, MidiModule* myMidiModule)
+	if (myMidiModule->hasNewMidiMessage())
 	{
-		if (midimod->hasNewMidiMessage())
+		//Grab the offered up midiMessage from the midi input/controller
+		vector<juce::MidiMessage> buffer = myMidiModule->getMidiBuffer();
+		int bufferlength = buffer.size();
+
+
+		for (int i = 0; i < bufferlength; i++)
 		{
-			//Grab the offered up midiMessage from the midi input/controller
-			vector<juce::MidiMessage> buffer = myMidiModule->getMidiBuffer();
-			int bufferlength = buffer.size();
-			//int bufferLength = pollMidiBufferLength();
-			for (int i = 0; i < bufferlength; i++)
+			Scene* currentScene = translatorScenes[translatorGUI->sceneIndex];
+			//grab the number of images in the current scene
+			int numImages = currentScene->SceneImageBindings.size();
+			for (int j = 0; j< numImages; j++) 
 			{
-				for (int j = 0; j < bindings.size(); j++)
+				ImageBinders* currentImage = currentScene->SceneImageBindings[j];
+				//update each image in the scene:
+				if (buffer[i].isNoteOnOrOff())
 				{
-					if (bindings[j].getTrigger() != NULL && bindings[j].getTrigger() == buffer[i].getNoteNumber())
+					for (int k = 0; k < currentImage->ImageNoteBindings.size(); j++)
 					{
-						switch (bindings[j].getTarget())
+						NoteBinding* currentNoteBinding = currentImage->ImageNoteBindings[j];
+						if (currentNoteBinding->noteNumber != NULL && currentNoteBinding->noteNumber == buffer[i].getNoteNumber())
 						{
+							switch (currentNoteBinding->param)
+							{
 							case 0: //target = 1 | X
 							{
-								if (bindings[j].getType() == 0) //type = 0: Set
-									setX(bindings[j], a, j);
+								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
+									NoteSetX(*currentNoteBinding, a, j);
 								else //Scale
-									scaleX(bindings[j], a, j);
+									NoteScaleX(*currentNoteBinding, a, j);
 								break;
 							}
 
 							case 1: //target = 2 | Y
 							{
-								if (bindings[j].getType() == 0) //type = 0: Set
-									setY(bindings[j], a, j);
+								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
+									NoteSetY(*currentNoteBinding, a, j);
 								else //Scale
-									scaleY(bindings[j], a, j);
+									NoteScaleY(*currentNoteBinding, a, j);
 								break;
 							}
 
 							case 2: //target = 3 | Size
 							{
-								if (bindings[j].getType() == 0) //type = 0: Set
-									setSize(bindings[j], a, j);
+								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
+									NoteSetSize(*currentNoteBinding, a, j);
 								else //Scale
-									scaleSize(bindings[j], a, j);
+									NoteScaleSize(*currentNoteBinding, a, j);
 								break;
 							}
 
 							case 3: //target = 4 | Rotation
 							{
-								if (bindings[j].getType() == 0) //type = 0: Set
-									setRotation(bindings[j], a, j);
+								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
+									NoteSetRotation(*currentNoteBinding, a, j);
 								else //Scale
-									scaleRotation(bindings[j], a, j);
+									NoteScaleRotation(*currentNoteBinding, a, j);
 								break;
 							}
 
@@ -174,84 +210,94 @@ public:
 
 							default: // code to be executed if n doesn't match any cases
 								cout << "Failed to execute Binding!" << endl;
+							}
 						}
+
 					}
 				}
+				if(buffer[i].isController())
+				{
+					//do CC updates here. 
+
+				}
+
+			//we need two seperate loops, one for our Notes, and one for Our CCs. 
 			}
 		}
 	}
+}
 
 #pragma region X
-	void setX(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setX(b.getAmount());
-	}
-	void scaleX(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setX(s->getX() * b.getAmount());
-	}
+void Translator::NoteSetX(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setX(b.amountOrPosition);
+}
+void Translator::NoteScaleX(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setX(s->getX() * b.amountOrPosition);
+}
 #pragma endregion
 #pragma region Y
-	void setY(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setY(b.getAmount());
-	}
-	void scaleY(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setY(s->getX() * b.getAmount());
-	}
+void Translator::NoteSetY(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setY(b.amountOrPosition);
+}
+void Translator::NoteScaleY(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setY(s->getX() * b.amountOrPosition);
+}
 #pragma endregion
 #pragma region Width
-	void setWidth(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setWidth(b.getAmount());
-	}
-	void scaleWidth(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setWidth(s->getX() * b.getAmount());
-	}
+void Translator::NoteSetWidth(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setWidth(b.amountOrPosition);
+}
+void Translator::NoteScaleWidth(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setWidth(s->getX() * b.amountOrPosition);
+}
 #pragma endregion
 #pragma region Height
-	void setHeight(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setHeight(b.getAmount());
-	}
-	void scaleHeight(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setHeight(s->getX() * b.getAmount());
-	}
+void Translator::NoteSetHeight(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setHeight(b.amountOrPosition);
+}
+void Translator::NoteScaleHeight(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setHeight(s->getX() * b.amountOrPosition);
+}
 #pragma endregion
 #pragma region Size
-	void setSize(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setScale(b.getAmount());
-	}
-	void scaleSize(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setScale(s->getX() * b.getAmount());
-	}
+void Translator::NoteSetSize(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setScale(b.amountOrPosition);
+}
+void Translator::NoteScaleSize(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setScale(s->getX() * b.amountOrPosition);
+}
 #pragma endregion
 #pragma region Rotation
-	void setRotation(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setRotation(b.getAmount());
-	}
-	void scaleRotation(Binding b, RenderWindow* a, int i)
-	{
-		Sprite* s = a->sprites[i];
-		s->setRotation(s->getX() * b.getAmount());
-	}
+void Translator::NoteSetRotation(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setRotation(b.amountOrPosition);
+}
+void Translator::NoteScaleRotation(NoteBinding b, RenderWindow* a, int i)
+{
+	Sprite* s = a->sprites[i];
+	s->setRotation(s->getX() * b.amountOrPosition);
+}
 #pragma endregion
 //#pragma region Alpha
 //	void scaleAlpha(Binding b, RenderWindow* a)
@@ -263,7 +309,3 @@ public:
 //
 //	}
 //#pragma endregion
-private:
-	MidiModule* midimod;
-	vector<Binding> bindings;
-};

@@ -11,6 +11,8 @@
 #include "imgParameters.hpp"
 #include "ImageBinders.h"
 
+#define addY 135
+
 
 class Scene 
 {
