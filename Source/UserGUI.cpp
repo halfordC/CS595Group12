@@ -37,7 +37,7 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	sceneIndex = 0;
 	addSceneIndex = 0;
 	Scene* firstScene = new Scene(kissGUI, &window);
-	sceneArray[addSceneIndex] = firstScene;
+	sceneArray.push_back(firstScene);
 	addSceneIndex++;
 
 
