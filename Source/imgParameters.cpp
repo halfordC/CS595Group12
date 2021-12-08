@@ -47,13 +47,15 @@ void imgParameters::render(int newY, SDL_Renderer* renderer)
 	imgKissGUI->kiss_button_draw(&remove, renderer);
 	imgKissGUI->kiss_button_draw(&browsePath, renderer);
 	imgKissGUI->kiss_button_draw(&midiLearn, renderer);
-	imgKissGUI->kiss_combobox_draw(&imgParam, renderer);
-	imgKissGUI->kiss_combobox_draw(&midiParam, renderer);
-	imgKissGUI->kiss_combobox_draw(&selector, renderer);
-	imgKissGUI->kiss_entry_draw(&noteEntry, renderer);
-	imgKissGUI->kiss_entry_draw(&filePathEntry, renderer);
 	imgKissGUI->kiss_entry_draw(&start, renderer);
 	imgKissGUI->kiss_entry_draw(&end, renderer);
+	imgKissGUI->kiss_combobox_draw(&selector, renderer);
+	imgKissGUI->kiss_combobox_draw(&imgParam, renderer);
+	imgKissGUI->kiss_combobox_draw(&midiParam, renderer);
+	
+	imgKissGUI->kiss_entry_draw(&noteEntry, renderer);
+	imgKissGUI->kiss_entry_draw(&filePathEntry, renderer);
+	
 	imgKissGUI->kiss_label_draw(&IDNum, renderer);
 
 	//SDL_RenderPresent(renderer);
@@ -80,15 +82,6 @@ void imgParameters::imgScroll(int direction)//shift should be the same distance 
 	midiParam.vscrollbar.uprect.y += (direction * addY);
 	midiParam.entry.rect.y += (direction * addY);
 	midiParam.entry.texty += (direction * addY);
-
-	/*int line = imgParam.textbox.selectedline;
-	if (line) {
-		void** p = imgParam.textbox.array->data + line;
-		void* s = *p;
-		char* selection = (char*)s;
-	}
-	imgKissGUI->kiss_combobox_new(&imgParam, &binding, selection, &imageParamList, binding.rect.x + 5, binding.rect.y + 50, 120, 100);
-	imgParam.textbox.selectedline = line;*/
 
 	noteEntry.rect.y += (direction * addY);
 	noteEntry.texty += (direction * addY);
