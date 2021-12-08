@@ -25,16 +25,22 @@ public:
 	void translate(RenderWindow* a, MidiModule* myMidiModule);
 	void NoteSetX(NoteBinding b, RenderWindow* a, int i);
 	void NoteScaleX(NoteBinding b, RenderWindow* a, int i);
+	void CCSetX(CCBinding b, RenderWindow* a, int i, int ccValue);
 	void NoteSetY(NoteBinding b, RenderWindow* a, int i);
 	void NoteScaleY(NoteBinding b, RenderWindow* a, int i);
+	void CCSetY(CCBinding b, RenderWindow* a, int i, int ccValue);
 	void NoteSetWidth(NoteBinding b, RenderWindow* a, int i);
 	void NoteScaleWidth(NoteBinding b, RenderWindow* a, int i);
+	void CCSetWidth(CCBinding b, RenderWindow* a, int i, int ccValue);
 	void NoteSetHeight(NoteBinding b, RenderWindow* a, int i);
 	void NoteScaleHeight(NoteBinding b, RenderWindow* a, int i);
+	void CCSetHeight(CCBinding b, RenderWindow* a, int i, int ccValue);
 	void NoteSetSize(NoteBinding b, RenderWindow* a, int i);
 	void NoteScaleSize(NoteBinding b, RenderWindow* a, int i);
+	void CCSetSize(CCBinding b, RenderWindow* a, int i, int ccValue);
 	void NoteSetRotation(NoteBinding b, RenderWindow* a, int i);
 	void NoteScaleRotation(NoteBinding b, RenderWindow* a, int i);
+	void CCSetRotation(CCBinding b, RenderWindow* a, int i, int ccValue);
 	std::vector<Scene*> translatorScenes;
 	//each scene contains a vector of image binders, which holds all note and CC bindings for that image.
 	//This way we can iterate through each binding for each image. 
