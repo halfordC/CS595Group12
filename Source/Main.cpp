@@ -108,6 +108,8 @@ int main(int argc, char* args[])
 			sceneViewWindow.render();
 			gui.render();
 			fpsCounter++;
+			//translator->translate(&sceneViewWindow, myMidiModule);
+			
 			if (myMidiModule->hasNewMidiMessage())
 			{
 				std::vector<juce::MidiMessage> inBuffer = myMidiModule->getMidiBuffer();
@@ -120,6 +122,7 @@ int main(int argc, char* args[])
 				myMidiModule->messagesParsed(); //this clears the flag, and waits for a new message. 
 
 			}
+			
 		}
 		upsCounter++;
 		if (currentTime - lastTime >= 1000)

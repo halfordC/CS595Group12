@@ -143,6 +143,11 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 		//Grab the offered up midiMessage from the midi input/controller
 		vector<juce::MidiMessage> buffer = myMidiModule->getMidiBuffer();
 		int bufferlength = buffer.size();
+		if (bufferlength == 0) 
+		{
+			myMidiModule->messagesParsed();
+			return;
+		}
 
 
 		for (int i = 0; i < bufferlength; i++)
@@ -224,6 +229,8 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 			//we need two seperate loops, one for our Notes, and one for Our CCs. 
 			}
 		}
+
+		myMidiModule->messagesParsed();
 	}
 }
 
