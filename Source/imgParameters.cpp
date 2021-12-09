@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <sstream>
 
 
 #include "UserGUI.hpp"
@@ -255,7 +256,19 @@ void imgParameters::startLocation(SDL_Event* e)
 	if (imgKissGUI->kiss_entry_event(&start, e, &draw))
 	{
 		std::string toFloat(start.text);
-		endValue = std::stof(toFloat);
+		std::istringstream iss(toFloat);
+		float f;
+		iss >> std::noskipws >> f; // noskipws considers leading whitespace invalid
+		// Check the entire string was consumed and if either failbit or badbit is set
+		if (iss.eof() && !iss.fail())
+		{
+			endValue = std::stof(toFloat);
+			if(endValue > 1 || endValue < 0)
+				imgKissGUI->kiss_string_copy(start.text, 14, "Must be (0-1)", NULL);
+			return;
+		}
+
+		imgKissGUI->kiss_string_copy(start.text, 12, "Not a Float", NULL);
 
 		//we need to see if it's in range. 0 to 1.
 		//check saftey on current binding. 
