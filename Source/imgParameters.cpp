@@ -38,7 +38,9 @@ imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss
 
 	binding.visible = 1;
 	index = p_index;
-	bindings = *binder;
+	bindings = binder;
+	noteBindingIndex = 0;
+	ccBindingIndex = 0;
 }
 
 void imgParameters::render(int newY, SDL_Renderer* renderer)
@@ -144,7 +146,22 @@ void imgParameters::selectImageParamEvent(SDL_Event* e)
 	int draw = 1;
 	if (imgKissGUI->kiss_combobox_event(&imgParam, e, &draw))
 	{
+		
 		//do stuff like the previous box up there
+
+		char* contents = imgParam.entry.text;
+		
+		if (!strcmp(contents, "Scale X")|| !strcmp(contents, "Set X")) paramSelected = 0;
+		else if (!strcmp(contents, "Scale Y") || !strcmp(contents, "Set Y")) paramSelected = 1;
+		else if (!strcmp(contents, "Scale Width") || !strcmp(contents, "Set Width")) paramSelected = 2;
+		else if (!strcmp(contents, "Scale Height") || !strcmp(contents, " Set Height")) paramSelected = 3;
+		else if (!strcmp(contents, "Scale Rotation") || !strcmp(contents, "Set Rotation")) paramSelected = 4;
+		else if (!strcmp(contents, "Scale Size") || !strcmp(contents, "Set Size")) paramSelected = 5;
+
+
+		
+		//imageParamSelected = true;
+		
 	}
 }
 
@@ -229,7 +246,9 @@ void imgParameters::startLocation(SDL_Event* e)
 	int draw = 1;
 	if (imgKissGUI->kiss_entry_event(&start, e, &draw))
 	{
+		//check saftey on current binding. 
 
+		//is this a note on/off?
 
 	}
 }
@@ -239,6 +258,9 @@ void imgParameters::endLocation(SDL_Event* e)
 	int draw = 1;
 	if (imgKissGUI->kiss_entry_event(&end, e, &draw))
 	{
+		//check saftey on current binding. 
+
+		//is this a note on/off?
 
 	}
 }
@@ -318,6 +340,20 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)//sa
 							string CCstr = "CC " + std::to_string(inBuffer[i].getControllerNumber());
 							const char* newCC = CCstr.c_str(); //really long function to get note number / letter
 							strcat(noteEntry.text, newCC); //fill char array with new note value
+
+
+							CCBinding* newCCBinding = new CCBinding();
+							newCCBinding->CCnumber = inBuffer[i].getControllerNumber();
+							newCCBinding->CCChannel = inBuffer[i].getChannel();
+							newCCBinding->param = paramSelected;
+							bindings->ImageCCBindings.push_back(newCCBinding);
+							ccBindingIndex++;
+							
+							
+							
+							//name this and place in Bindings selector
+
+
 
 							//Also, add this note to the translator app for the selected image param
 						}

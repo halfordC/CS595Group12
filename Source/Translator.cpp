@@ -293,7 +293,7 @@ void Translator::NoteScaleX(NoteBinding b, RenderWindow* a, int i)
 
 void Translator::CCSetX(CCBinding b, RenderWindow* a, int i, int ccValue)
 {
-	float inCC = ccValue / 127; 
+	float inCC = (float)ccValue / (float)127; 
 	Sprite* s = a->sprites[i];
 	s->setX(inCC);
 }
@@ -311,7 +311,7 @@ void Translator::NoteScaleY(NoteBinding b, RenderWindow* a, int i)
 }
 void Translator::CCSetY(CCBinding b, RenderWindow* a, int i, int ccValue)
 {
-	float inCC = ccValue / 127;
+	float inCC = (float)ccValue / (float)127;
 	Sprite* s = a->sprites[i];
 	s->setY(inCC);
 }
@@ -329,7 +329,7 @@ void Translator::NoteScaleWidth(NoteBinding b, RenderWindow* a, int i)
 }
 void Translator::CCSetWidth(CCBinding b, RenderWindow* a, int i, int ccValue)
 {
-	float inCC = ccValue / 127;
+	float inCC = (float)ccValue / (float)127;
 	Sprite* s = a->sprites[i];
 	s->setWidth(inCC);
 }
@@ -347,7 +347,7 @@ void Translator::NoteScaleHeight(NoteBinding b, RenderWindow* a, int i)
 }
 void Translator::CCSetHeight(CCBinding b, RenderWindow* a, int i, int ccValue)
 {
-	float inCC = ccValue / 127;
+	float inCC = (float)ccValue / (float)127;
 	Sprite* s = a->sprites[i];
 	s->setHeight(inCC);
 }
@@ -365,7 +365,7 @@ void Translator::NoteScaleSize(NoteBinding b, RenderWindow* a, int i)
 }
 void Translator::CCSetSize(CCBinding b, RenderWindow* a, int i, int ccValue)
 {
-	float inCC = ccValue / 127;
+	float inCC = (float)ccValue / (float)127;
 	Sprite* s = a->sprites[i];
 	s->setScale(inCC);
 }
@@ -383,7 +383,7 @@ void Translator::NoteScaleRotation(NoteBinding b, RenderWindow* a, int i)
 }
 void Translator::CCSetRotation(CCBinding b, RenderWindow* a, int i, int ccValue)
 {
-	float inCC = ccValue / 127;
+	float inCC = (float)ccValue / (float)127;
 	Sprite* s = a->sprites[i];
 	s->setRotation(inCC);
 }

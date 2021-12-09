@@ -50,7 +50,10 @@ public:
 	kiss_array bindingList;
 	int previousImageFlag = 0;//0 is no previous image, 1 is previous image
 
-	ImageBinders bindings;
+	ImageBinders* bindings;
+	int noteBindingIndex;
+	int ccBindingIndex;
+	int paramSelected;
 
 private:
 	SDL_Event* e;
