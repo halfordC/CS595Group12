@@ -25,6 +25,7 @@ public:
 	void addSceneEvent(SDL_Event* e);
 	void sceneTabEvent(SDL_Event* e);
 	void scrollEvent(SDL_Event* e);
+	void startEvent(SDL_Event* e, RenderWindow* myRenderWindow);
 
 
 	std::filesystem::path selectedDirectory;

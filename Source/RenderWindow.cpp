@@ -42,7 +42,8 @@ RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(
 #endif
 	cout << cwd.string() << endl;
 	if (!fs::exists(cwd)) fs::create_directory(cwd);
-	fullscreen = true;
+	//fullscreen = true;
+	fullscreen = false;
 	initializeScene();
 	
 }

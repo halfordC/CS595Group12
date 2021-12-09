@@ -1536,6 +1536,15 @@
 			strcpy(entry->text, "");
 			*draw = 1;
 		}
+		//so we can past filepaths
+		else if (event->key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL && entry->active) {
+			if (kiss_textwidth(entry->font, entry->text,
+				event->text.text) < entry->textwidth &&
+				strlen(entry->text) + strlen(event->text.text) <
+				KISS_MAX_LENGTH)
+				strcpy(entry->text, SDL_GetClipboardText());
+			*draw = 1;
+		}
 		return 0;
 	}
 

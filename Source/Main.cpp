@@ -38,7 +38,7 @@ int main(int argc, char* args[])
 	}
 
 	RenderWindow sceneViewWindow("Scene View Window");
-	sceneViewWindow.enterViewMode();
+	//sceneViewWindow.enterViewMode();
 	UserGUI gui("GUI Test", myMidiModule);
 
 	Translator* translator = new Translator(&gui);
@@ -82,6 +82,7 @@ int main(int argc, char* args[])
 			gui.addSceneEvent(&event);
 			gui.sceneTabEvent(&event);
 			gui.scrollEvent(&event);
+			gui.startEvent(&event, &sceneViewWindow);
 			switch (event.type)
 			{
 			case SDL_QUIT:

@@ -240,3 +240,13 @@ void UserGUI::scrollEvent(SDL_Event* e)
 
 	}
 }
+
+void UserGUI::startEvent(SDL_Event* e, RenderWindow* myRenderWindow)
+{
+	int draw = 1;
+	if (kissGUI->kiss_button_event(&startButton, e, &draw))
+	{
+		myRenderWindow->enterViewMode();
+		myRenderWindow->toggleFullscreen();
+	}
+}
