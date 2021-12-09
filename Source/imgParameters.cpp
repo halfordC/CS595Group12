@@ -255,25 +255,7 @@ void imgParameters::startLocation(SDL_Event* e)
 	int draw = 1;
 	if (imgKissGUI->kiss_entry_event(&start, e, &draw))
 	{
-		std::string toFloat(start.text);
-		std::istringstream iss(toFloat);
-		float f;
-		iss >> std::noskipws >> f; // noskipws considers leading whitespace invalid
-		// Check the entire string was consumed and if either failbit or badbit is set
-		if (iss.eof() && !iss.fail())
-		{
-			endValue = std::stof(toFloat);
-			if(endValue > 1 || endValue < 0)
-				imgKissGUI->kiss_string_copy(start.text, 14, "Must be (0-1)", NULL);
-			return;
-		}
-
-		imgKissGUI->kiss_string_copy(start.text, 12, "Not a Float", NULL);
-
-		//we need to see if it's in range. 0 to 1.
-		//check saftey on current binding. 
-
-		//is this a note on/off?
+		
 
 	}
 }
@@ -283,6 +265,26 @@ void imgParameters::endLocation(SDL_Event* e)
 	int draw = 1;
 	if (imgKissGUI->kiss_entry_event(&end, e, &draw))
 	{
+
+		std::string toFloat(end.text);
+		std::istringstream iss(toFloat);
+		float f;
+		iss >> std::noskipws >> f; // noskipws considers leading whitespace invalid
+		// Check the entire string was consumed and if either failbit or badbit is set
+		if (iss.eof() && !iss.fail())
+		{
+			endValue = std::stof(toFloat);
+			if (endValue > 1 || endValue < 0)
+				imgKissGUI->kiss_string_copy(end.text, 14, "Must be (0-1)", NULL);
+			return;
+		}
+
+		imgKissGUI->kiss_string_copy(end.text, 12, "Not a Float", NULL);
+
+		//we need to see if it's in range. 0 to 1.
+		//check saftey on current binding. 
+
+		//is this a note on/off?
 		//check saftey on current binding. 
 
 		//is this a note on/off?
@@ -292,13 +294,16 @@ void imgParameters::endLocation(SDL_Event* e)
 
 void imgParameters::midiLearnEvent(SDL_Event* e)
 {
+	/*
 	int draw = 1;
 	if (imgKissGUI->kiss_entry_event(&noteEntry, e, &draw))
 	{
+
 		char* inputText = noteEntry.text;
 		//check if the note is infact a note. 
 
 	}
+	*/
 }
 
 void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)//save binding and add it to the binding selector dropdown?

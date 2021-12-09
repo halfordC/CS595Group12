@@ -160,9 +160,9 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 				//update each image in the scene:
 				if (buffer[i].isNoteOnOrOff())
 				{
-					for (int j = 0; j < currentImage->ImageNoteBindings.size(); j++)
+					for (int k = 0; k < currentImage->ImageNoteBindings.size(); k++)
 					{
-						NoteBinding* currentNoteBinding = currentImage->ImageNoteBindings[j];
+						NoteBinding* currentNoteBinding = currentImage->ImageNoteBindings[k];
 						if (currentNoteBinding->noteNumber != NULL && currentNoteBinding->noteNumber == buffer[i].getNoteNumber())
 						{
 							switch (currentNoteBinding->param)
@@ -170,36 +170,36 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 							case 0: //target = 1 | X
 							{
 								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
-									NoteSetX(*currentNoteBinding, a, j);
+									NoteSetX(*currentNoteBinding, a, k);
 								else //Scale
-									NoteScaleX(*currentNoteBinding, a, j);
+									NoteScaleX(*currentNoteBinding, a, k);
 								break;
 							}
 
 							case 1: //target = 2 | Y
 							{
 								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
-									NoteSetY(*currentNoteBinding, a, j);
+									NoteSetY(*currentNoteBinding, a, k);
 								else //Scale
-									NoteScaleY(*currentNoteBinding, a, j);
+									NoteScaleY(*currentNoteBinding, a, k);
 								break;
 							}
 
 							case 2: //target = 3 | Size
 							{
 								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
-									NoteSetSize(*currentNoteBinding, a, j);
+									NoteSetSize(*currentNoteBinding, a, k);
 								else //Scale
-									NoteScaleSize(*currentNoteBinding, a, j);
+									NoteScaleSize(*currentNoteBinding, a, k);
 								break;
 							}
 
 							case 3: //target = 4 | Rotation
 							{
 								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
-									NoteSetRotation(*currentNoteBinding, a, j);
+									NoteSetRotation(*currentNoteBinding, a, k);
 								else //Scale
-									NoteScaleRotation(*currentNoteBinding, a, j);
+									NoteScaleRotation(*currentNoteBinding, a, k);
 								break;
 							}
 
@@ -222,34 +222,34 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 				if(buffer[i].isController())
 				{
 					//do CC updates here. 
-					for (int j = 0; j < currentImage->ImageCCBindings.size(); j++)
+					for (int m = 0; m < currentImage->ImageCCBindings.size(); m++)
 					{
-						CCBinding* currentCCBinding = currentImage->ImageCCBindings[j];
+						CCBinding* currentCCBinding = currentImage->ImageCCBindings[m];
 						if (currentCCBinding->CCnumber != NULL && currentCCBinding->CCnumber == buffer[i].getControllerNumber())
 						{
 							switch (currentCCBinding->param)
 							{
 							case 0: //target = 1 | X
 							{
-								CCSetX(*currentCCBinding, a, j, buffer[i].getControllerValue());
+								CCSetX(*currentCCBinding, a, m, buffer[i].getControllerValue());
 								break;
 							}
 
 							case 1: //target = 2 | Y
 							{
-								CCSetY(*currentCCBinding, a, j, buffer[i].getControllerValue());
+								CCSetY(*currentCCBinding, a, m, buffer[i].getControllerValue());
 								break;
 							}
 
 							case 2: //target = 3 | Size
 							{
-								CCSetSize(*currentCCBinding, a, j, buffer[i].getControllerValue()); 
+								CCSetSize(*currentCCBinding, a, m, buffer[i].getControllerValue()); 
 								break;
 							}
 
 							case 3: //target = 4 | Rotation
 							{
-								CCSetRotation(*currentCCBinding, a, j, buffer[i].getControllerValue()); 
+								CCSetRotation(*currentCCBinding, a, m, buffer[i].getControllerValue()); 
 								break;
 							}
 
