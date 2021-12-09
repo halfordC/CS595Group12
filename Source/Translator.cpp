@@ -21,9 +21,6 @@ using std::vector;
 
 //namespace fs = std::filesystem;
 
-
-
-
 Translator::Translator(UserGUI* InGUI) //const RenderWindow &a maybe as a argument to get sprite data and match them with bindings
 {
 	translatorGUI = InGUI;
@@ -229,28 +226,41 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 						{
 							switch (currentCCBinding->param)
 							{
-							case 0: //target = 1 | X
+							case 0: //target = 0 | X
 							{
 								CCSetX(*currentCCBinding, a, m, buffer[i].getControllerValue());
 								break;
 							}
 
-							case 1: //target = 2 | Y
+							case 1: //target = 1 | Y
 							{
 								CCSetY(*currentCCBinding, a, m, buffer[i].getControllerValue());
 								break;
 							}
 
-							case 2: //target = 3 | Size
+							case 2: //target = 2 | Width 
+							{
+								CCSetWidth(*currentCCBinding, a, m, buffer[i].getControllerValue());
+								break;
+							}
+
+							case 3: //target = 3 | Height
 							{
 								CCSetSize(*currentCCBinding, a, m, buffer[i].getControllerValue()); 
 								break;
 							}
 
-							case 3: //target = 4 | Rotation
+							case 4: //target = 4 | Rotation
 							{
 								CCSetRotation(*currentCCBinding, a, m, buffer[i].getControllerValue()); 
 								break;
+							}
+
+							case 5: //target = 5 | scale 
+							{
+								CCSetSize(*currentCCBinding, a, m, buffer[i].getControllerValue());
+								break;
+
 							}
 
 							//case 4: //target = 5 | Alpha
@@ -383,9 +393,10 @@ void Translator::NoteScaleRotation(NoteBinding b, RenderWindow* a, int i)
 }
 void Translator::CCSetRotation(CCBinding b, RenderWindow* a, int i, int ccValue)
 {
-	float inCC = (float)ccValue / (float)127;
+	//float inCC = (float)ccValue / (float)127;
+	
 	Sprite* s = a->sprites[i];
-	s->setRotation(inCC);
+	s->setRotation(ccValue*2.7);
 }
 #pragma endregion
 //#pragma region Alpha
