@@ -101,6 +101,10 @@ int main(int argc, char* args[])
 				{
 				case SDLK_F11:
 					sceneViewWindow.toggleFullscreen();
+					break;
+				case SDLK_ESCAPE:
+					sceneViewWindow.toggleFullscreen();
+					break;
 				}
 			default:
 				break;
