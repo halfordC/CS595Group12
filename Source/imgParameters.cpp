@@ -16,7 +16,7 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum)
+imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, ImageBinders* binder)
 {
 	std::string tmp = "" + std::to_string(layerNum);
 	char* layerNumber = const_cast<char*>(tmp.c_str());
@@ -38,6 +38,7 @@ imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss
 
 	binding.visible = 1;
 	index = p_index;
+	bindings = *binder;
 }
 
 void imgParameters::render(int newY, SDL_Renderer* renderer)
@@ -115,9 +116,9 @@ void imgParameters::selectMidiParamEvent(SDL_Event* e)
 	int draw = 1;
 	if (imgKissGUI->kiss_combobox_event(&midiParam, e, &draw))
 	{
-		//An item has been clicked! but which one? 
+		//An item has been clicked! but which one?
 		//normally, we would use bsearch, but we can't really do that in c++ with how this is setup.
-		//so we must mannualy search through and find the entry. 
+		//so we must mannualy search through and find the entry.
 		int length = midiParam.textbox.array->length;
 		for (int i = 0; i < length; i++)
 		{
@@ -129,8 +130,8 @@ void imgParameters::selectMidiParamEvent(SDL_Event* e)
 			bool result = imgKissGUI->dropBoxcompare(midiParam.entry, contents);
 			if (result)
 			{
-				//We are at the text box entry index of what we clicked on, do the clicked action. 
-				//so it is important we know what is here. 
+				//We are at the text box entry index of what we clicked on, do the clicked action.
+				//so it is important we know what is here.
 
 				listenFilter = i;
 			}

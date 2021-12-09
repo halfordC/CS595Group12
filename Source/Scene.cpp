@@ -27,14 +27,15 @@ Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow)
 	addImgParamIndex = 0; //this is the number of imgParam objects in our ImgParam array.
 	staticX = 20;
 	currentY = 70;
-	imgParameters *firstIMPar = new imgParameters(staticX, currentY, addImgParamIndex, kissGUI, &sceneWindow, addImgParamIndex + 1);
+
+	ImageBinders* addImageBinding = new ImageBinders();
+	SceneImageBindings.push_back(addImageBinding);
+
+	imgParameters *firstIMPar = new imgParameters(staticX, currentY, addImgParamIndex, kissGUI, &sceneWindow, addImgParamIndex + 1, SceneImageBindings.at(0));
 	imgParArray[addImgParamIndex] = firstIMPar;
 	imgParamIndex = 0;
 	currentY += addY;
 	addImgParamIndex = 1;
-
-	ImageBinders* addImageBinding = new ImageBinders();
-	SceneImageBindings.push_back(addImageBinding);
 
 	displayIndex = 0;
 }
@@ -43,14 +44,15 @@ void Scene::addImg()
 {
 	if (addImgParamIndex < 15)
 	{
-		 
-		imgParameters* nextIMPar = new imgParameters(10, currentY, addImgParamIndex, sceneKissGUI, &sceneWindow, addImgParamIndex + 1);
+		ImageBinders* addImageBinding = new ImageBinders();
+		SceneImageBindings.push_back(addImageBinding);
+
+		imgParameters* nextIMPar = new imgParameters(10, currentY, addImgParamIndex, sceneKissGUI, &sceneWindow, addImgParamIndex + 1, SceneImageBindings.at(addImgParamIndex));
 		imgParArray[addImgParamIndex] = nextIMPar;
 		currentY += addY;
 		addImgParamIndex++;
 
-		ImageBinders* addImageBinding = new ImageBinders();
-		SceneImageBindings.push_back(addImageBinding);
+		
 	}
 }
 

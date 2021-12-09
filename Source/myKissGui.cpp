@@ -68,13 +68,20 @@
 	{
 		kiss_array_new(inArray);
 
+		kiss_array_appendstring(inArray, 0, "Set X", NULL);
+		kiss_array_appendstring(inArray, 0, "Set Y", NULL);
+		kiss_array_appendstring(inArray, 0, "Set Width", NULL);
+		kiss_array_appendstring(inArray, 0, "Set Height", NULL);
+		kiss_array_appendstring(inArray, 0, "Set Size", NULL);
+		kiss_array_appendstring(inArray, 0, "Set Rotation", NULL);
+		kiss_array_appendstring(inArray, 0, "Set On/Off", NULL);
+
 		kiss_array_appendstring(inArray, 0, "Scale X", NULL);
 		kiss_array_appendstring(inArray, 0, "Scale Y", NULL);
 		kiss_array_appendstring(inArray, 0, "Scale Width", NULL);
 		kiss_array_appendstring(inArray, 0, "Scale Height", NULL);
 		kiss_array_appendstring(inArray, 0, "Scale Size", NULL);
 		kiss_array_appendstring(inArray, 0, "Scale Rotation", NULL);
-		kiss_array_appendstring(inArray, 0, "Scale Alpha", NULL);
 	}
 
 	bool myKissGUI::dropBoxcompare(kiss_entry clickedEntry, char* compare)
