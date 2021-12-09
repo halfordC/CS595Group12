@@ -20,7 +20,7 @@ RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(
 	{
 		cout << "Failed to get current display mode. Error: " << SDL_GetError() << endl;
 	}
-	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mode.w, mode.h, SDL_WINDOW_HIDDEN); //title, xpos, ypos, width, height, and show the window.
+	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mode.w, mode.h, SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN_DESKTOP); //title, xpos, ypos, width, height, and show the window.
 	if (window == NULL)
 	{
 		cout << "Window failed to init. Error: " << SDL_GetError() << endl;
@@ -42,25 +42,29 @@ RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(
 #endif
 	cout << cwd.string() << endl;
 	if (!fs::exists(cwd)) fs::create_directory(cwd);
+	fullscreen = true;
 	initializeScene();
 	
 }
 
 /* This method will show the RenderWindow in the native resolution of the system. It will be fullscreen
    and borderless. This method should be triggered by the "START" button on the GUI. */
-void RenderWindow::enterViewMode()
+void RenderWindow::enterViewMode() { SDL_ShowWindow(window);	}
+void RenderWindow::toggleFullscreen()
 {
-	/*
-	SDL_SetWindowSize(window, mode.w, mode.h);
-	SDL_ShowWindow(window);
-	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
-	*/
-	
-	//just to get a cool example screenshot
-	SDL_SetWindowSize(window, 640, 480);
-	SDL_SetWindowPosition(window, 50, 50);
-	SDL_ShowWindow(window);
-	
+	if (fullscreen)
+	{
+		SDL_SetWindowSize(window, 640, 480);
+		SDL_SetWindowPosition(window, 50, 50);
+		SDL_SetWindowFullscreen(window, 0);
+		fullscreen = false;
+	}
+	else
+	{
+		SDL_SetWindowSize(window, mode.w, mode.h);
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		fullscreen = true;
+	}
 }
 
 /* This method will open the scenes folder in file explorer(windows) or finder(macOSx).

@@ -18,6 +18,7 @@ public:
 	void setSceneDirectory(std::filesystem::path newDir);
 	void render();
 	void cleanUp();
+	void toggleFullscreen();
 	void setSprites(std::vector<Sprite*>);
 	std::vector<Sprite*> getSprites();
 	std::filesystem::path cwd;
@@ -31,6 +32,7 @@ public:
 
 private:
 
+	bool fullscreen;
 	SDL_Texture* image;
 	Sprite temp;
 };

@@ -96,6 +96,12 @@ int main(int argc, char* args[])
 				default:
 					break;
 				}
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym)
+				{
+				case SDLK_F11:
+					sceneViewWindow.toggleFullscreen();
+				}
 			default:
 				break;
 			}
