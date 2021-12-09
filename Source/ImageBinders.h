@@ -22,6 +22,13 @@ public:
 	std::vector<CCBinding*> ImageCCBindings;
 	std::vector<NoteBinding*> ImageNoteBindings;
 
+	float starX;
+	float startY;
+	float startScale;
+	float startRotation;
+	float startWidth;
+	float startHeight;
+
 private:
 
 };
