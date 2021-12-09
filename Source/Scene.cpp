@@ -47,6 +47,7 @@ void Scene::addImg()
 		ImageBinders* addImageBinding = new ImageBinders();
 		SceneImageBindings.push_back(addImageBinding);
 
+
 		imgParameters* nextIMPar = new imgParameters(10, currentY, addImgParamIndex, sceneKissGUI, &sceneWindow, addImgParamIndex + 1, SceneImageBindings.at(addImgParamIndex));
 		imgParArray[addImgParamIndex] = nextIMPar;
 		currentY += addY;
@@ -121,5 +122,6 @@ void Scene::sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow *myR
 		imgParArray[i]->midiLearnEvent(e);
 		imgParArray[i]->midiListenButton(e, myMidiModule);
 		imgParArray[i]->browseEvent(e, *myRenderWindow);
+		imgParArray[i]->warningEvent(e);
 	}
 }

@@ -19,6 +19,12 @@ using std::endl; using std::string;
 
 imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, ImageBinders* binder)
 {
+
+	char* warningText = "No Midi Device Selected";
+	warning = false;
+	imageParamSelected = false;
+	midiParamSelected = false;
+
 	std::string tmp = "" + std::to_string(layerNum);
 	char* layerNumber = const_cast<char*>(tmp.c_str());
 	imgKissGUI = kissGUI;
@@ -36,6 +42,9 @@ imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss
 	kissGUI->kiss_button_new(&browsePath, &binding, "Browse", binding.rect.x + 505, binding.rect.y + 14);
 	kissGUI->kiss_button_new(&midiLearn, &binding, "Listen", binding.rect.x + 460, binding.rect.y + 54);
 	kissGUI->kiss_label_new(&IDNum, &binding, layerNumber, binding.rect.x + 15, binding.rect.y + 15);
+	kissGUI->kiss_window_new(&warningWindow, &binding, 1, x, y, inWindow->rect.w - 20, 130);
+	kissGUI->kiss_label_new(&warningLabel, &warningWindow, warningText, warningWindow.rect.x + 10, warningWindow.rect.y + 10);
+	kissGUI->kiss_button_new(&warningButton, &warningWindow, "OK", (warningWindow.rect.w) / 2, warningWindow.rect.y + 60);
 
 	binding.visible = 1;
 	index = p_index;
@@ -48,22 +57,28 @@ imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss
 void imgParameters::render(int newY, SDL_Renderer* renderer)
 {
 	//SDL_RenderClear(renderer);
-
-	imgKissGUI->kiss_window_draw(&binding, renderer);
-	imgKissGUI->kiss_button_draw(&remove, renderer);
-	imgKissGUI->kiss_button_draw(&browsePath, renderer);
-	imgKissGUI->kiss_button_draw(&midiLearn, renderer);
-	imgKissGUI->kiss_entry_draw(&start, renderer);
-	imgKissGUI->kiss_entry_draw(&end, renderer);
-	imgKissGUI->kiss_combobox_draw(&selector, renderer);
-	imgKissGUI->kiss_combobox_draw(&imgParam, renderer);
-	imgKissGUI->kiss_combobox_draw(&midiParam, renderer);
+	if (warning)
+	{
+		imgKissGUI->kiss_window_draw(&warningWindow, renderer);
+		imgKissGUI->kiss_button_draw(&warningButton, renderer);
+		imgKissGUI->kiss_label_draw(&warningLabel, renderer);
+	}else
+	{
+		imgKissGUI->kiss_window_draw(&binding, renderer);
+		imgKissGUI->kiss_button_draw(&remove, renderer);
+		imgKissGUI->kiss_button_draw(&browsePath, renderer);
+		imgKissGUI->kiss_button_draw(&midiLearn, renderer);
+		imgKissGUI->kiss_entry_draw(&start, renderer);
+		imgKissGUI->kiss_entry_draw(&end, renderer);
+		imgKissGUI->kiss_combobox_draw(&selector, renderer);
+		imgKissGUI->kiss_combobox_draw(&imgParam, renderer);
+		imgKissGUI->kiss_combobox_draw(&midiParam, renderer);
 	
-	imgKissGUI->kiss_entry_draw(&noteEntry, renderer);
-	imgKissGUI->kiss_entry_draw(&filePathEntry, renderer);
+		imgKissGUI->kiss_entry_draw(&noteEntry, renderer);
+		imgKissGUI->kiss_entry_draw(&filePathEntry, renderer);
 	
-	imgKissGUI->kiss_label_draw(&IDNum, renderer);
-
+		imgKissGUI->kiss_label_draw(&IDNum, renderer);
+	}
 	//SDL_RenderPresent(renderer);
 }
 
@@ -140,6 +155,7 @@ void imgParameters::selectMidiParamEvent(SDL_Event* e)
 				listenFilter = i;
 			}
 		}
+		midiParamSelected = true;
 	}
 }
 
@@ -169,7 +185,7 @@ void imgParameters::selectImageParamEvent(SDL_Event* e)
 
 
 		
-		//imageParamSelected = true;
+		imageParamSelected = true;
 		
 	}
 }
@@ -276,6 +292,7 @@ void imgParameters::endLocation(SDL_Event* e)
 			endValue = std::stof(toFloat);
 			if (endValue > 1 || endValue < 0)
 				imgKissGUI->kiss_string_copy(end.text, 14, "Must be (0-1)", NULL);
+			endParamSelected = true;
 			return;
 		}
 
@@ -313,6 +330,37 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)//sa
 	char newText[200] = "newNote";
 	if (imgKissGUI->kiss_button_event(&midiLearn, e, &draw))
 	{
+		if (!myMidiModule->isConnected())
+		{
+
+			//display warning
+			warning = true;
+			updateWarning("No Midi Device Connected");
+			return; //if no connected devices, we will be in a loop forever.
+		}
+
+		if (!imageParamSelected)
+		{
+			warning = true;
+			updateWarning("No Image Parameter selected");
+			return;
+		}
+		if (!midiParamSelected)
+		{
+			warning = true;
+			updateWarning("No Midi Message type selected");
+			return;
+		}
+		/*
+		if (!endParamSelected)
+		{
+			warning = true;
+			updateWarning("No endpoint selected");
+			return;
+
+		}
+		*/
+
 
 		if (!myMidiModule->isConnected())
 		{
@@ -427,4 +475,20 @@ void imgParameters::browseEvent(SDL_Event* e, RenderWindow myRenderWindow)
 	{
 		myRenderWindow.openSceneFolder();
 	}
+}
+
+void imgParameters::updateWarning(char* newText)
+{
+	imgKissGUI->kiss_label_new(&warningLabel, &warningWindow, newText, warningWindow.rect.x + 10, warningWindow.rect.y + 10);
+}
+
+
+void imgParameters::warningEvent(SDL_Event* e)
+{
+	int draw = 1;
+	if (imgKissGUI->kiss_button_event(&warningButton, e, &draw))
+	{
+		warning = false;
+	}
+
 }

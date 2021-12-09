@@ -30,7 +30,10 @@ public:
 	void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
 	void imgScroll(int direction);
 
+	void updateWarning(char* newText);
+
 	int getIndex() { return index; };
+	void warningEvent(SDL_Event* e);
 
 	kiss_window binding;
 	kiss_combobox imgParam;
@@ -57,10 +60,17 @@ public:
 	int setOrScaleSelected; //if 1, set. if 2, scale.
 	float startValue;
 	float endValue;
+	kiss_label warningLabel;
+	kiss_window warningWindow;
+	kiss_button warningButton;
 
 private:
 	SDL_Event* e;
 	myKissGUI* imgKissGUI;
 	int listenFilter;
 	int index;
+	bool warning;
+	bool imageParamSelected;
+	bool midiParamSelected;
+	bool endParamSelected;
 };
