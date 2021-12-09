@@ -41,6 +41,7 @@ imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss
 	bindings = binder;
 	noteBindingIndex = 0;
 	ccBindingIndex = 0;
+	setOrScaleSelected = 1;
 }
 
 void imgParameters::render(int newY, SDL_Renderer* renderer)
@@ -150,6 +151,13 @@ void imgParameters::selectImageParamEvent(SDL_Event* e)
 		//do stuff like the previous box up there
 
 		char* contents = imgParam.entry.text;
+
+		string checkString(contents);
+		int space = checkString.find_last_of(" ");
+		if (space==3) 
+		{
+			setOrScaleSelected = 0;
+		}
 		
 		if (!strcmp(contents, "Scale X")|| !strcmp(contents, "Set X")) paramSelected = 0;
 		else if (!strcmp(contents, "Scale Y") || !strcmp(contents, "Set Y")) paramSelected = 1;
@@ -246,6 +254,10 @@ void imgParameters::startLocation(SDL_Event* e)
 	int draw = 1;
 	if (imgKissGUI->kiss_entry_event(&start, e, &draw))
 	{
+		std::string toFloat(start.text);
+		endValue = std::stof(toFloat);
+
+		//we need to see if it's in range. 0 to 1.
 		//check saftey on current binding. 
 
 		//is this a note on/off?
@@ -314,6 +326,16 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)//sa
 							strcat(noteEntry.text, newNote); //fill char array with new note value
 
 							//Also, add this note to the translator app for the selected image param
+							NoteBinding* newNoteBinding = new NoteBinding();
+							newNoteBinding->noteNumber = inBuffer[i].getNoteNumber();
+							newNoteBinding->noteChannel = inBuffer[i].getChannel();
+							newNoteBinding->param = paramSelected;
+							newNoteBinding->setOrScale = setOrScaleSelected;
+							newNoteBinding->amountOrPosition = endValue;
+							newNoteBinding->noteOffOn = 1;
+							bindings->ImageNoteBindings.push_back(newNoteBinding);
+							noteBindingIndex++;
+
 						}
 
 						break;
@@ -327,7 +349,15 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)//sa
 							const char* newNote = noteString.c_str();
 							strcat(noteEntry.text, newNote); //fill char array with new note value
 
-							//Also, add this note to the translator app for the selected image param
+							NoteBinding* newNoteBinding = new NoteBinding();
+							newNoteBinding->noteNumber = inBuffer[i].getNoteNumber();
+							newNoteBinding->noteChannel = inBuffer[i].getChannel();
+							newNoteBinding->param = paramSelected;
+							newNoteBinding->setOrScale = setOrScaleSelected;
+							newNoteBinding->noteOffOn = 0;
+							newNoteBinding->amountOrPosition = endValue;
+							bindings->ImageNoteBindings.push_back(newNoteBinding);
+							noteBindingIndex++;
 						}
 
 						break;

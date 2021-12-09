@@ -54,6 +54,9 @@ public:
 	int noteBindingIndex;
 	int ccBindingIndex;
 	int paramSelected;
+	int setOrScaleSelected; //if 1, set. if 2, scale.
+	float startValue;
+	float endValue;
 
 private:
 	SDL_Event* e;
