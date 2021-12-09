@@ -9,12 +9,13 @@
 #include "myKissGui.hpp"
 #include "midiModule.h"
 #include "RenderWindow.hpp"
+#include "ImageBinders.h"
 
 
 class imgParameters
 {
 public:
-	imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum);
+	imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, ImageBinders* binder);
 
 	void render(int newY, SDL_Renderer* renderer);//Alternatively could modify coordinates for scrolling in their own method
 	void cleanUp();
@@ -47,6 +48,8 @@ public:
 	kiss_array midiParamList;
 	kiss_array imageParamList;
 	kiss_array bindingList;
+
+	ImageBinders bindings;
 
 private:
 	SDL_Event* e;

@@ -16,7 +16,7 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum)
+imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, ImageBinders* binder)
 {
 	std::string tmp = "" + std::to_string(layerNum);
 	char* layerNumber = const_cast<char*>(tmp.c_str());
@@ -38,6 +38,7 @@ imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss
 
 	binding.visible = 1;
 	index = p_index;
+	bindings = *binder;
 }
 
 void imgParameters::render(int newY, SDL_Renderer* renderer)
