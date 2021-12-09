@@ -17,7 +17,7 @@ public:
 	void render();
 	void cleanUp();
 	std::vector<Scene*> getCurrentSceneArray();
-	void guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
+	void guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow *myRenderWindow, SDL_Renderer* renderer);
 	void selectMidiDropdownEvent(SDL_Event* e, MidiModule * myMidiModule);
 	void addBindingEvent(SDL_Event* e);
 	void removeBindingEvent(SDL_Event* e);

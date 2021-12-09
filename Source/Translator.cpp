@@ -13,7 +13,6 @@
 #include "Translator.h"
 #include "UserGUI.hpp"
 
-extern std::vector<Sprite>* sprites;
 
 //using namespace std;
 using std::cout; using std::cin;

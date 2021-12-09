@@ -106,18 +106,18 @@ int Scene::sceneScroll(int direction)
 	}
 }
 
-void Scene::sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow)
+void Scene::sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow *myRenderWindow, SDL_Renderer *renderer)
 {
 	for (int i = 0; i < addImgParamIndex; i++)
 	{
 		imgParArray[i]->selectMidiParamEvent(e);
 		imgParArray[i]->selectImageParamEvent(e);
 		imgParArray[i]->bindingSelectorEvent(e);
-		imgParArray[i]->typeFilePath(e, &(SceneImageBindings[i]->path));
+		imgParArray[i]->typeFilePath(e, &(SceneImageBindings[i]->path), myRenderWindow, renderer);
 		imgParArray[i]->startLocation(e);
 		imgParArray[i]->endLocation(e);
 		imgParArray[i]->midiLearnEvent(e);
 		imgParArray[i]->midiListenButton(e, myMidiModule);
-		imgParArray[i]->browseEvent(e, myRenderWindow);
+		imgParArray[i]->browseEvent(e, *myRenderWindow);
 	}
 }

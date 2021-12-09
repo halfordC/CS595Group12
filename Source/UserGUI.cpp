@@ -122,10 +122,10 @@ std::vector<Scene*> UserGUI::getCurrentSceneArray()
 
 }
 
-void UserGUI::guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow)
+void UserGUI::guiEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow *myRenderWindow, SDL_Renderer *renderer)
 {
 	
-	sceneArray[sceneIndex]->sceneEvent(e, myMidiModule, myRenderWindow);
+	sceneArray[sceneIndex]->sceneEvent(e, myMidiModule, myRenderWindow, renderer);
 }
 
 

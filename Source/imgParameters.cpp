@@ -156,19 +156,70 @@ void imgParameters::bindingSelectorEvent(SDL_Event* e)
 	}
 }
 
-void imgParameters::typeFilePath(SDL_Event* e, std::string* inString)
+void imgParameters::typeFilePath(SDL_Event* e, std::string* inString, RenderWindow *inRenderWindow, SDL_Renderer* renderer)
 {
 	int draw = 1;
 	if (imgKissGUI->kiss_entry_event(&filePathEntry, e, &draw))
 	{
 		char* inputText = filePathEntry.text;
 		//do stuff with inputText
+		int i = 0;
+		int w, h; 
 
+
+		
 		std::string returnString(inputText);
 
-		*inString = returnString;
 
+		int lastPeriod = returnString.find_last_of(".");
+		if (lastPeriod == (-1)) 
+		{
+			//go into warning state
+			imgKissGUI->kiss_string_copy(filePathEntry.text, 16, "Not a file Type", NULL);
+			return;
+			//
+			
+		}
 
+		std::cout << "lastPeriodIs " << lastPeriod << std::endl;
+		std::string ext = returnString.substr(lastPeriod);
+		transform(ext.begin(), ext.end(), ext.begin(), ::toupper);
+		if (ext.compare(".JPEG") == 0 || ext.compare(".PNG") == 0)
+		{
+			*inString = returnString;
+			//push the sprite onto this 
+			//inRenderWindow->sprites.push_back();
+
+			//is this a valid file? does it actually exist? does the SDL image return a bad path that we can check?
+			SDL_Texture* image = IMG_LoadTexture(renderer, inputText);
+
+			if (image == NULL) 
+			{
+				imgKissGUI->kiss_string_copy(filePathEntry.text, 18, "Invalid File Path", NULL);
+				return;
+			}
+
+			//if not, render the file 
+
+			SDL_QueryTexture(image, NULL, NULL, &w, &h);
+			Sprite* temp = new Sprite(i * 0.1f, i * 0.1f, w, h, image);
+
+			if (previousImageFlag==1) 
+			{	
+				inRenderWindow->sprites.at(index) = temp;
+				return;
+			}
+			
+			inRenderWindow->sprites.push_back(temp); //Sprite has been inserted
+			previousImageFlag = 1;
+			return;
+
+		}
+			//go into warning state
+			//char warning[KISS_MAX_LENGTH] = "Incompatible file type";
+			//filePathEntry.text = warning;
+			imgKissGUI->kiss_string_copy(filePathEntry.text, 17, "Invalid File type", NULL);
+			
 	}
 }
 
@@ -177,6 +228,7 @@ void imgParameters::startLocation(SDL_Event* e)
 	int draw = 1;
 	if (imgKissGUI->kiss_entry_event(&start, e, &draw))
 	{
+
 
 	}
 }

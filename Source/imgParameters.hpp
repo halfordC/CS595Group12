@@ -23,7 +23,7 @@ public:
 	void bindingSelectorEvent(SDL_Event* e);
 	void startLocation(SDL_Event* e);
 	void endLocation(SDL_Event* e);
-	void typeFilePath(SDL_Event* e, std::string* inString);
+	void typeFilePath(SDL_Event* e, std::string* inString, RenderWindow * inRenderWindow, SDL_Renderer* renderer);
 	void midiLearnEvent(SDL_Event* e);
 	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
 	void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
@@ -47,6 +47,7 @@ public:
 	kiss_array midiParamList;
 	kiss_array imageParamList;
 	kiss_array bindingList;
+	int previousImageFlag = 0;//0 is no previous image, 1 is previous image
 
 private:
 	SDL_Event* e;

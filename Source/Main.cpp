@@ -78,7 +78,7 @@ int main(int argc, char* args[])
 			gui.selectMidiDropdownEvent(&event, myMidiModule);
 			gui.addBindingEvent(&event);
 			gui.removeBindingEvent(&event);
-			gui.guiEvent(&event, myMidiModule, sceneViewWindow);
+			gui.guiEvent(&event, myMidiModule, &sceneViewWindow, sceneViewWindow.renderer);
 			gui.addSceneEvent(&event);
 			gui.sceneTabEvent(&event);
 			gui.scrollEvent(&event);
@@ -126,6 +126,7 @@ int main(int argc, char* args[])
 			
 		}
 		upsCounter++;
+		/*
 		if (currentTime - lastTime >= 1000)
 		{
 			cout << "FPS: " << fpsCounter << " | Updates: " << upsCounter << endl;
@@ -150,6 +151,7 @@ int main(int argc, char* args[])
 				secondCounter = 0;
 			}
 		}
+		*/
 
 	}
 

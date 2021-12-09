@@ -21,7 +21,7 @@ public:
 	void addImg(); //not an event, called by the event in Main Window. 
 	void removeImg();
 	void render(SDL_Renderer* renderer);
-	void sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow myRenderWindow);
+	void sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow *myRenderWindow, SDL_Renderer* renderer);
 	int sceneScroll(int direction);
 
 	imgParameters* imgParArray[15]; // setting a hard limit of 15 images for now. Might change later.

@@ -27,9 +27,10 @@ public:
 
 	// Trying to connect shit
 	Sprite* arr_sprites[15];
+	SDL_Renderer* renderer;
 
 private:
-	SDL_Renderer* renderer;
+
 	SDL_Texture* image;
 	Sprite temp;
 };
