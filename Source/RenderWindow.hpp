@@ -19,10 +19,9 @@ public:
 	void render();
 	void cleanUp();
 	void toggleFullscreen();
-	void setSprites(std::vector<Sprite*>);
-	std::vector<Sprite*> getSprites();
+	bool addSprite(Sprite* sprite);
 	std::filesystem::path cwd;
-	std::vector<Sprite*> sprites;
+	//std::vector<Sprite*> sprites;
 	SDL_DisplayMode mode;
 	SDL_Window* window;
 
@@ -31,7 +30,7 @@ public:
 	SDL_Renderer* renderer;
 
 private:
-
+	int num_sprites;
 	bool fullscreen;
 	SDL_Texture* image;
 	Sprite temp;

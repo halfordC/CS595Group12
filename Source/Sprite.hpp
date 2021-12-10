@@ -8,13 +8,15 @@
 class Sprite
 {
 public:
-  Sprite()
+  Sprite(SDL_Texture* resourse)
   {
     x = 0.0f;
     y = 0.0f;
     w = 0;
     h = 0;
-    res = NULL;
+    rot = 0;
+    scale = 1.0f;
+    res = resourse;
   }
   Sprite(float xPos, float yPos, int width, int height, SDL_Texture* resource)
   {
