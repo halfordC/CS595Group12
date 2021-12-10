@@ -2,6 +2,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include "CCBinding.h"
+#include "NoteBinding.h"
+
 class Sprite
 {
 public:
@@ -45,5 +48,9 @@ private:
   int h;
   int rot;
   float scale;
+
+  std::vector<CCBinding*> c_binding;
+  std::vector<NoteBinding*> n_binding;
+  
   SDL_Texture* res;
 };
