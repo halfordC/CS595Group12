@@ -15,7 +15,7 @@
 class imgParameters
 {
 public:
-	imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, ImageBinders* binder);
+	imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window* inWindow, int layerNum, int inSceneIndex);
 
 	void render(int newY, SDL_Renderer* renderer);//Alternatively could modify coordinates for scrolling in their own method
 	void cleanUp();
@@ -24,9 +24,9 @@ public:
 	void bindingSelectorEvent(SDL_Event* e);
 	void startLocation(SDL_Event* e);
 	void endLocation(SDL_Event* e);
-	void typeFilePath(SDL_Event* e, std::string* inString, RenderWindow * inRenderWindow, SDL_Renderer* renderer);
+	void typeFilePath(SDL_Event* e, RenderWindow * inRenderWindow, SDL_Renderer* renderer);
 	void midiLearnEvent(SDL_Event* e);
-	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule);
+	void midiListenButton(SDL_Event* e, MidiModule* myMidiModule, RenderWindow* inRenderWindow);
 	void browseEvent(SDL_Event* e, RenderWindow myRenderWindow);
 	void imgScroll(int direction);
 
@@ -53,7 +53,8 @@ public:
 	kiss_array bindingList;
 	int previousImageFlag = 0;//0 is no previous image, 1 is previous image
 
-	ImageBinders* bindings;
+	Sprite* sprite;
+	//ImageBinders* bindings;
 	int noteBindingIndex;
 	int ccBindingIndex;
 	int paramSelected;
@@ -73,4 +74,5 @@ private:
 	bool imageParamSelected;
 	bool midiParamSelected;
 	bool endParamSelected;
+	int sceneIndex; //this is the scene that this layer is attached to.
 };

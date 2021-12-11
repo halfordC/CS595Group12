@@ -71,7 +71,4 @@ private:
 	int addSceneTabIndex;
 	int currentSceneTabX;
 	int staticSceneTabY;
-
-
-
 };

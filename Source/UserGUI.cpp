@@ -36,7 +36,7 @@ UserGUI::UserGUI(char* p_title, MidiModule* myMidiModule) : renderer(NULL)
 	//We want to instantite the first scene after we instantiate the window. 
 	sceneIndex = 0;
 	addSceneIndex = 0;
-	Scene* firstScene = new Scene(kissGUI, &window);
+	Scene* firstScene = new Scene(kissGUI, &window, addSceneIndex);
 	sceneArray.push_back(firstScene);
 	addSceneIndex++;
 
@@ -183,7 +183,7 @@ void UserGUI::addSceneEvent(SDL_Event* e)
 		//first Add the scene
 		if(addSceneIndex < 15 && addSceneTabIndex < 5) // eventually, more than 5 scenes will make new scroll tabs appear
 		{
-			Scene* nextScene = new Scene(kissGUI, &window);
+			Scene* nextScene = new Scene(kissGUI, &window, addSceneIndex);
 			sceneArray.push_back(nextScene);
 			addSceneIndex++;  //we don't really need this anymore, but we'll keep it around for now.
 			//then add the scene tab

@@ -8,6 +8,17 @@
 class Sprite
 {
 public:
+    Sprite() 
+    {
+        x = 0.0f;
+        y = 0.0f;
+        w = 0;
+        h = 0;
+        rot = 0;
+        scale = 1.0f;
+        res = NULL;
+    }
+
   Sprite(SDL_Texture* resourse)
   {
     x = 0.0f;
@@ -41,6 +52,9 @@ public:
   int getRotation() { return rot; };
   float getScale() { return scale; };
   SDL_Texture* getRes() { return res; };
+  void setRes(SDL_Texture* inRes) { res = inRes; };
+  std::vector<CCBinding*> c_binding;
+  std::vector<NoteBinding*> n_binding;
   //TODO ADD ALPHA SCALING
   ~Sprite() { SDL_DestroyTexture(res); };
 private:
@@ -51,8 +65,7 @@ private:
   int rot;
   float scale;
 
-  std::vector<CCBinding*> c_binding;
-  std::vector<NoteBinding*> n_binding;
+
   
   SDL_Texture* res;
 };

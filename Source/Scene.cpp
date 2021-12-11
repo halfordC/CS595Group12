@@ -19,7 +19,7 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow)
+Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow, int inSceneIndex)
 {
 	sceneKissGUI = kissGUI;
 	sceneKissGUI->kiss_window_new(&sceneWindow, mainWindow, 1, mainWindow->rect.x + 10, mainWindow->rect.y + 60, mainWindow->rect.w - 40, mainWindow->rect.h - 110);
@@ -28,15 +28,15 @@ Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow)
 	staticX = 20;
 	currentY = 70;
 
-	ImageBinders* addImageBinding = new ImageBinders();
-	SceneImageBindings.push_back(addImageBinding);
+	//Sprite* addSprite = new Sprite();
+	//inRenderWindow->arr_sprites[].push_back(addImageBinding);
 
-	imgParameters *firstIMPar = new imgParameters(staticX, currentY, addImgParamIndex, kissGUI, &sceneWindow, addImgParamIndex + 1, SceneImageBindings.at(0));
+	imgParameters *firstIMPar = new imgParameters(staticX, currentY, addImgParamIndex, kissGUI, &sceneWindow, addImgParamIndex + 1, sceneIndex);
 	imgParArray[addImgParamIndex] = firstIMPar;
 	imgParamIndex = 0;
 	currentY += addY;
 	addImgParamIndex = 1;
-
+	sceneIndex = inSceneIndex;
 	displayIndex = 0;
 }
 
@@ -44,16 +44,10 @@ void Scene::addImg()
 {
 	if (addImgParamIndex < 15)
 	{
-		ImageBinders* addImageBinding = new ImageBinders();
-		SceneImageBindings.push_back(addImageBinding);
-
-
-		imgParameters* nextIMPar = new imgParameters(10, currentY, addImgParamIndex, sceneKissGUI, &sceneWindow, addImgParamIndex + 1, SceneImageBindings.at(addImgParamIndex));
+		imgParameters* nextIMPar = new imgParameters(10, currentY, addImgParamIndex, sceneKissGUI, &sceneWindow, addImgParamIndex + 1, sceneIndex);
 		imgParArray[addImgParamIndex] = nextIMPar;
 		currentY += addY;
 		addImgParamIndex++;
-
-		
 	}
 }
 
@@ -69,7 +63,9 @@ void Scene::removeImg()
 		}
 		else currentY -= addY;
 
-		SceneImageBindings.pop_back(); //we need to remove the previous Image from the array
+		//SceneImageBindings.pop_back(); //we need to remove the previous Image from the array
+
+		//We do need to remove the image from the scene, 
 
 	}
 }
@@ -116,11 +112,11 @@ void Scene::sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow *myR
 		imgParArray[i]->selectMidiParamEvent(e);
 		imgParArray[i]->selectImageParamEvent(e);
 		imgParArray[i]->bindingSelectorEvent(e);
-		imgParArray[i]->typeFilePath(e, &(SceneImageBindings[i]->path), myRenderWindow, renderer);
+		imgParArray[i]->typeFilePath(e, myRenderWindow, renderer);
 		imgParArray[i]->startLocation(e);
 		imgParArray[i]->endLocation(e);
 		imgParArray[i]->midiLearnEvent(e);
-		imgParArray[i]->midiListenButton(e, myMidiModule);
+		imgParArray[i]->midiListenButton(e, myMidiModule, myRenderWindow);
 		imgParArray[i]->browseEvent(e, *myRenderWindow);
 		imgParArray[i]->warningEvent(e);
 	}

@@ -134,6 +134,7 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 	{
 		translatorScenes = translatorGUI->getCurrentSceneArray();
 	}
+
 	if (myMidiModule->hasNewMidiMessage())
 	{
 		//Grab the offered up midiMessage from the midi input/controller
@@ -145,9 +146,10 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 			return;
 		}
 
-
+		int translatorSceneIndex = translatorGUI->sceneIndex;
 		for (int i = 0; i < bufferlength; i++)
 		{
+			/*
 			Scene* currentScene = translatorScenes[translatorGUI->sceneIndex];
 			//grab the number of images in the current scene
 			int numImages = currentScene->SceneImageBindings.size();
@@ -283,6 +285,7 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 
 			//we need two seperate loops, one for our Notes, and one for Our CCs. 
 			}
+			*/
 		}
 
 		myMidiModule->messagesParsed();
@@ -290,112 +293,112 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 }
 
 #pragma region X
-void Translator::NoteSetX(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteSetX(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setX(b.amountOrPosition);
 }
-void Translator::NoteScaleX(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteScaleX(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setX(s->getX() * b.amountOrPosition);
 }
 
-void Translator::CCSetX(CCBinding b, RenderWindow* a, int i, int ccValue)
+void Translator::CCSetX(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {
 	float inCC = (float)ccValue / (float)127; 
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setX(inCC);
 }
 #pragma endregion
 #pragma region Y
-void Translator::NoteSetY(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteSetY(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setY(b.amountOrPosition);
 }
-void Translator::NoteScaleY(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteScaleY(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setY(s->getX() * b.amountOrPosition);
 }
-void Translator::CCSetY(CCBinding b, RenderWindow* a, int i, int ccValue)
+void Translator::CCSetY(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {
 	float inCC = (float)ccValue / (float)127;
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setY(inCC);
 }
 #pragma endregion
 #pragma region Width
-void Translator::NoteSetWidth(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteSetWidth(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setWidth(b.amountOrPosition);
 }
-void Translator::NoteScaleWidth(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteScaleWidth(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setWidth(s->getX() * b.amountOrPosition);
 }
-void Translator::CCSetWidth(CCBinding b, RenderWindow* a, int i, int ccValue)
+void Translator::CCSetWidth(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {
 	float inCC = (float)ccValue / (float)127;
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setWidth(inCC);
 }
 #pragma endregion
 #pragma region Height
-void Translator::NoteSetHeight(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteSetHeight(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setHeight(b.amountOrPosition);
 }
-void Translator::NoteScaleHeight(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteScaleHeight(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setHeight(s->getX() * b.amountOrPosition);
 }
-void Translator::CCSetHeight(CCBinding b, RenderWindow* a, int i, int ccValue)
+void Translator::CCSetHeight(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {
 	float inCC = (float)ccValue / (float)127;
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setHeight(inCC);
 }
 #pragma endregion
 #pragma region Size
-void Translator::NoteSetSize(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteSetSize(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setScale(b.amountOrPosition);
 }
-void Translator::NoteScaleSize(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteScaleSize(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setScale(s->getX() * b.amountOrPosition);
 }
-void Translator::CCSetSize(CCBinding b, RenderWindow* a, int i, int ccValue)
+void Translator::CCSetSize(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {
 	float inCC = (float)ccValue / (float)127;
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setScale(inCC);
 }
 #pragma endregion
 #pragma region Rotation
-void Translator::NoteSetRotation(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteSetRotation(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setRotation(b.amountOrPosition);
 }
-void Translator::NoteScaleRotation(NoteBinding b, RenderWindow* a, int i)
+void Translator::NoteScaleRotation(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setRotation(s->getX() * b.amountOrPosition);
 }
-void Translator::CCSetRotation(CCBinding b, RenderWindow* a, int i, int ccValue)
+void Translator::CCSetRotation(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {
 	//float inCC = (float)ccValue / (float)127;
 	
-	Sprite* s = a->sprites[i];
+	Sprite* s = a->arr_sprites[sceneIndex][i];
 	s->setRotation(ccValue*2.7);
 }
 #pragma endregion

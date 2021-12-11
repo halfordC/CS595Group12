@@ -17,7 +17,7 @@
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, ImageBinders* binder)
+imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, int inSceneIndex)
 {
 
 	char* warningText = "No Midi Device Selected";
@@ -48,10 +48,11 @@ imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss
 
 	binding.visible = 1;
 	index = p_index;
-	bindings = binder;
+	//bindings = binder;
 	noteBindingIndex = 0;
 	ccBindingIndex = 0;
 	setOrScaleSelected = 1;
+	sceneIndex = inSceneIndex;
 }
 
 void imgParameters::render(int newY, SDL_Renderer* renderer)
@@ -199,7 +200,7 @@ void imgParameters::bindingSelectorEvent(SDL_Event* e)
 	}
 }
 
-void imgParameters::typeFilePath(SDL_Event* e, std::string* inString, RenderWindow *inRenderWindow, SDL_Renderer* renderer)
+void imgParameters::typeFilePath(SDL_Event* e, RenderWindow *inRenderWindow, SDL_Renderer* renderer)
 {
 	int draw = 1;
 	if (imgKissGUI->kiss_entry_event(&filePathEntry, e, &draw))
@@ -229,7 +230,7 @@ void imgParameters::typeFilePath(SDL_Event* e, std::string* inString, RenderWind
 		transform(ext.begin(), ext.end(), ext.begin(), ::toupper);
 		if (ext.compare(".JPEG") == 0 || ext.compare(".PNG") == 0)
 		{
-			*inString = returnString;
+			//*inString = returnString;
 			//push the sprite onto this 
 			//inRenderWindow->sprites.push_back();
 
@@ -245,15 +246,19 @@ void imgParameters::typeFilePath(SDL_Event* e, std::string* inString, RenderWind
 			//if not, render the file 
 
 			SDL_QueryTexture(image, NULL, NULL, &w, &h);
-			Sprite* temp = new Sprite(i * 0.1f, i * 0.1f, w, h, image);
 
 			if (previousImageFlag==1) 
 			{	
-				inRenderWindow->sprites.at(index) = temp;
+
+				inRenderWindow->arr_sprites[sceneIndex][index]->setRes(image);
 				return;
 			}
 			
-			inRenderWindow->sprites.push_back(temp); //Sprite has been inserted
+			Sprite* temp = new Sprite(i * 0.1f, i * 0.1f, w, h, image);
+			if (!inRenderWindow->addSprite(temp, sceneIndex)) {
+				std::cout << "Add new image failure" << std::endl;
+			}
+			 //Sprite has been inserted
 			previousImageFlag = 1;
 			return;
 
@@ -323,7 +328,7 @@ void imgParameters::midiLearnEvent(SDL_Event* e)
 	*/
 }
 
-void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)//save binding and add it to the binding selector dropdown?
+void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, RenderWindow* inRenderWindow)//save binding and add it to the binding selector dropdown?
 {
 	int draw = 1;
 	bool isMidiType = false;
@@ -399,7 +404,10 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)//sa
 							newNoteBinding->setOrScale = setOrScaleSelected;
 							newNoteBinding->amountOrPosition = endValue;
 							newNoteBinding->noteOffOn = 1;
-							bindings->ImageNoteBindings.push_back(newNoteBinding);
+
+							inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
+							
+								//bindings->ImageNoteBindings.push_back(newNoteBinding);
 							noteBindingIndex++;
 
 						}
@@ -422,7 +430,9 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)//sa
 							newNoteBinding->setOrScale = setOrScaleSelected;
 							newNoteBinding->noteOffOn = 0;
 							newNoteBinding->amountOrPosition = endValue;
-							bindings->ImageNoteBindings.push_back(newNoteBinding);
+							inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
+
+							//bindings->ImageNoteBindings.push_back(newNoteBinding);
 							noteBindingIndex++;
 						}
 
@@ -442,7 +452,8 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule)//sa
 							newCCBinding->CCnumber = inBuffer[i].getControllerNumber();
 							newCCBinding->CCChannel = inBuffer[i].getChannel();
 							newCCBinding->param = paramSelected;
-							bindings->ImageCCBindings.push_back(newCCBinding);
+							inRenderWindow->arr_sprites[sceneIndex][index]->c_binding.push_back(newCCBinding);
+							//bindings->ImageCCBindings.push_back(newCCBinding);
 							ccBindingIndex++;
 							
 							

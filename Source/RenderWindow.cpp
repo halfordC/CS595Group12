@@ -13,8 +13,9 @@ using std::endl; using std::string;
 
 namespace fs = std::filesystem;
 
-RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(NULL), image(NULL), num_sprites(0)
+RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(NULL), image(NULL)
 {
+
 	/* Get current display mode to initialize a window with native screen resolution. */
 	if (SDL_GetCurrentDisplayMode(0, &mode) != 0)
 	{
@@ -45,6 +46,11 @@ RenderWindow::RenderWindow(const char* p_title) :mode(), window(NULL), renderer(
 	//fullscreen = true;
 	fullscreen = false;
 	initializeScene();
+
+	for (int i = 0; i < 15; i++) 
+	{
+		num_sprites[i] = 0;
+	}
 	
 }
 
@@ -138,12 +144,12 @@ void RenderWindow::setSceneDirectory(fs::path path)
 	}
 }
 
-bool RenderWindow::addSprite(Sprite* sprite)
+bool RenderWindow::addSprite(Sprite* sprite, int sceneIndex)
 {
-	if (num_sprites < 15)
+	if (num_sprites[sceneIndex] < 15)
 	{
-		arr_sprites[num_sprites] = sprite;
-		num_sprites++;
+		arr_sprites[sceneIndex][num_sprites[sceneIndex]] = sprite;
+		num_sprites[sceneIndex]++;
 		return true;
 	}
 	return false;
@@ -152,18 +158,18 @@ bool RenderWindow::addSprite(Sprite* sprite)
 /* This method will render the sprites that are held in the sprite vector to the screen.
 	 Sprites are going to be rendered with the center of their rect at the x and y percentages that are
 	 stored. This method should be called by main in the main program loop. */
-void RenderWindow::render()
+void RenderWindow::render(int sceneIndex)
 {
 	SDL_RenderClear(renderer);
-	for (int i = 0; i < num_sprites; i++)
+	for (int i = 0; i < num_sprites[sceneIndex]; i++)
 	{
 		SDL_Rect texr;
-		texr.x = (mode.w * arr_sprites[i]->getX()) - ((arr_sprites[i]->getWidth() * arr_sprites[i]->getScale()) / 2);
-		texr.y = (mode.h * arr_sprites[i]->getY()) - ((arr_sprites[i]->getHeight() * arr_sprites[i]->getScale()) / 2);
-		texr.w = arr_sprites[i]->getWidth() * arr_sprites[i]->getScale();
-		texr.h = arr_sprites[i]->getHeight() * arr_sprites[i]->getScale();
+		texr.x = (mode.w * arr_sprites[sceneIndex][i]->getX()) - ((arr_sprites[sceneIndex][i]->getWidth() * arr_sprites[sceneIndex][i]->getScale()) / 2);
+		texr.y = (mode.h * arr_sprites[sceneIndex][i]->getY()) - ((arr_sprites[sceneIndex][i]->getHeight() * arr_sprites[sceneIndex][i]->getScale()) / 2);
+		texr.w = arr_sprites[sceneIndex][i]->getWidth() * arr_sprites[sceneIndex][i]->getScale();
+		texr.h = arr_sprites[sceneIndex][i]->getHeight() * arr_sprites[sceneIndex][i]->getScale();
 
-		SDL_RenderCopyEx(renderer, arr_sprites[i]->getRes(), NULL, &texr, arr_sprites[i]->getRotation(), NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, arr_sprites[sceneIndex][i]->getRes(), NULL, &texr, arr_sprites[sceneIndex][i]->getRotation(), NULL, SDL_FLIP_NONE);
 	}
 	SDL_RenderPresent(renderer);
 }

@@ -116,7 +116,7 @@ int main(int argc, char* args[])
 		/* Do renders */
 		if (((float)(currentTime - lastTime)) >= (16.67f * fpsCounter))
 		{
-			sceneViewWindow.render();
+			sceneViewWindow.render(gui.sceneIndex);
 			gui.render();
 			fpsCounter++;
 			translator->translate(&sceneViewWindow, myMidiModule);

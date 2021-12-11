@@ -17,7 +17,7 @@
 class Scene 
 {
 public:
-	Scene::Scene(myKissGUI* kissGUI, kiss_window* mainWindow);
+	Scene::Scene(myKissGUI* kissGUI, kiss_window* mainWindow, int inSceneIndex);
 	void addImg(); //not an event, called by the event in Main Window. 
 	void removeImg();
 	void render(SDL_Renderer* renderer);
@@ -28,11 +28,12 @@ public:
 	kiss_button addImgButton;
 	kiss_window sceneWindow;
 	int currentY;
-	std::vector<ImageBinders*> SceneImageBindings;
+	//std::vector<ImageBinders*> SceneImageBindings;
 
 	// Using for connecting - Noah
-	std::vector<ImageBinders*> arr_SceneImageBindings[15];
+	//std::vector<ImageBinders*> arr_SceneImageBindings[15];
 private:
+	int sceneIndex; //the Index of this scene, should not go over 15. does not change after instatiation
 	int imgParamIndex; //should not go over 15. 
 	int addImgParamIndex;
 	myKissGUI* sceneKissGUI;
