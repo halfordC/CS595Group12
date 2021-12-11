@@ -25,13 +25,11 @@ public:
 	SDL_DisplayMode mode;
 	SDL_Window* window;
 
-	// Trying to connect shit
-
+	int num_sprites[15]; //we have upto 15 sprite indexes. 
 	Sprite* arr_sprites[15][15]; //15 max scenes, 15 max sprites per scene. [Scene][Sprite]
 	SDL_Renderer* renderer;
 
 private:
-	int num_sprites[15]; //we have upto 15 sprite indexes. 
 	bool fullscreen;
 	SDL_Texture* image;
 	Sprite temp;

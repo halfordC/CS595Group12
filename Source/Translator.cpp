@@ -147,120 +147,110 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 		}
 
 		int translatorSceneIndex = translatorGUI->sceneIndex;
-		for (int i = 0; i < bufferlength; i++)
+		for (int i = 0; i < bufferlength; i++) //look at all incoming notes
 		{
-			/*
-			Scene* currentScene = translatorScenes[translatorGUI->sceneIndex];
-			//grab the number of images in the current scene
-			int numImages = currentScene->SceneImageBindings.size();
-			for (int j = 0; j< numImages; j++) 
+			for (int j = 0; j < a->num_sprites[translatorSceneIndex]; j++)  //look through every image in our current scene. 
 			{
-				ImageBinders* currentImage = currentScene->SceneImageBindings[j];
-				//update each image in the scene:
 				if (buffer[i].isNoteOnOrOff())
 				{
-					for (int k = 0; k < currentImage->ImageNoteBindings.size(); k++)
+					std::vector<NoteBinding*> loopBindings = a->arr_sprites[translatorSceneIndex][j]->n_binding;
+					//loop through note vector
+					for (NoteBinding* n : loopBindings)
 					{
-						NoteBinding* currentNoteBinding = currentImage->ImageNoteBindings[k];
-						if (currentNoteBinding->noteNumber != NULL && currentNoteBinding->noteNumber == buffer[i].getNoteNumber())
+						//do translations. 
+						if (n->noteNumber != NULL && n->noteNumber == buffer[i].getNoteNumber())
 						{
-							switch (currentNoteBinding->param)
+							switch (n->param)
 							{
 							case 0: //target = 1 | X
 							{
-								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
-									NoteSetX(*currentNoteBinding, a, k);
+								if (n->setOrScale == 0) //type = 0: Set
+									NoteSetX(*n, a, j, translatorSceneIndex);
 								else //Scale
-									NoteScaleX(*currentNoteBinding, a, k);
+									NoteScaleX(*n, a, j, translatorSceneIndex);
 								break;
 							}
 
 							case 1: //target = 2 | Y
 							{
-								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
-									NoteSetY(*currentNoteBinding, a, k);
+								if (n->setOrScale == 0) //type = 0: Set
+									NoteSetY(*n, a, j, translatorSceneIndex);
 								else //Scale
-									NoteScaleY(*currentNoteBinding, a, k);
+									NoteScaleY(*n, a, j, translatorSceneIndex);
 								break;
 							}
 
 							case 2: //target = 3 | Size
 							{
-								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
-									NoteSetSize(*currentNoteBinding, a, k);
+								if (n->setOrScale == 0) //type = 0: Set
+									NoteSetSize(*n, a, j, translatorSceneIndex);
 								else //Scale
-									NoteScaleSize(*currentNoteBinding, a, k);
+									NoteScaleSize(*n, a, j, translatorSceneIndex);
 								break;
 							}
 
 							case 3: //target = 4 | Rotation
 							{
-								if (currentNoteBinding->setOrScale == 0) //type = 0: Set
-									NoteSetRotation(*currentNoteBinding, a, k);
+								if (n->setOrScale == 0) //type = 0: Set
+									NoteSetRotation(*n, a, j, translatorSceneIndex);
 								else //Scale
-									NoteScaleRotation(*currentNoteBinding, a, k);
+									NoteScaleRotation(*n, a, j, translatorSceneIndex);
 								break;
-							}
-
-							//case 4: //target = 5 | Alpha
-							//{
-							//	if (bindings[j].getType() == 0) //type = 0: Set
-							//		setAlpha(bindings[j], a);
-							//	else //Scale
-							//		scaleAlpha(bindings[j], a);
-							//	break;
-							//}
 
 							default: // code to be executed if n doesn't match any cases
 								cout << "Failed to execute Binding!" << endl;
-							}
-						}
 
+							}
+
+							}
+
+						}
 					}
 				}
-				if(buffer[i].isController())
+				else if (buffer[i].isController())
 				{
-					//do CC updates here. 
-					for (int m = 0; m < currentImage->ImageCCBindings.size(); m++)
+					//loop through cc vector
+					std::vector<CCBinding*> loopBindings = a->arr_sprites[translatorSceneIndex][j]->c_binding;
+					for (CCBinding* c : loopBindings)
 					{
-						CCBinding* currentCCBinding = currentImage->ImageCCBindings[m];
-						if (currentCCBinding->CCnumber != NULL && currentCCBinding->CCnumber == buffer[i].getControllerNumber())
+						//do translations
+						if (c->CCnumber != NULL && c->CCnumber == buffer[i].getControllerNumber())
 						{
-							switch (currentCCBinding->param)
+							switch (c->param)
 							{
 							case 0: //target = 0 | X
 							{
-								CCSetX(*currentCCBinding, a, m, buffer[i].getControllerValue());
+								CCSetX(*c, a, j, buffer[i].getControllerValue(), translatorSceneIndex);
 								break;
 							}
 
 							case 1: //target = 1 | Y
 							{
-								CCSetY(*currentCCBinding, a, m, buffer[i].getControllerValue());
+								CCSetY(*c, a, j, buffer[i].getControllerValue(), translatorSceneIndex);
 								break;
 							}
 
 							case 2: //target = 2 | Width 
 							{
-								CCSetWidth(*currentCCBinding, a, m, buffer[i].getControllerValue());
+								CCSetWidth(*c, a, j, buffer[i].getControllerValue(), translatorSceneIndex);
 								break;
 							}
 
 							case 3: //target = 3 | Height
 							{
-								CCSetSize(*currentCCBinding, a, m, buffer[i].getControllerValue()); 
+								CCSetSize(*c, a, j, buffer[i].getControllerValue(), translatorSceneIndex);
 								break;
 							}
 
 							case 4: //target = 4 | Rotation
 							{
-								CCSetRotation(*currentCCBinding, a, m, buffer[i].getControllerValue()); 
+								CCSetRotation(*c, a, j, buffer[i].getControllerValue(), translatorSceneIndex);
 								break;
 							}
 
 							case 5: //target = 5 | scale 
 							{
-								CCSetSize(*currentCCBinding, a, m, buffer[i].getControllerValue());
+								CCSetSize(*c, a, j, buffer[i].getControllerValue(), translatorSceneIndex);
 								break;
 
 							}
@@ -277,17 +267,14 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 							default: // code to be executed if n doesn't match any cases
 								cout << "Failed to execute Binding!" << endl;
 							}
+
 						}
 
 					}
 
 				}
-
-			//we need two seperate loops, one for our Notes, and one for Our CCs. 
 			}
-			*/
 		}
-
 		myMidiModule->messagesParsed();
 	}
 }
