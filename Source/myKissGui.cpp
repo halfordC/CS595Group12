@@ -1542,7 +1542,11 @@
 				event->text.text) < entry->textwidth &&
 				strlen(entry->text) + strlen(event->text.text) <
 				KISS_MAX_LENGTH)
-				strcpy(entry->text, SDL_GetClipboardText());
+			{
+				std::string text(SDL_GetClipboardText());
+				if (text.at(0) == '"') text = text.substr(1, text.size() - 2);
+				strcpy(entry->text, const_cast<char*>(text.c_str()));
+			}
 			*draw = 1;
 		}
 		return 0;
