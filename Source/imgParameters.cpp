@@ -52,7 +52,8 @@ imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss
 	binding.visible = 1;
 	index = p_index;
 	//bindings = binder;
-	bindingIndex = 0;
+	bindingAddIndex = 0;
+	bindingCurrentIndex = 0;
 	setOrScaleSelected = 1;
 	imageLoaded = false;
 	sceneIndex = inSceneIndex;
@@ -161,6 +162,8 @@ void imgParameters::selectMidiParamEvent(SDL_Event* e)
 		}
 		midiParamSelected = true;
 	}
+
+
 }
 
 void imgParameters::selectImageParamEvent(SDL_Event* e)
@@ -194,11 +197,67 @@ void imgParameters::selectImageParamEvent(SDL_Event* e)
 	}
 }
 
-void imgParameters::bindingSelectorEvent(SDL_Event* e)
+void imgParameters::bindingSelectorEvent(SDL_Event* e, Sprite * inSprite)
 {
 	int draw = 1;
 	if (imgKissGUI->kiss_combobox_event(&selector, e, &draw))
 	{
+		char* contents = selector.entry.text;
+
+
+		if (!strcmp(contents, "New Binding") )
+		{
+			bindingCurrentIndex = bindingAddIndex;
+			imgKissGUI->kiss_string_copy(noteEntry.text, 2, " ", NULL);
+			return;
+		}
+
+		//We want the first int from contents, if there is one. 
+
+		std::vector<NoteBinding*> checkNoteBindings = inSprite->n_binding;
+		std::vector<CCBinding*> checkCCBindings = inSprite->c_binding;
+
+		std::string contentsString(contents);
+		std::string::size_type sz;   // alias of size_t
+
+		int bindingCheckIndex = std::stoi(contentsString, &sz)-1;
+
+		//int otherBindingCheckIndex = selector.textbox.selectedline;
+
+		for (NoteBinding* n : checkNoteBindings) 
+		{
+			if (n->index == bindingCheckIndex) 
+			{
+				//this is what we want to populate everything with, 
+				// 		//be sure to set listen filter when selectring new bindings.
+//and return
+
+				return;
+
+			}
+		}
+
+		for (CCBinding* c: checkCCBindings) 
+		{
+			if (c->index == bindingCheckIndex) 
+			{
+				std::string tmp = "CC " + std::to_string(c->CCnumber);
+				char* ccNumIn = const_cast<char*>(tmp.c_str());
+				//this is what we want to populate everything with, 
+				//be sure to set listen filter when selectring new bindings.
+				//and return
+
+				imgKissGUI->kiss_string_copy(imgParam.entry.text,12, (char*)imgParam.textbox.array->data[c->param], NULL);
+				imgKissGUI->kiss_string_copy(midiParam.entry.text, 15, "Control Change", NULL);
+				imgKissGUI->kiss_string_copy(noteEntry.text, 6, ccNumIn, NULL);
+				listenFilter = 2;
+				bindingCurrentIndex = c->index;
+				return;
+
+			}
+
+		}
+
 
 	}
 }
@@ -406,26 +465,90 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, Ren
 							strcat(noteEntry.text, newNote); //fill char array with new note value
 
 							//Also, add this note to the translator app for the selected image param
-							NoteBinding* newNoteBinding = new NoteBinding();
-							newNoteBinding->noteNumber = inBuffer[i].getNoteNumber();
-							newNoteBinding->noteChannel = inBuffer[i].getChannel();
-							newNoteBinding->param = paramSelected;
-							newNoteBinding->setOrScale = setOrScaleSelected;
-							newNoteBinding->amountOrPosition = endValue;
-							newNoteBinding->noteOffOn = 1;
-							newNoteBinding->index = bindingIndex;
-							inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
-							
-							std::string tmp = "" + std::to_string(bindingIndex + 1);
-							std::string param(imgParam.entry.text);
-							std::string type(midiParam.entry.text);
-							tmp += "-" + param + " " + type + " " + noteString;
-							char* bindingNumber = const_cast<char*>(tmp.c_str());
-							imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
-							
-								//bindings->ImageNoteBindings.push_back(newNoteBinding);
-							//noteBindingIndex++;
-							bindingIndex++;
+
+
+							if (bindingAddIndex != bindingCurrentIndex) 
+							{
+								Sprite* checkSprite = inRenderWindow->arr_sprites[sceneIndex][index];
+								std::vector<NoteBinding*> checkNoteBinding = checkSprite->n_binding;
+								std::vector<CCBinding*> checkCCBinding = checkSprite->c_binding;
+
+								bool noteFound = false;
+
+								for (NoteBinding* n : checkNoteBinding)
+								{
+									if (n->index == bindingCurrentIndex)
+									{
+										//edit this value and return 
+										n->noteNumber = inBuffer[i].getNoteNumber();
+										n->noteChannel = inBuffer[i].getChannel();
+										n->param = paramSelected;
+										n->setOrScale = setOrScaleSelected;
+										n->amountOrPosition = endValue;
+										n->noteOffOn = 1;
+										noteFound = true;
+										break;
+									}
+
+								}
+								//Note not found, so Current binding is CC Binding being changed to a note.
+								if(!noteFound)
+								{
+									int i = 0; //for each loop for saftey, i to grab iterator index.
+									for (CCBinding* c : checkCCBinding)
+									{
+
+										if (c->index == bindingCurrentIndex)
+										{
+											std::vector<CCBinding*>::iterator it1 = checkCCBinding.begin();
+											it1 += i;
+											checkCCBinding.erase(it1);
+											break;
+										}
+
+									}
+
+									NoteBinding* newNoteBinding = new NoteBinding();
+									newNoteBinding->noteNumber = inBuffer[i].getNoteNumber();
+									newNoteBinding->noteChannel = inBuffer[i].getChannel();
+									newNoteBinding->param = paramSelected;
+									newNoteBinding->setOrScale = setOrScaleSelected;
+									newNoteBinding->amountOrPosition = endValue;
+									newNoteBinding->noteOffOn = 1;
+									newNoteBinding->index = bindingAddIndex;
+									inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
+
+									std::string tmp = "" + std::to_string(bindingAddIndex + 1);
+									std::string param(imgParam.entry.text);
+									std::string type(midiParam.entry.text);
+									tmp += "-" + param + " " + type + " " + noteString;
+									char* bindingNumber = const_cast<char*>(tmp.c_str());
+									imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
+									bindingAddIndex++;
+									bindingCurrentIndex++;
+								}
+							}
+							else 
+							{ 
+								NoteBinding* newNoteBinding = new NoteBinding();
+								newNoteBinding->noteNumber = inBuffer[i].getNoteNumber();
+								newNoteBinding->noteChannel = inBuffer[i].getChannel();
+								newNoteBinding->param = paramSelected;
+								newNoteBinding->setOrScale = setOrScaleSelected;
+								newNoteBinding->amountOrPosition = endValue;
+								newNoteBinding->noteOffOn = 1;
+								newNoteBinding->index = bindingAddIndex;
+								inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
+
+								std::string tmp = "" + std::to_string(bindingAddIndex + 1);
+								std::string param(imgParam.entry.text);
+								std::string type(midiParam.entry.text);
+								tmp += "-" + param + " " + type + " " + noteString;
+								char* bindingNumber = const_cast<char*>(tmp.c_str());
+								imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
+								bindingAddIndex++;
+								bindingCurrentIndex++;
+							}							
 
 						}
 
@@ -440,25 +563,88 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, Ren
 							const char* newNote = noteString.c_str();
 							strcat(noteEntry.text, newNote); //fill char array with new note value
 
-							NoteBinding* newNoteBinding = new NoteBinding();
-							newNoteBinding->noteNumber = inBuffer[i].getNoteNumber();
-							newNoteBinding->noteChannel = inBuffer[i].getChannel();
-							newNoteBinding->param = paramSelected;
-							newNoteBinding->setOrScale = setOrScaleSelected;
-							newNoteBinding->noteOffOn = 0;
-							newNoteBinding->amountOrPosition = endValue;
-							newNoteBinding->index = bindingIndex;
-							inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
-							
-							std::string tmp = "" + std::to_string(bindingIndex + 1);
-							std::string param(imgParam.entry.text);
-							std::string type(midiParam.entry.text);
-							tmp += "-" + param + " " + type + " " + noteString;
-							char* bindingNumber = const_cast<char*>(tmp.c_str());
-							imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
-							
-							//bindings->ImageNoteBindings.push_back(newNoteBinding);
-							bindingIndex++;
+							if (bindingAddIndex != bindingCurrentIndex)
+							{
+								Sprite* checkSprite = inRenderWindow->arr_sprites[sceneIndex][index];
+								std::vector<NoteBinding*> checkNoteBinding = checkSprite->n_binding;
+								std::vector<CCBinding*> checkCCBinding = checkSprite->c_binding;
+
+								bool noteFound = false;
+
+								for (NoteBinding* n : checkNoteBinding)
+								{
+									if (n->index == bindingCurrentIndex)
+									{
+										//edit this value and return 
+										n->noteNumber = inBuffer[i].getNoteNumber();
+										n->noteChannel = inBuffer[i].getChannel();
+										n->param = paramSelected;
+										n->setOrScale = setOrScaleSelected;
+										n->amountOrPosition = endValue;
+										n->noteOffOn = 1;
+										noteFound = true;
+										break;
+									}
+
+								}
+								//Note not found, so Current binding is CC Binding being changed to a note.
+								if (!noteFound)
+								{
+									int i = 0; //for each loop for saftey, i to grab iterator index.
+									for (CCBinding* c : checkCCBinding)
+									{
+
+										if (c->index == bindingCurrentIndex)
+										{
+											std::vector<CCBinding*>::iterator it1 = checkCCBinding.begin();
+											it1 += i;
+											checkCCBinding.erase(it1);
+											break;
+										}
+
+									}
+
+									NoteBinding* newNoteBinding = new NoteBinding();
+									newNoteBinding->noteNumber = inBuffer[i].getNoteNumber();
+									newNoteBinding->noteChannel = inBuffer[i].getChannel();
+									newNoteBinding->param = paramSelected;
+									newNoteBinding->setOrScale = setOrScaleSelected;
+									newNoteBinding->amountOrPosition = endValue;
+									newNoteBinding->noteOffOn = 1;
+									newNoteBinding->index = bindingAddIndex;
+									inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
+
+									std::string tmp = "" + std::to_string(bindingAddIndex + 1);
+									std::string param(imgParam.entry.text);
+									std::string type(midiParam.entry.text);
+									tmp += "-" + param + " " + type + " " + noteString;
+									char* bindingNumber = const_cast<char*>(tmp.c_str());
+									imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
+									bindingAddIndex++;
+									bindingCurrentIndex++;
+								}
+							}
+							else
+							{
+								NoteBinding* newNoteBinding = new NoteBinding();
+								newNoteBinding->noteNumber = inBuffer[i].getNoteNumber();
+								newNoteBinding->noteChannel = inBuffer[i].getChannel();
+								newNoteBinding->param = paramSelected;
+								newNoteBinding->setOrScale = setOrScaleSelected;
+								newNoteBinding->amountOrPosition = endValue;
+								newNoteBinding->noteOffOn = 1;
+								newNoteBinding->index = bindingAddIndex;
+								inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
+
+								std::string tmp = "" + std::to_string(bindingAddIndex + 1);
+								std::string param(imgParam.entry.text);
+								std::string type(midiParam.entry.text);
+								tmp += "-" + param + " " + type + " " + noteString;
+								char* bindingNumber = const_cast<char*>(tmp.c_str());
+								imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
+								bindingAddIndex++;
+								bindingCurrentIndex++;
+							}
 						}
 
 						break;
@@ -473,24 +659,89 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, Ren
 							strcat(noteEntry.text, newCC); //fill char array with new note value
 
 
-							CCBinding* newCCBinding = new CCBinding();
-							newCCBinding->CCnumber = inBuffer[i].getControllerNumber();
-							newCCBinding->CCChannel = inBuffer[i].getChannel();
-							newCCBinding->param = paramSelected;
-							newCCBinding->index = bindingIndex;
-							inRenderWindow->arr_sprites[sceneIndex][index]->c_binding.push_back(newCCBinding);
-							//bindings->ImageCCBindings.push_back(newCCBinding);
-							
-							
-							std::string tmp = "" + std::to_string(bindingIndex + 1);
-							std::string param(imgParam.entry.text);
-							tmp += "-" + param + " " + CCstr;
-							char* bindingNumber = const_cast<char*>(tmp.c_str());
-							imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
-							
-							//name this and place in Bindings selector
+							if (bindingAddIndex != bindingCurrentIndex)
+							{
+								Sprite* checkSprite = inRenderWindow->arr_sprites[sceneIndex][index];
+								std::vector<NoteBinding*> checkNoteBinding = checkSprite->n_binding;
+								std::vector<CCBinding*> checkCCBinding = checkSprite->c_binding;
 
-							bindingIndex++;
+								bool CCFound = false;
+
+								for (CCBinding* c : checkCCBinding)
+								{
+									if (c->index == bindingCurrentIndex)
+									{
+										//edit this value and return 
+										c->CCnumber = inBuffer[i].getControllerNumber();
+										c->CCChannel = inBuffer[i].getChannel();
+										c->param = paramSelected;
+										CCFound = true;
+										break;
+									}
+
+								}
+								//Note not found, so Current binding is CC Binding being changed to a note.
+								if (!CCFound)
+								{
+									int i = 0; //for each loop for saftey, i to grab iterator index.
+									for (NoteBinding* n : checkNoteBinding)
+									{
+
+										if (n->index == bindingCurrentIndex)
+										{
+											std::vector<NoteBinding*>::iterator it1 = checkNoteBinding.begin();
+											it1 += i;
+											checkNoteBinding.erase(it1);
+											break;
+										}
+
+									}
+
+									CCBinding* newCCBinding = new CCBinding();
+									newCCBinding->CCnumber = inBuffer[i].getControllerNumber();
+									newCCBinding->CCChannel = inBuffer[i].getChannel();
+									newCCBinding->param = paramSelected;
+									newCCBinding->index = bindingAddIndex;
+									inRenderWindow->arr_sprites[sceneIndex][index]->c_binding.push_back(newCCBinding);
+									//bindings->ImageCCBindings.push_back(newCCBinding);
+
+
+									std::string tmp = "" + std::to_string(bindingAddIndex + 1);
+									std::string param(imgParam.entry.text);
+									tmp += "-" + param + " " + CCstr;
+									char* bindingNumber = const_cast<char*>(tmp.c_str());
+									imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
+
+									//name this and place in Bindings selector
+
+									bindingAddIndex++;
+									bindingCurrentIndex++;
+								}
+							}
+							else
+							{
+								CCBinding* newCCBinding = new CCBinding();
+								newCCBinding->CCnumber = inBuffer[i].getControllerNumber();
+								newCCBinding->CCChannel = inBuffer[i].getChannel();
+								newCCBinding->param = paramSelected;
+								newCCBinding->index = bindingAddIndex;
+								inRenderWindow->arr_sprites[sceneIndex][index]->c_binding.push_back(newCCBinding);
+								//bindings->ImageCCBindings.push_back(newCCBinding);
+
+
+								std::string tmp = "" + std::to_string(bindingAddIndex + 1);
+								std::string param(imgParam.entry.text);
+								tmp += "-" + param + " " + CCstr;
+								char* bindingNumber = const_cast<char*>(tmp.c_str());
+								imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
+
+								//name this and place in Bindings selector
+
+								bindingAddIndex++;
+								bindingCurrentIndex++;
+							}
+
+							
 
 							//Also, add this note to the translator app for the selected image param
 						}

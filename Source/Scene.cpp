@@ -112,7 +112,7 @@ void Scene::sceneEvent(SDL_Event* e, MidiModule* myMidiModule, RenderWindow *myR
 	{
 		imgParArray[i]->selectMidiParamEvent(e);
 		imgParArray[i]->selectImageParamEvent(e);
-		imgParArray[i]->bindingSelectorEvent(e);
+		imgParArray[i]->bindingSelectorEvent(e, myRenderWindow->arr_sprites[sceneIndex][i]);
 		imgParArray[i]->typeFilePath(e, myRenderWindow, renderer);
 		imgParArray[i]->startLocation(e);
 		imgParArray[i]->endLocation(e);
