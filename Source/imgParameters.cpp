@@ -19,7 +19,8 @@ using std::endl; using std::string;
 
 imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss_window *inWindow, int layerNum, int inSceneIndex)
 {
-
+	kissGUI->kiss_array_new(&bindingList);
+	kissGUI->kiss_array_appendstring(&bindingList, 0, "New Binding", NULL);
 	char* warningText = "No Midi Device Selected";
 	warning = false;
 	imageParamSelected = false;
@@ -46,12 +47,14 @@ imgParameters::imgParameters(int x, int y, int p_index, myKissGUI* kissGUI, kiss
 	kissGUI->kiss_label_new(&warningLabel, &warningWindow, warningText, warningWindow.rect.x + 10, warningWindow.rect.y + 10);
 	kissGUI->kiss_button_new(&warningButton, &warningWindow, "OK", (warningWindow.rect.w) / 2, warningWindow.rect.y + 60);
 
+	
+
 	binding.visible = 1;
 	index = p_index;
 	//bindings = binder;
-	noteBindingIndex = 0;
-	ccBindingIndex = 0;
+	bindingIndex = 0;
 	setOrScaleSelected = 1;
+	imageLoaded = false;
 	sceneIndex = inSceneIndex;
 }
 
@@ -249,6 +252,7 @@ void imgParameters::typeFilePath(SDL_Event* e, RenderWindow *inRenderWindow, SDL
 			{	
 
 				inRenderWindow->arr_sprites[sceneIndex][index]->setRes(image);
+				imageLoaded = true;
 				return;
 			}
 			
@@ -258,6 +262,7 @@ void imgParameters::typeFilePath(SDL_Event* e, RenderWindow *inRenderWindow, SDL
 			}
 			 //Sprite has been inserted
 			previousImageFlag = 1;
+			imageLoaded = true;
 			return;
 
 		}
@@ -354,6 +359,12 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, Ren
 			updateWarning("No Midi Message type selected");
 			return;
 		}
+		if (!imageLoaded)
+		{
+			warning = true;
+			updateWarning("Missing Image");
+			return;
+		}
 		/*
 		if (!endParamSelected)
 		{
@@ -402,11 +413,19 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, Ren
 							newNoteBinding->setOrScale = setOrScaleSelected;
 							newNoteBinding->amountOrPosition = endValue;
 							newNoteBinding->noteOffOn = 1;
-
+							newNoteBinding->index = bindingIndex;
 							inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
 							
+							std::string tmp = "" + std::to_string(bindingIndex + 1);
+							std::string param(imgParam.entry.text);
+							std::string type(midiParam.entry.text);
+							tmp += "-" + param + " " + type + " " + noteString;
+							char* bindingNumber = const_cast<char*>(tmp.c_str());
+							imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
+							
 								//bindings->ImageNoteBindings.push_back(newNoteBinding);
-							noteBindingIndex++;
+							//noteBindingIndex++;
+							bindingIndex++;
 
 						}
 
@@ -428,10 +447,18 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, Ren
 							newNoteBinding->setOrScale = setOrScaleSelected;
 							newNoteBinding->noteOffOn = 0;
 							newNoteBinding->amountOrPosition = endValue;
+							newNoteBinding->index = bindingIndex;
 							inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
-
+							
+							std::string tmp = "" + std::to_string(bindingIndex + 1);
+							std::string param(imgParam.entry.text);
+							std::string type(midiParam.entry.text);
+							tmp += "-" + param + " " + type + " " + noteString;
+							char* bindingNumber = const_cast<char*>(tmp.c_str());
+							imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
+							
 							//bindings->ImageNoteBindings.push_back(newNoteBinding);
-							noteBindingIndex++;
+							bindingIndex++;
 						}
 
 						break;
@@ -450,15 +477,20 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, Ren
 							newCCBinding->CCnumber = inBuffer[i].getControllerNumber();
 							newCCBinding->CCChannel = inBuffer[i].getChannel();
 							newCCBinding->param = paramSelected;
+							newCCBinding->index = bindingIndex;
 							inRenderWindow->arr_sprites[sceneIndex][index]->c_binding.push_back(newCCBinding);
 							//bindings->ImageCCBindings.push_back(newCCBinding);
-							ccBindingIndex++;
 							
 							
+							std::string tmp = "" + std::to_string(bindingIndex + 1);
+							std::string param(imgParam.entry.text);
+							tmp += "-" + param + " " + CCstr;
+							char* bindingNumber = const_cast<char*>(tmp.c_str());
+							imgKissGUI->kiss_array_appendstring(&bindingList, 0, bindingNumber, NULL);
 							
 							//name this and place in Bindings selector
 
-
+							bindingIndex++;
 
 							//Also, add this note to the translator app for the selected image param
 						}

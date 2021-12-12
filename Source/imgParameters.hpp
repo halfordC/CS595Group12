@@ -55,8 +55,9 @@ public:
 
 	Sprite* sprite;
 	//ImageBinders* bindings;
-	int noteBindingIndex;
-	int ccBindingIndex;
+	//int noteBindingIndex;
+	//int ccBindingIndex;
+	int bindingIndex;
 	int paramSelected;
 	int setOrScaleSelected; //if 1, set. if 2, scale.
 	float startValue;
@@ -74,5 +75,6 @@ private:
 	bool imageParamSelected;
 	bool midiParamSelected;
 	bool endParamSelected;
+	bool imageLoaded;
 	int sceneIndex; //this is the scene that this layer is attached to.
 };
