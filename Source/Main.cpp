@@ -39,7 +39,7 @@ int main(int argc, char* args[])
 
 	RenderWindow sceneViewWindow("Scene View Window");
 	//sceneViewWindow.enterViewMode();
-	UserGUI gui("GUI Test", myMidiModule);
+	UserGUI gui("Scene Editor", myMidiModule);
 
 	Translator* translator = new Translator(&gui);
 

@@ -1,6 +1,6 @@
-C:\Files\CS595Project\Builds\VisualStudio2019\x64\Debug\ConsoleApp\MidiVisualizer.exe
-C:\Files\CS595Project\Builds\VisualStudio2019\x64\Debug\ConsoleApp\MidiVisualizer.pdb
 C:\Files\CS595\Repo\CS595Group12\Builds\VisualStudio2019\x64\Debug\ConsoleApp\MidiVisualizer.exe
 C:\Users\qwalt\source\repos\CS595\Builds\VisualStudio2019\x64\Debug\ConsoleApp\MidiVisualizer.exe
 C:\Users\qwalt\source\repos\CS595\Builds\VisualStudio2019\x64\Debug\ConsoleApp\MidiVisualizer.pdb
 C:\Users\noahr\source\repos\CS595Group12\Builds\VisualStudio2019\x64\Debug\ConsoleApp\MidiVisualizer.exe
+C:\Files\CS595Project\Builds\VisualStudio2019\x64\Debug\ConsoleApp\MidiVisualizer.exe
+C:\Files\CS595Project\Builds\VisualStudio2019\x64\Debug\ConsoleApp\MidiVisualizer.pdb

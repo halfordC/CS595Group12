@@ -21,6 +21,7 @@ using std::endl; using std::string;
 
 Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow, int inSceneIndex)
 {
+	sceneIndex = inSceneIndex;
 	sceneKissGUI = kissGUI;
 	sceneKissGUI->kiss_window_new(&sceneWindow, mainWindow, 1, mainWindow->rect.x + 10, mainWindow->rect.y + 60, mainWindow->rect.w - 40, mainWindow->rect.h - 110);
 
@@ -36,7 +37,7 @@ Scene::Scene(myKissGUI* kissGUI, kiss_window *mainWindow, int inSceneIndex)
 	imgParamIndex = 0;
 	currentY += addY;
 	addImgParamIndex = 1;
-	sceneIndex = inSceneIndex;
+
 	displayIndex = 0;
 }
 

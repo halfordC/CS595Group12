@@ -209,8 +209,6 @@ void imgParameters::typeFilePath(SDL_Event* e, RenderWindow *inRenderWindow, SDL
 		//do stuff with inputText
 		int i = 0;
 		int w, h; 
-
-
 		
 		std::string returnString(inputText);
 
@@ -225,7 +223,7 @@ void imgParameters::typeFilePath(SDL_Event* e, RenderWindow *inRenderWindow, SDL
 			
 		}
 
-		std::cout << "lastPeriodIs " << lastPeriod << std::endl;
+		//std::cout << "lastPeriodIs " << lastPeriod << std::endl;
 		std::string ext = returnString.substr(lastPeriod);
 		transform(ext.begin(), ext.end(), ext.begin(), ::toupper);
 		if (ext.compare(".JPEG") == 0 || ext.compare(".PNG") == 0)

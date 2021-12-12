@@ -157,7 +157,7 @@ void Translator::translate(RenderWindow* a, MidiModule* myMidiModule)
 					//loop through note vector
 					for (NoteBinding* n : loopBindings)
 					{
-						//do translations. 
+						//do translations, execut all bindings attached to current note. 
 						if (n->noteNumber != NULL && n->noteNumber == buffer[i].getNoteNumber())
 						{
 							switch (n->param)
