@@ -205,7 +205,7 @@ void imgParameters::bindingSelectorEvent(SDL_Event* e, Sprite * inSprite)
 		char* contents = selector.entry.text;
 
 
-		if (!strcmp(contents, "New Binding") )
+		if (!strcmp(contents, "New Binding") || !strcmp(contents, "Binding Selector"))
 		{
 			bindingCurrentIndex = bindingAddIndex;
 			imgKissGUI->kiss_string_copy(noteEntry.text, 2, " ", NULL);
@@ -230,8 +230,18 @@ void imgParameters::bindingSelectorEvent(SDL_Event* e, Sprite * inSprite)
 			{
 				//this is what we want to populate everything with, 
 				// 		//be sure to set listen filter when selectring new bindings.
-//and return
+				//and return
+				listenFilter = n->noteOffOn;
 
+				std::string newNote(contents);
+				newNote = newNote.substr(newNote.size() - 2);
+				char* notenum = const_cast<char*>(newNote.c_str());
+
+				imgKissGUI->kiss_string_copy(imgParam.entry.text, 20, (char*)imgParam.textbox.array->data[n->param + (n->setOrScale * 5)], NULL);
+				imgKissGUI->kiss_string_copy(midiParam.entry.text, 10, (char*)midiParam.textbox.array->data[listenFilter], NULL);
+				imgKissGUI->kiss_string_copy(noteEntry.text, 4, notenum, NULL);
+				
+				bindingCurrentIndex = n->index;
 				return;
 
 			}
@@ -485,7 +495,7 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, Ren
 										n->param = paramSelected;
 										n->setOrScale = setOrScaleSelected;
 										n->amountOrPosition = endValue;
-										n->noteOffOn = 1;
+										n->noteOffOn = 0;
 										noteFound = true;
 										break;
 									}
@@ -514,7 +524,7 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, Ren
 									newNoteBinding->param = paramSelected;
 									newNoteBinding->setOrScale = setOrScaleSelected;
 									newNoteBinding->amountOrPosition = endValue;
-									newNoteBinding->noteOffOn = 1;
+									newNoteBinding->noteOffOn = 0;
 									newNoteBinding->index = bindingAddIndex;
 									inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
 
@@ -536,7 +546,7 @@ void imgParameters::midiListenButton(SDL_Event* e, MidiModule* myMidiModule, Ren
 								newNoteBinding->param = paramSelected;
 								newNoteBinding->setOrScale = setOrScaleSelected;
 								newNoteBinding->amountOrPosition = endValue;
-								newNoteBinding->noteOffOn = 1;
+								newNoteBinding->noteOffOn = 0;
 								newNoteBinding->index = bindingAddIndex;
 								inRenderWindow->arr_sprites[sceneIndex][index]->n_binding.push_back(newNoteBinding);
 
