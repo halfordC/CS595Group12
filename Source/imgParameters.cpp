@@ -222,19 +222,14 @@ void imgParameters::bindingSelectorEvent(SDL_Event* e, Sprite * inSprite)
 
 		int bindingCheckIndex = std::stoi(contentsString, &sz)-1;
 
-		//int otherBindingCheckIndex = selector.textbox.selectedline;
 
 		for (NoteBinding* n : checkNoteBindings) 
 		{
 			if (n->index == bindingCheckIndex) 
 			{
-				//this is what we want to populate everything with, 
-				// 		//be sure to set listen filter when selectring new bindings.
-				//and return
 				listenFilter = n->noteOffOn;
-
-				std::string newNote(contents);
-				newNote = newNote.substr(newNote.size() - 2);
+				
+				std::string newNote = numberToNote(n->noteNumber);
 				char* notenum = const_cast<char*>(newNote.c_str());
 
 				imgKissGUI->kiss_string_copy(imgParam.entry.text, 20, (char*)imgParam.textbox.array->data[n->param + (n->setOrScale * 5)], NULL);
@@ -253,9 +248,6 @@ void imgParameters::bindingSelectorEvent(SDL_Event* e, Sprite * inSprite)
 			{
 				std::string tmp = "CC " + std::to_string(c->CCnumber);
 				char* ccNumIn = const_cast<char*>(tmp.c_str());
-				//this is what we want to populate everything with, 
-				//be sure to set listen filter when selectring new bindings.
-				//and return
 
 				imgKissGUI->kiss_string_copy(imgParam.entry.text,12, (char*)imgParam.textbox.array->data[c->param], NULL);
 				imgKissGUI->kiss_string_copy(midiParam.entry.text, 15, "Control Change", NULL);
@@ -792,5 +784,16 @@ void imgParameters::warningEvent(SDL_Event* e)
 	{
 		warning = false;
 	}
+
+}
+
+std::string imgParameters::numberToNote(int note) 
+{
+
+	juce::String noteString = juce::MidiMessage::getMidiNoteName(note, true, true, 3);
+	
+	std::string returnString = noteString.toStdString();
+
+	return returnString;
 
 }

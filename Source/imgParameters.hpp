@@ -34,6 +34,7 @@ public:
 
 	int getIndex() { return index; };
 	void warningEvent(SDL_Event* e);
+	std::string imgParameters::numberToNote(int note);
 
 	kiss_window binding;
 	kiss_combobox imgParam;
