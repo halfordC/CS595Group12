@@ -288,7 +288,7 @@ void Translator::NoteSetX(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 void Translator::NoteScaleX(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
 	Sprite* s = a->arr_sprites[sceneIndex][i];
-	s->setX(s->getX() * b.amountOrPosition);
+	s->setX(s->getX() + b.amountOrPosition);
 }
 
 void Translator::CCSetX(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
@@ -307,7 +307,7 @@ void Translator::NoteSetY(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 void Translator::NoteScaleY(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
 	Sprite* s = a->arr_sprites[sceneIndex][i];
-	s->setY(s->getX() * b.amountOrPosition);
+	s->setY(s->getX() + b.amountOrPosition);
 }
 void Translator::CCSetY(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {
@@ -325,7 +325,7 @@ void Translator::NoteSetWidth(NoteBinding b, RenderWindow* a, int i, int sceneIn
 void Translator::NoteScaleWidth(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
 	Sprite* s = a->arr_sprites[sceneIndex][i];
-	s->setWidth(s->getX() * b.amountOrPosition);
+	s->setWidth(s->getX() + b.amountOrPosition);
 }
 void Translator::CCSetWidth(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {
@@ -343,7 +343,7 @@ void Translator::NoteSetHeight(NoteBinding b, RenderWindow* a, int i, int sceneI
 void Translator::NoteScaleHeight(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
 	Sprite* s = a->arr_sprites[sceneIndex][i];
-	s->setHeight(s->getX() * b.amountOrPosition);
+	s->setHeight(s->getX() + b.amountOrPosition);
 }
 void Translator::CCSetHeight(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {
@@ -361,7 +361,7 @@ void Translator::NoteSetSize(NoteBinding b, RenderWindow* a, int i, int sceneInd
 void Translator::NoteScaleSize(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
 	Sprite* s = a->arr_sprites[sceneIndex][i];
-	s->setScale(s->getX() * b.amountOrPosition);
+	s->setScale(s->getX() + b.amountOrPosition);
 }
 void Translator::CCSetSize(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {
@@ -379,7 +379,7 @@ void Translator::NoteSetRotation(NoteBinding b, RenderWindow* a, int i, int scen
 void Translator::NoteScaleRotation(NoteBinding b, RenderWindow* a, int i, int sceneIndex)
 {
 	Sprite* s = a->arr_sprites[sceneIndex][i];
-	s->setRotation(s->getX() * b.amountOrPosition);
+	s->setRotation(s->getX() + b.amountOrPosition);
 }
 void Translator::CCSetRotation(CCBinding b, RenderWindow* a, int i, int ccValue, int sceneIndex)
 {

@@ -359,8 +359,8 @@ void imgParameters::endLocation(SDL_Event* e)
 		if (iss.eof() && !iss.fail())
 		{
 			endValue = std::stof(toFloat);
-			if (endValue > 1 || endValue < 0)
-				imgKissGUI->kiss_string_copy(end.text, 14, "Must be (0-1)", NULL);
+			if (endValue > 2 || endValue < 0)
+				imgKissGUI->kiss_string_copy(end.text, 14, "Must be (0-2)", NULL);
 			endParamSelected = true;
 			return;
 		}
