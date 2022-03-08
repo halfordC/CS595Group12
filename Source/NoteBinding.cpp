@@ -12,5 +12,6 @@ NoteBinding::NoteBinding()
 	param = 7;
 	setOrScale = 2;
 	amountOrPosition = 0.0;
+	index = -1;
 }
 

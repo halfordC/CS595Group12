@@ -21,7 +21,7 @@ public:
 	void cleanUp();
 	void selectMidiParamEvent(SDL_Event* e);
 	void selectImageParamEvent(SDL_Event* e);
-	void bindingSelectorEvent(SDL_Event* e);
+	void bindingSelectorEvent(SDL_Event* e, Sprite* inSprite);
 	void startLocation(SDL_Event* e);
 	void endLocation(SDL_Event* e);
 	void typeFilePath(SDL_Event* e, RenderWindow * inRenderWindow, SDL_Renderer* renderer);
@@ -34,6 +34,7 @@ public:
 
 	int getIndex() { return index; };
 	void warningEvent(SDL_Event* e);
+	std::string imgParameters::numberToNote(int note);
 
 	kiss_window binding;
 	kiss_combobox imgParam;
@@ -55,8 +56,10 @@ public:
 
 	Sprite* sprite;
 	//ImageBinders* bindings;
-	int noteBindingIndex;
-	int ccBindingIndex;
+	//int noteBindingIndex;
+	//int ccBindingIndex;
+	int bindingAddIndex;
+	int bindingCurrentIndex;
 	int paramSelected;
 	int setOrScaleSelected; //if 1, set. if 2, scale.
 	float startValue;
@@ -68,11 +71,12 @@ public:
 private:
 	SDL_Event* e;
 	myKissGUI* imgKissGUI;
-	int listenFilter;
+	int listenFilter; //0 = note On, 1 = Note off, 2 = CC
 	int index;
 	bool warning;
 	bool imageParamSelected;
 	bool midiParamSelected;
 	bool endParamSelected;
+	bool imageLoaded;
 	int sceneIndex; //this is the scene that this layer is attached to.
 };

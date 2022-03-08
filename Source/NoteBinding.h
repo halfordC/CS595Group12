@@ -17,6 +17,7 @@ public:
 	uint8_t param; //Which property to target: 0=x, 1=y, 2=width, 3=heigt, 4=rotation, 5=scale, 6=Layer On
 	uint8_t setOrScale; //Type of change: 0=Set, 1=Scale
 	float amountOrPosition; //value to scale by, or to set to. 
+	int index;
 
 private:
 
