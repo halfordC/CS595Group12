@@ -933,6 +933,18 @@
     <ClCompile Include="..\..\Source\Scene.cpp">
       <Filter>MidiVisualizer\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\CCBinding.cpp">
+      <Filter>MidiVisualizer\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ImageBinders.cpp">
+      <Filter>MidiVisualizer\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\LayerBinding.cpp">
+      <Filter>MidiVisualizer\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\NoteBinding.cpp">
+      <Filter>MidiVisualizer\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
@@ -1872,6 +1884,21 @@
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Scene.h">
+      <Filter>MidiVisualizer\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\LayerBinding.h">
+      <Filter>MidiVisualizer\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NoteBinding.h">
+      <Filter>MidiVisualizer\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CCBinding.h">
+      <Filter>MidiVisualizer\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ImageBinders.h">
+      <Filter>MidiVisualizer\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Translator.h">
       <Filter>MidiVisualizer\Include</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,16 +2,32 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include "CCBinding.h"
+#include "NoteBinding.h"
+
 class Sprite
 {
 public:
-  Sprite()
+    Sprite() 
+    {
+        x = 0.0f;
+        y = 0.0f;
+        w = 0;
+        h = 0;
+        rot = 0;
+        scale = 1.0f;
+        res = NULL;
+    }
+
+  Sprite(SDL_Texture* resourse)
   {
     x = 0.0f;
     y = 0.0f;
     w = 0;
     h = 0;
-    res = NULL;
+    rot = 0;
+    scale = 1.0f;
+    res = resourse;
   }
   Sprite(float xPos, float yPos, int width, int height, SDL_Texture* resource)
   {
@@ -36,6 +52,9 @@ public:
   int getRotation() { return rot; };
   float getScale() { return scale; };
   SDL_Texture* getRes() { return res; };
+  void setRes(SDL_Texture* inRes) { res = inRes; };
+  std::vector<CCBinding*> c_binding;
+  std::vector<NoteBinding*> n_binding;
   //TODO ADD ALPHA SCALING
   ~Sprite() { SDL_DestroyTexture(res); };
 private:
@@ -45,5 +64,8 @@ private:
   int h;
   int rot;
   float scale;
+
+
+  
   SDL_Texture* res;
 };

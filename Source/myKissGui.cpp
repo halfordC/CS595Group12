@@ -68,13 +68,20 @@
 	{
 		kiss_array_new(inArray);
 
+		kiss_array_appendstring(inArray, 0, "Set X", NULL);
+		kiss_array_appendstring(inArray, 0, "Set Y", NULL);
+		kiss_array_appendstring(inArray, 0, "Set Width", NULL);
+		kiss_array_appendstring(inArray, 0, "Set Height", NULL);
+		kiss_array_appendstring(inArray, 0, "Set Rotation", NULL);
+		kiss_array_appendstring(inArray, 0, "Set Size", NULL);
+		//kiss_array_appendstring(inArray, 0, "Set On/Off", NULL);
+
 		kiss_array_appendstring(inArray, 0, "Scale X", NULL);
 		kiss_array_appendstring(inArray, 0, "Scale Y", NULL);
 		kiss_array_appendstring(inArray, 0, "Scale Width", NULL);
 		kiss_array_appendstring(inArray, 0, "Scale Height", NULL);
 		kiss_array_appendstring(inArray, 0, "Scale Size", NULL);
 		kiss_array_appendstring(inArray, 0, "Scale Rotation", NULL);
-		kiss_array_appendstring(inArray, 0, "Scale Alpha", NULL);
 	}
 
 	bool myKissGUI::dropBoxcompare(kiss_entry clickedEntry, char* compare)
@@ -582,28 +589,28 @@
 		renderer = SDL_CreateRenderer(window, -1,
 			SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		if (renderer) kiss_array_append(a, RENDERER_TYPE, renderer);
-		r += kiss_font_new(&kiss_textfont, "kiss_font.ttf", a,
+		r += kiss_font_new(&kiss_textfont, "kissGUIAssets/kiss_font.ttf", a,
 			kiss_textfont_size);
-		r += kiss_font_new(&kiss_buttonfont, "kiss_font.ttf", a,
+		r += kiss_font_new(&kiss_buttonfont, "kissGUIAssets/kiss_font.ttf", a,
 			kiss_buttonfont_size);
-		r += kiss_image_new(&kiss_normal, "kiss_normal.png", a, renderer);
-		r += kiss_image_new(&kiss_prelight, "kiss_prelight.png", a, renderer);
-		r += kiss_image_new(&kiss_active, "kiss_active.png", a, renderer);
-		r += kiss_image_new(&kiss_bar, "kiss_bar.png", a, renderer);
-		r += kiss_image_new(&kiss_vslider, "kiss_vslider.png", a, renderer);
-		r += kiss_image_new(&kiss_hslider, "kiss_hslider.png", a, renderer);
-		r += kiss_image_new(&kiss_up, "kiss_up.png", a, renderer);
-		r += kiss_image_new(&kiss_up_prelight, "kiss_up_prelight.png", a, renderer);
-		r += kiss_image_new(&kiss_down, "kiss_down.png", a, renderer);
-		r += kiss_image_new(&kiss_down_prelight, "kiss_down_prelight.png", a, renderer);
-		r += kiss_image_new(&kiss_left, "kiss_left.png", a, renderer);
-		r += kiss_image_new(&kiss_right, "kiss_right.png", a, renderer);
-		r += kiss_image_new(&kiss_combo, "kiss_combo.png", a, renderer);
-		r += kiss_image_new(&kiss_selected, "kiss_selected.png", a, renderer);
-		r += kiss_image_new(&kiss_tabSelected, "kiss_tabSelected.png", a, renderer);
-		r += kiss_image_new(&kiss_tabHover, "kiss_tabHover.png", a, renderer);
-		r += kiss_image_new(&kiss_tabNormal, "kiss_tab.png", a, renderer);
-		r += kiss_image_new(&kiss_unselected, "kiss_unselected.png", a,
+		r += kiss_image_new(&kiss_normal, "kissGUIAssets/kiss_normal.png", a, renderer);
+		r += kiss_image_new(&kiss_prelight, "kissGUIAssets/kiss_prelight.png", a, renderer);
+		r += kiss_image_new(&kiss_active, "kissGUIAssets/kiss_active.png", a, renderer);
+		r += kiss_image_new(&kiss_bar, "kissGUIAssets/kiss_bar.png", a, renderer);
+		r += kiss_image_new(&kiss_vslider, "kissGUIAssets/kiss_vslider.png", a, renderer);
+		r += kiss_image_new(&kiss_hslider, "kissGUIAssets/kiss_hslider.png", a, renderer);
+		r += kiss_image_new(&kiss_up, "kissGUIAssets/kiss_up.png", a, renderer);
+		r += kiss_image_new(&kiss_up_prelight, "kissGUIAssets/kiss_up_prelight.png", a, renderer);
+		r += kiss_image_new(&kiss_down, "kissGUIAssets/kiss_down.png", a, renderer);
+		r += kiss_image_new(&kiss_down_prelight, "kissGUIAssets/kiss_down_prelight.png", a, renderer);
+		r += kiss_image_new(&kiss_left, "kissGUIAssets/kiss_left.png", a, renderer);
+		r += kiss_image_new(&kiss_right, "kissGUIAssets/kiss_right.png", a, renderer);
+		r += kiss_image_new(&kiss_combo, "kissGUIAssets/kiss_combo.png", a, renderer);
+		r += kiss_image_new(&kiss_selected, "kissGUIAssets/kiss_selected.png", a, renderer);
+		r += kiss_image_new(&kiss_tabSelected, "kissGUIAssets/kiss_tabSelected.png", a, renderer);
+		r += kiss_image_new(&kiss_tabHover, "kissGUIAssets/kiss_tabHover.png", a, renderer);
+		r += kiss_image_new(&kiss_tabNormal, "kissGUIAssets/kiss_tab.png", a, renderer);
+		r += kiss_image_new(&kiss_unselected, "kissGUIAssets/kiss_unselected.png", a,
 			renderer);
 		if (r) {
 			kiss_clean(a);
@@ -1527,6 +1534,19 @@
 			(event->key.keysym.mod & KMOD_CTRL) &&
 			event->key.keysym.scancode == SDL_SCANCODE_U) {
 			strcpy(entry->text, "");
+			*draw = 1;
+		}
+		//so we can past filepaths
+		else if (event->key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL && entry->active) {
+			if (kiss_textwidth(entry->font, entry->text,
+				event->text.text) < entry->textwidth &&
+				strlen(entry->text) + strlen(event->text.text) <
+				KISS_MAX_LENGTH)
+			{
+				std::string text(SDL_GetClipboardText());
+				if (text.at(0) == '"') text = text.substr(1, text.size() - 2);
+				strcpy(entry->text, const_cast<char*>(text.c_str()));
+			}
 			*draw = 1;
 		}
 		return 0;

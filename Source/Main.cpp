@@ -3,13 +3,14 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <string>
-//#include <unistd.h>
 #include <filesystem>
 
-#include "kiss_sdl.h"
 #include "RenderWindow.hpp"
 #include "Sprite.hpp"
 #include "midiModule.h"
+#include "UserGUI.hpp"
+#include "myKissGui.hpp"
+#include "Translator.h"
 
 using std::cout; using std::cin;
 using std::endl; using std::string;
@@ -23,26 +24,8 @@ int main(int argc, char* args[])
 
 	//init Midi Module, get midi input
 	MidiModule* myMidiModule = new MidiModule();
+
 	
-	std::vector<std::string> midiInputDeviceNames;
-
-	std::cout << "Which of these devices would you like to connect to?" << std::endl;
-	myMidiModule->getMidiDeviceNames(&midiInputDeviceNames);
-
-	for (auto i = midiInputDeviceNames.begin(); i != midiInputDeviceNames.end(); i++)
-	{
-		std::cout << *i << std::endl;
-	}
-
-	if(midiInputDeviceNames.size()>0)
-	{
-		std::string inputRequest;
-		std::cin >> inputRequest;
-		myMidiModule->connectToMidiDevice(inputRequest);
-	}
-	
-
-
 	///Initialze SDL stuff
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
 	{
@@ -55,10 +38,10 @@ int main(int argc, char* args[])
 	}
 
 	RenderWindow sceneViewWindow("Scene View Window");
-	sceneViewWindow.enterViewMode();
-	RenderWindow sceneViewWindow2("Scene View Window");
-	sceneViewWindow2.enterViewMode();
-	//sceneViewWindow.openSceneFolder();
+	//sceneViewWindow.enterViewMode();
+	UserGUI gui("Scene Editor", myMidiModule);
+
+	Translator* translator = new Translator(&gui);
 
 	SDL_Event event;
 	unsigned int lastTime = SDL_GetTicks();
@@ -94,10 +77,12 @@ int main(int argc, char* args[])
 			//GUI callback events go here.
 			gui.selectMidiDropdownEvent(&event, myMidiModule);
 			gui.addBindingEvent(&event);
-			gui.guiEvent(&event, myMidiModule, sceneViewWindow);
+			gui.removeBindingEvent(&event);
+			gui.guiEvent(&event, myMidiModule, &sceneViewWindow, sceneViewWindow.renderer);
 			gui.addSceneEvent(&event);
 			gui.sceneTabEvent(&event);
 			gui.scrollEvent(&event);
+			gui.startEvent(&event, &sceneViewWindow);
 			switch (event.type)
 			{
 			case SDL_QUIT:
@@ -112,6 +97,16 @@ int main(int argc, char* args[])
 				default:
 					break;
 				}
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym)
+				{
+				case SDLK_F11:
+					sceneViewWindow.toggleFullscreen();
+					break;
+				case SDLK_ESCAPE:
+					sceneViewWindow.toggleFullscreen();
+					break;
+				}
 			default:
 				break;
 			}
@@ -121,8 +116,11 @@ int main(int argc, char* args[])
 		/* Do renders */
 		if (((float)(currentTime - lastTime)) >= (16.67f * fpsCounter))
 		{
-			sceneViewWindow.render();
+			sceneViewWindow.render(gui.sceneIndex);
+			gui.render();
 			fpsCounter++;
+			translator->translate(&sceneViewWindow, myMidiModule);
+			/*
 			if (myMidiModule->hasNewMidiMessage())
 			{
 				std::vector<juce::MidiMessage> inBuffer = myMidiModule->getMidiBuffer();
@@ -135,8 +133,11 @@ int main(int argc, char* args[])
 				myMidiModule->messagesParsed(); //this clears the flag, and waits for a new message. 
 
 			}
+			*/
+			
 		}
 		upsCounter++;
+		/*
 		if (currentTime - lastTime >= 1000)
 		{
 			cout << "FPS: " << fpsCounter << " | Updates: " << upsCounter << endl;
@@ -161,6 +162,7 @@ int main(int argc, char* args[])
 				secondCounter = 0;
 			}
 		}
+		*/
 
 	}
 
@@ -171,7 +173,7 @@ int main(int argc, char* args[])
 	
 	myMidiModule->~MidiModule();
 	sceneViewWindow.cleanUp();
-	sceneViewWindow2.cleanUp();
+	gui.cleanUp();
 	
 	
 
